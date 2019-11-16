@@ -1,0 +1,113 @@
+* {
+	margin: 0;
+	padding: 0;
+	user-select: none;
+	-ms-user-select: none; 
+    -moz-user-select: none; 
+    -webkit-user-select: none;
+}
+
+.store {
+	text-align: center;
+	font-weight: bold;
+	font-size: 30px;
+	line-height: 42px;
+}
+
+.align-right {
+	text-align: right !important; 
+}
+.align-center {
+	text-align: center !important;
+}
+
+.hover {
+	background: #f8f9fe;
+	cursor: pointer;
+}
+
+.sum {
+	padding-top: 20px;
+	font-size: 20px;
+	font-weight: bold;
+}
+
+.listName {
+	float: left;
+	font-weight: 500;
+	padding-top: 6px;
+}
+
+.listDate {
+	float: right;
+	padding-top: 6px;
+}
+
+.listGroup {
+	float: left;
+	background: rgba(228, 230, 240, 0.8);
+    padding: 4px 8px;
+    border-radius: 12px;
+    margin: 0 8px 2px 0;
+    line-height: 14px;
+}
+
+.listIcon {
+	float:right;
+	line-height: 22px;
+	color: #94a1b3;
+    font-size: 16px;
+}
+
+.listIcon:hover {
+	color: #1CA1C1;
+}
+
+.listBlock {
+	height: 40px; 	
+}
+
+.listImg {
+	border-radius: 50px;
+	float: left;
+	width: 48px;
+	height: 48px;
+	margin: 9px 15px 10px 5px;
+}
+
+.dataImg {
+	border-radius: 50px;
+	width: 30px;
+	height: 30px;
+	margin: 3px;
+}
+
+.dataIcon {
+	line-height: 42px;
+    font-size: 20px;
+    padding-left: 8px;
+}
+
+.listPos {
+	float: left;
+	line-height: 10px;
+	color: #475466;
+}
+
+.pad {
+	padding-top: 
+}
+
+.listGroupIcon {
+	float: left;
+	padding-right: 5px;
+}
+
+.icon {
+	height: 30px;
+	padding: 9px;
+}
+
+.listEmployees .webix_scroll_cont .webix_list_item{
+	height: 70px !important;
+}
