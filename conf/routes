@@ -8,6 +8,15 @@ module:testrunner
 
 
 GET     /                                       App.Index
+GET     /employees                              App.Employees
+
+
+GET     /project                                CProject.ReadAll
+# GET     /project/:id                            CProject.Read
+# PUT     /project                                CProject.Create
+# POST    /project/:id                            CProject.Update
+# DELETE  /project/:id                            CProject.Delete
+
 
 # Ignore favicon requests
 GET     /favicon.ico                            404
@@ -24,5 +33,3 @@ GET     /public/*filepath                       Static.Serve("public")
 # For rapid development uncomment the following to add new controller.action endpoints
 # without having to add them to the routes table.
 # *       /:controller/:action                    :controller.:action
-
-GET         /project        CProject.ReadAll
