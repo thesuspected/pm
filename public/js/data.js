@@ -33,15 +33,15 @@ let sort_data = [
 
 let imagePath = "https://docs.webix.com/samples/63_kanban/common/imgs/";
 let users_set = [
-    {id:1, value:"Rick Lopes", position:"Руководитель отдела", image:imagePath + "1.jpg"},
-    {id:2, value:"Martin Farrell", position:"Junior programmist", image:imagePath + "2.jpg"},
-    {id:3, value:"Douglass Moore", position:"Менеджер", image:imagePath + "3.jpg"},
-    {id:4, value:"Eric Doe", position:"Ведущий проекта", image:imagePath + "4.jpg"},
-    {id:5, value:"Sophi Elliman", position:"Секретарь", image:imagePath + "5.jpg"},
-    {id:6, value:"Anna O'Neal", position:"Аналитик", image:imagePath + "6.jpg"},
-    {id:7, value:"Marcus Storm", position:"Тестировщик", image:imagePath + "7.jpg"},
-    {id:8, value:"Nick Branson", position:"Дизайнер", image:imagePath + "8.jpg"},
-    {id:9, value:"CC", position:"Верстальшик", image:imagePath + "9.jpg"}
+    {id:1, value:"Rick Lopes", position:"Руководитель отдела", image:imagePath + "1.jpg", date:new Date(2019,3,1), mail:"exampleemail@gmail.com"},
+    {id:2, value:"Martin Farrell", position:"Junior programmist", image:imagePath + "2.jpg", date:new Date(2019,3,1), mail:"exampleemail@gmail.com"},
+    {id:3, value:"Douglass Moore", position:"Менеджер", image:imagePath + "3.jpg", date:new Date(2019,3,1), mail:"exampleemail@gmail.com"},
+    {id:4, value:"Eric Doe", position:"Ведущий проекта", image:imagePath + "4.jpg", date:new Date(2019,3,1), mail:"exampleemail@gmail.com"},
+    {id:5, value:"Sophi Elliman", position:"Секретарь", image:imagePath + "5.jpg", date:new Date(2019,3,1), mail:"exampleemail@gmail.com"},
+    {id:6, value:"Anna O'Neal", position:"Аналитик", image:imagePath + "6.jpg", date:new Date(2019,3,1), mail:"exampleemail@gmail.com"},
+    {id:7, value:"Marcus Storm", position:"Тестировщик", image:imagePath + "7.jpg", date:new Date(2019,3,1), mail:"exampleemail@gmail.com"},
+    {id:8, value:"Nick Branson", position:"Дизайнер", image:imagePath + "8.jpg", date:new Date(2019,3,1), mail:"exampleemail@gmail.com"},
+    {id:9, value:"CC", position:"Верстальщик", image:imagePath + "9.jpg", date:new Date(2019,3,1), mail:"exampleemail@gmail.com"}
 ];
 
 let tags_set = [
@@ -66,4 +66,23 @@ let projectGroup_data = [
     {value:"dbEngineers"}
 ];
 
-export {projects_data, projectPopup_data, colors_set, kanban_data, projectGroup_data, sort_data, tags_set, users_set};
+let groups_data = [
+    {date:new Date(2019,3,1), name:"Не назначенные", lead:"", id:1},
+    {date:new Date(2019,5,24), name:"Developers", lead:"Rick Lopes", id:2},
+    {date:new Date(2019,6,25), name:"Designers", lead:"Sophi Elliman", id:3},
+    {date:new Date(2019,8,1), name:"dbEngineers", lead:"Marcus Storm", id:4},
+];
+
+let positions = [
+    {value:"Руководитель отдела"},
+    {value:"Junior programmist"},
+    {value:"Менеджер"},
+    {value:"Ведущий проекта"},
+    {value:"Секретарь"},
+    {value:"Аналитик"},
+    {value:"Тестировщик"},
+    {value:"Дизайнер"},
+    {value:"Верстальщик"}
+]
+
+export {projects_data, projectPopup_data, colors_set, kanban_data, projectGroup_data, sort_data, tags_set, users_set, groups_data, positions};

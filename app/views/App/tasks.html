@@ -24,7 +24,7 @@
 
 		import {toolbar} from "/public/js/toolbar.js";						// шапка
 		import {sidebar} from "/public/js/sidebar.js";						// боковая панель
-		// Вкладка задачи
+
 		import {projects} from "/public/js/project/projects.js";			// островок Проекты
 		import {kanban} from "/public/js/task/kanban.js";					// островок Задачи
 
@@ -143,14 +143,20 @@
 						}
 					]
 				});
+
 				// Подсветка вкладки
 				$$("sidebar").select("tasks", true);
 
 				//////////////////////////////////////////// Обработчики ///////////////////////////////////////////////
 
 				// Переход по вкладкам
-				$$("sidebar").attachEvent("onItemClick", function(){
-					location.href = id + ".html";
+				$$("sidebar").attachEvent("onItemClick", function(id){
+					location.href = id;
+				});
+
+				// Открыть/закрыть sidebar
+				$$("toggleIcon").attachEvent("onItemClick", function(){
+					$$("sidebar").toggle()
 				});
 
 				// Добавить проект

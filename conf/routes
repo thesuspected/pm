@@ -8,6 +8,7 @@ module:testrunner
 
 
 GET     /                                       App.Index
+GET     /tasks                                  App.Tasks
 GET     /employees                              App.Employees
 
 

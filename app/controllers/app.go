@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"github.com/revel/revel"
-	"pm/app/routes"
+	"my-app/app/routes"
 )
 
 type App struct {
@@ -10,10 +10,13 @@ type App struct {
 }
 
 func (c App) Index() revel.Result {
+	return c.Redirect(routes.App.Index())
+}
+
+func (c App) Tasks() revel.Result {
 	return c.Render()
 }
 
 func (c App) Employees() revel.Result {
-	return c.Redirect(routes.App.Employees())
 	return c.Render()
 }
