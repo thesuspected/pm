@@ -22,20 +22,22 @@
 
 		///////////////////////////////////////////////// Виджеты //////////////////////////////////////////////////////
 
-		import {toolbar} from "/public/js/toolbar.js";						// шапка
-		import {sidebar} from "/public/js/sidebar.js";						// боковая панель
+		import {toolbar} from "/public/js/toolbar.js";							// шапка
+		import {sidebar} from "/public/js/sidebar.js";							// боковая панель
 
-		import {projects} from "/public/js/project/projects.js";			// островок Проекты
-		import {kanban} from "/public/js/task/kanban.js";					// островок Задачи
+		import {projects} from "/public/js/project/projects.js";				// островок Проекты
+		import {kanban} from "/public/js/task/kanban.js";						// островок Задачи
 
-		import {projectWindow} from "/public/js/project/projectWindow.js";	// окно проекта
+		import {projectWindow} from "/public/js/project/projectWindow.js";		// окно проекта
 		webix.ui(projectWindow);
 
-		import {projectPopup} from "/public/js/project/projectPopup.js";	// попап проектов [редактировать / удалить]
+		import {projectPopup} from "/public/js/project/projectPopup.js";		// попап списка [редактировать / удалить]
 		webix.ui(projectPopup);
 
-		import {sortPopup} from "/public/js/sortPopup.js";					// попап сортировки [по порядку / по имени / по дате]
+		import {sortPopup} from "/public/js/sortPopup.js";						// попап сортировки [по порядку / по имени / по дате]
 		webix.ui(sortPopup);
+
+		import {projects_originalValues} from "/public/js/origValuesForm.js";	// оригинальные значения формы проекта
 
 		////////////////////////////////////////////////// Функции /////////////////////////////////////////////////////
 
@@ -47,7 +49,7 @@
 			$$("titleP").setValue("Изменить проект");
 			$$("dltProjectFormBtn").show();
 			$$("project_Popup").hide();
-			var projectValues = $$("listProject").getSelectedItem();
+			let projectValues = $$("listProject").getSelectedItem();
 			// заносим значения элемента в форму для изменения
 			$$("project_Form").setValues(projectValues);
 			$$("project_window").show();
@@ -57,12 +59,12 @@
 			// валидация заполнения имени проекта
 			if ($$("project_Form").validate()) {
 				// берем значения элемента
-				var item_data = $$("project_Form").getValues();
+				let item_data = $$("project_Form").getValues();
 				// поиск выбранного элемента в массиве
 				let findIt = projects_data.find(itemFind => itemFind.id == item_data.id);
 				if(findIt) {
 					// изменение существующего
-					var id = $$("listProject").getSelectedId();
+					let id = $$("listProject").getSelectedId();
 					projects_data[id - 1] = item_data;
 					$$("listProject").remove(id);
 					$$("listProject").add(item_data, id-1);
@@ -84,14 +86,14 @@
 		function deleteProject() {
 			$$("project_Popup").hide();
 			$$("project_window").hide();
-			var projectValues = $$("listProject").getSelectedItem();
+			let projectValues = $$("listProject").getSelectedItem();
 			// подтверждение удаления
 			webix.confirm({
 				ok:"ОК", cancel:"Отмена",
 				text:"Вы собираетесь удалить проект, вы уверены?"
 			})
 					.then(function(){
-						var id = $$("listProject").getSelectedId();
+						let id = $$("listProject").getSelectedId();
 						// удаляем элемент в массиве
 						projects_data.splice(id - 1, 1);
 						// удаляем элемент на странице
@@ -107,8 +109,6 @@
 						}
 					})
 		}
-		// Стандартные значения формы проектов
-		let originalValues = {name:"", date:new Date(), group:"Designers"};
 
 		///////////////////////////////////////////////// Отрисовка ////////////////////////////////////////////////////
 
@@ -163,7 +163,7 @@
 				$$("addProjectBtn").attachEvent("onItemClick", function(){
 					$$("titleP").setValue("Добавить проект");
 					$$("dltProjectFormBtn").hide();
-					$$("project_Form").setValues(originalValues);
+					$$("project_Form").setValues(projects_originalValues);
 					$$("project_window").show();
 				});
 

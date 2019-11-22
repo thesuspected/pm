@@ -14,8 +14,6 @@
 <body>
     <script type="module">
 
-        import {groups_data} from '/public/js/data.js';
-
         webix.i18n.setLocale('ru-RU');
 
         ///////////////////////////////////////////////// Виджеты //////////////////////////////////////////////////////
@@ -27,13 +25,14 @@
         import {groupTable} from "/public/js/group/groupTable.js";		        // островок сотрудники Группы
         import {employees} from "/public/js/employee/employees.js";			    // островок Сотрудники
 
-        var employees_originalValues = {name:"", date:new Date(), group:"Designers"};
-
         import {groupWindow} from "/public/js/group/groupWindow.js";		    // окно группы
         webix.ui(groupWindow);
 
         import {employeeWindow} from "/public/js/employee/employeeWindow.js";	// окно сотрудника
         webix.ui(employeeWindow);
+
+        import {projectPopup} from "/public/js/project/projectPopup.js";	    // попап списка [редактировать / удалить]
+        webix.ui(projectPopup);
 
         import {sortPopup} from "/public/js/sortPopup.js";					    // попап сортировки [по порядку / по имени / по дате]
         webix.ui(sortPopup);
@@ -43,17 +42,12 @@
         function sortProject(value) {
             $$("listGroup").sort("#" + value + "#");
         };
-
-        function showWindow(id) {
-            $$(id + "_Form").setValues(eval(id + "_originalValues"));
-            $$(id + "_window").show();
-        }
-
-        function deleteEmployees() {
-
+        
+        function editGroup() {
+            
         };
 
-        function addEmployees() {
+        function addGroup() {
 
         };
 
@@ -61,7 +55,15 @@
 
         };
 
-        function addGroup() {
+        function editEmployee() {
+
+        };
+
+        function addEmployee() {
+
+        };
+
+        function deleteEmployee() {
 
         };
 
@@ -111,7 +113,7 @@
                 });
 
                 // подсветка вкладки
-                $$("sidebar").select("groups", true);
+                $$("sidebar").select("employees", true);
 
                 //////////////////////////////////////////// Обработчики ///////////////////////////////////////////////
 
@@ -129,7 +131,7 @@
                 $$("addGroupBtn").attachEvent("onItemClick", function(){
                     $$("titleG").setValue("Добавить группу");
                     $$("dltGroupFormBtn").hide();
-                    //$$("groups_Form").setValues(originalValues);
+                    //$$("groups_Form").setValues(groups_originalValues);
                     $$("groups_window").show();
                 });
 
@@ -156,9 +158,44 @@
                 });
 
                 // Показать попап группы
-                $$("listProject").on_click.listIcon = function(node) {
+                $$("listGroup").on_click.listIcon = function(node) {
                     $$("project_Popup").show(node);
                 };
+
+                // Действия попапа группы
+                $$("projectPopup_List").attachEvent("onItemClick", function(id){
+                    let value = this.getItem(id).value;
+                    switch(value) {
+                        case "edit":
+                            editGroup();
+                            break;
+                        case "delete":
+                            deleteGroup();
+                            break;
+                    }
+                });
+
+                // Окно заполнения группы
+                $$("dltGroupFormBtn").attachEvent("onItemClick", function(){
+                    deleteGroup();
+                });
+                $$("saveGroupFormBtn").attachEvent("onItemClick", function(){
+                    addGroup();
+                });
+                $$("closeGroupFormBtn").attachEvent("onItemClick", function(){
+                    $$('groups_window').hide();
+                });
+
+                // Окно заполнения сотрудника
+                $$("dltEmployeeFormBtn").attachEvent("onItemClick", function(){
+                    deleteEmployee();
+                });
+                $$("saveEmployeeFormBtn").attachEvent("onItemClick", function(){
+                    addEmployee();
+                });
+                $$("closeEmployeeFormBtn").attachEvent("onItemClick", function(){
+                    $$('groups_window').hide();
+                });
 
                 // Поиск сотрудников
                 $$("search").attachEvent("onTimedKeyPress",function(){

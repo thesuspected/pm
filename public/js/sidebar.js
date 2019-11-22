@@ -4,7 +4,7 @@ export let sidebar = {
     collapsed:true,
     width: 150,
     data:[
-        { id:"tasks", value:"Задачи", icon:"mdi mdi-calendar-check", click: () => {window.location.replace("/tasks");} },
-        { id:"employees", value:"Сотрудники", icon:"mdi mdi-account-group", click: () => {window.location.replace("/employees");} }
+        { id:"tasks", value:"Задачи", icon:"mdi mdi-calendar-check" },
+        { id:"employees", value:"Сотрудники", icon:"mdi mdi-account-group" }
     ]
 };

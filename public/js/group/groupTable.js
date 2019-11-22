@@ -4,7 +4,7 @@ export let groupTable = {
     id:"groupsTable",
     columns:[
         { id:"id", header:"№",  width:30},
-        { id:"image", header:"<div class='dataIcon mdi mdi-account-circle'></div>", template:"<img src='#image#' class='dataImg'></img>", width: 50},
+        { id:"image", header:"<div class='dataIcon mdi mdi-account-circle'></div>", template:"<img src='#image#' class='dataImg'>", width: 50},
         { id:"value", header:"ФИО", fillspace:true},
         { id:"position", header:"Должность", width: 160},
         { id:"date", header:"Дата рождения", template:function(obj){return "<div>" + webix.i18n.dateFormatStr(obj.date) + "</div>"}, width: 100},

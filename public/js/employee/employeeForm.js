@@ -32,9 +32,9 @@ export let employeeForm = {
         {
             margin:10,
             cols:[
-                { view:"button", id:"dltProjectBtn", width:111, value:"Уволить" },
+                { view:"button", id:"dltEmployeeFormBtn", width:111, value:"Уволить" },
                 {},
-                { view:"button", value:"Нанять", width:111, css:"webix_primary"},
+                { view:"button", id:"saveEmployeeFormBtn", value:"Нанять", width:111, css:"webix_primary"},
             ]
         }
     ]

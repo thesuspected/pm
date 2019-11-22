@@ -18,7 +18,7 @@ export let groupForm = {
         { margin:10, cols:[
                 { view:"button", id:"dltGroupFormBtn", width:111, value:"Удалить" },
                 {},
-                { view:"button", value:"Сохранить", width:111, css:"webix_primary" },
+                { view:"button", id:"saveGroupFormBtn", value:"Сохранить", width:111, css:"webix_primary" },
             ]}
     ]
 };

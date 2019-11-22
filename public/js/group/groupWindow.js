@@ -8,9 +8,7 @@ export let groupWindow = {
     head:{
         view:"toolbar", padding:{left:17}, margin:-4, cols:[
             { view:"label", id:"titleG", label:"Добавить группу" },
-            { view:"icon", icon:"mdi mdi-close", click:function(){
-                    $$('groups_window').hide();
-                }}
+            { view:"icon", id:"closeGroupFormBtn", icon:"mdi mdi-close" }
         ]
     },
     close:true,

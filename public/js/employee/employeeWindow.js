@@ -8,9 +8,7 @@ export let employeeWindow = webix.ui({
     head:{
         view:"toolbar", padding:{left:17}, margin:-4, cols:[
             { view:"label", id:"titleP", label: "Нанять сотрудника" },
-            { view:"icon", icon:"mdi mdi-close", click:function(){
-                    $$('employees_window').hide();
-                }}
+            { view:"icon", id:"closeEmployeeFormBtn", icon:"mdi mdi-close" }
         ]
     },
     close:true,
