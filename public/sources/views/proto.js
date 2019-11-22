@@ -12,24 +12,23 @@ import {protoUI} from "../ui/core";
 import {bind} from "../webix/helpers";
 
 const api = {
-	name:"proto",
-	$init:function(){
-		this.data.provideApi(this, true);
-		this._dataobj = this._dataobj || this._contentobj;
-		
-		//render self , each time when data is updated
-		this.data.attachEvent("onStoreUpdated",bind(function(){
-			this.render.apply(this,arguments);
-		},this));
-	},
-	$setSize:function(){
-		if (base.api.$setSize.apply(this, arguments))
-			this.render();
-	},
-	_id:/*@attr*/"webix_item",
-	on_mouse_move:{
-	},
-	type:{}
+    name: "proto",
+    $init: function () {
+        this.data.provideApi(this, true);
+        this._dataobj = this._dataobj || this._contentobj;
+
+        //render self , each time when data is updated
+        this.data.attachEvent("onStoreUpdated", bind(function () {
+            this.render.apply(this, arguments);
+        }, this));
+    },
+    $setSize: function () {
+        if (base.api.$setSize.apply(this, arguments))
+            this.render();
+    },
+    _id:/*@attr*/"webix_item",
+    on_mouse_move: {},
+    type: {}
 };
 
 

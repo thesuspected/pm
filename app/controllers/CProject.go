@@ -10,7 +10,7 @@ type CProject struct {
 	provider *project.Provider
 }
 
-func (c *CProject) ReadAll() revel.Result  {
+func (c *CProject) ReadAll() revel.Result {
 	c.provider = project.New()
 	projects, err := c.provider.ReadAll()
 	if err != nil {

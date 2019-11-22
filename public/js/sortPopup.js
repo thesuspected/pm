@@ -1,4 +1,5 @@
 import {sort_data} from '/public/js/data.js';
+
 export let sortPopup = {
     view: "popup",
     id: "sort_Popup",

@@ -6,9 +6,9 @@ users.insert(require("./data/users.json"));
 const tags = new Datastore();
 tags.insert(require("./data/tags.json"));
 
-module.exports = function(app, root){
+module.exports = function (app, root) {
     // get all users
-    app.get(root + "/users",(req, res, next) => {
+    app.get(root + "/users", (req, res, next) => {
         users.find({}, (err, docs) => {
             if (err)
                 next(err);
@@ -18,7 +18,7 @@ module.exports = function(app, root){
     });
 
     // get all tags
-    app.get(root + "/tags",(req, res, next) => {
+    app.get(root + "/tags", (req, res, next) => {
         tags.find({}, (err, docs) => {
             if (err)
                 next(err);
@@ -29,7 +29,7 @@ module.exports = function(app, root){
 
 
     // show all attachments
-    app.get(root + "/attachments/:id",(req, res, next) => {
-        res.sendFile(__dirname + "/attachments/"+req.params.id);
+    app.get(root + "/attachments/:id", (req, res, next) => {
+        res.sendFile(__dirname + "/attachments/" + req.params.id);
     });
 }

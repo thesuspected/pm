@@ -4,9 +4,9 @@ var bodyParser = require("body-parser");
 var app = express();
 
 // parsing application/json
-app.use(bodyParser.json()); 
+app.use(bodyParser.json());
 // parsing application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: true })); 
+app.use(bodyParser.urlencoded({extended: true}));
 
 require("./routes")(app);
 

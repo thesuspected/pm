@@ -1,6 +1,6 @@
 const i18n = {
-	parseFormat:"%Y-%m-%d %H:%i:%s",
-	parseTimeFormat:"%H:%i:%s",
+    parseFormat: "%Y-%m-%d %H:%i:%s",
+    parseTimeFormat: "%H:%i:%s",
 };
 
 

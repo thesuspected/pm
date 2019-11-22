@@ -1,4 +1,4 @@
-import {uid, bind} from "../webix/helpers";
+import {bind, uid} from "../webix/helpers";
 import {proto, ui} from "../ui/core";
 
 import EventSystem from "./eventsystem";
@@ -18,21 +18,23 @@ import CollectionBind from "../core/collectionbind";
 import {define} from "../services";
 
 const DataCollection = proto({
-	name:"DataCollection",
-	isVisible:function(){ 
-		if (!this.data.order.length && !this.data._filter_order && !this._settings.dataFeed) return false;
-		return true; 
-	},
-	$init:function(config){
-		this.data.provideApi(this, true);
-		var id = (config&&config.id)?config.id:uid();
-		this._settings.id =id;
-		ui.views[id] = this;
-		this.data.attachEvent("onStoreLoad", bind(function(){
-			this.callEvent("onBindRequest",[]);
-		}, this));
-	},
-	refresh:function(){ this.callEvent("onBindRequest",[]); }
+    name: "DataCollection",
+    isVisible: function () {
+        if (!this.data.order.length && !this.data._filter_order && !this._settings.dataFeed) return false;
+        return true;
+    },
+    $init: function (config) {
+        this.data.provideApi(this, true);
+        var id = (config && config.id) ? config.id : uid();
+        this._settings.id = id;
+        ui.views[id] = this;
+        this.data.attachEvent("onStoreLoad", bind(function () {
+            this.callEvent("onBindRequest", []);
+        }, this));
+    },
+    refresh: function () {
+        this.callEvent("onBindRequest", []);
+    }
 }, DataMove, CollectionBind, BindSource, ValidateCollection, DataLoader, MapCollection, EventSystem, BaseBind, Destruction, Settings);
 
 define("DataCollection", DataCollection);

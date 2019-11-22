@@ -4,9 +4,9 @@ import {protoUI} from "../ui/core";
 
 
 const api = {
-	name:"context"
+    name: "context"
 };
 
 
-const view = protoUI(api,  ContextHelper, popup.view);
+const view = protoUI(api, ContextHelper, popup.view);
 export default {api, view};

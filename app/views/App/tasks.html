@@ -1,235 +1,236 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-	<meta charset="UTF-8">
-	<title>pm - tasks</title>
-	<link rel="stylesheet" href="/public/css/style.css" type="text/css">
-	<link rel="stylesheet" href="/public/codebase/webix.css" type="text/css">
-	<link rel="stylesheet" href="/public/kanban/codebase/kanban.css" type="text/css">
-	<link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.5.95/css/materialdesignicons.css" type="text/css" charset="utf-8">
-	<script src="/public/codebase/webix.js" type="text/javascript"></script>
-	<script src="/public/kanban/codebase/kanban.js" type="text/javascript"></script>
+    <meta charset="UTF-8">
+    <title>pm - tasks</title>
+    <link rel="stylesheet" href="/public/css/style.css" type="text/css">
+    <link rel="stylesheet" href="/public/codebase/webix.css" type="text/css">
+    <link rel="stylesheet" href="/public/kanban/codebase/kanban.css" type="text/css">
+    <link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.5.95/css/materialdesignicons.css" type="text/css"
+          charset="utf-8">
+    <script src="/public/codebase/webix.js" type="text/javascript"></script>
+    <script src="/public/kanban/codebase/kanban.js" type="text/javascript"></script>
     <script src="/public/codebase/i18n/ru.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <body>
-	<script type="module">
+<script type="module">
 
-		import {locale} from '/public/js/locale.js';						// локализация канбана
-		import {projects_data} from '/public/js/data.js';					// массивы
+    import {locale} from '/public/js/locale.js';						// локализация канбана
+    import {projects_data} from '/public/js/data.js';					// массивы
 
-		webix.i18n.locales["ru-RU"].kanban = locale;
-		webix.i18n.setLocale('ru-RU');
+    webix.i18n.locales["ru-RU"].kanban = locale;
+    webix.i18n.setLocale('ru-RU');
 
-		///////////////////////////////////////////////// Виджеты //////////////////////////////////////////////////////
+    ///////////////////////////////////////////////// Виджеты //////////////////////////////////////////////////////
 
-		import {toolbar} from "/public/js/toolbar.js";							// шапка
-		import {sidebar} from "/public/js/sidebar.js";							// боковая панель
+    import {toolbar} from "/public/js/toolbar.js";							// шапка
+    import {sidebar} from "/public/js/sidebar.js";							// боковая панель
 
-		import {projects} from "/public/js/project/projects.js";				// островок Проекты
-		import {kanban} from "/public/js/task/kanban.js";						// островок Задачи
+    import {projects} from "/public/js/project/projects.js";				// островок Проекты
+    import {kanban} from "/public/js/task/kanban.js";						// островок Задачи
 
-		import {projectWindow} from "/public/js/project/projectWindow.js";		// окно проекта
-		webix.ui(projectWindow);
+    import {projectWindow} from "/public/js/project/projectWindow.js";		// окно проекта
+    webix.ui(projectWindow);
 
-		import {projectPopup} from "/public/js/project/projectPopup.js";		// попап списка [редактировать / удалить]
-		webix.ui(projectPopup);
+    import {projectPopup} from "/public/js/project/projectPopup.js";		// попап списка [редактировать / удалить]
+    webix.ui(projectPopup);
 
-		import {sortPopup} from "/public/js/sortPopup.js";						// попап сортировки [по порядку / по имени / по дате]
-		webix.ui(sortPopup);
+    import {sortPopup} from "/public/js/sortPopup.js";						// попап сортировки [по порядку / по имени / по дате]
+    webix.ui(sortPopup);
 
-		import {projects_originalValues} from "/public/js/origValuesForm.js";	// оригинальные значения формы проекта
+    import {projects_originalValues} from "/public/js/origValuesForm.js";	// оригинальные значения формы проекта
 
-		////////////////////////////////////////////////// Функции /////////////////////////////////////////////////////
+    ////////////////////////////////////////////////// Функции /////////////////////////////////////////////////////
 
-		function sortProject(value) {
-			$$("listProject").sort("#" + value + "#");
-		};
+    function sortProject(value) {
+        $$("listProject").sort("#" + value + "#");
+    };
 
-		function editProject() {
-			$$("titleP").setValue("Изменить проект");
-			$$("dltProjectFormBtn").show();
-			$$("project_Popup").hide();
-			let projectValues = $$("listProject").getSelectedItem();
-			// заносим значения элемента в форму для изменения
-			$$("project_Form").setValues(projectValues);
-			$$("project_window").show();
-		}
+    function editProject() {
+        $$("titleP").setValue("Изменить проект");
+        $$("dltProjectFormBtn").show();
+        $$("project_Popup").hide();
+        let projectValues = $$("listProject").getSelectedItem();
+        // заносим значения элемента в форму для изменения
+        $$("project_Form").setValues(projectValues);
+        $$("project_window").show();
+    }
 
-		function addProject() {
-			// валидация заполнения имени проекта
-			if ($$("project_Form").validate()) {
-				// берем значения элемента
-				let item_data = $$("project_Form").getValues();
-				// поиск выбранного элемента в массиве
-				let findIt = projects_data.find(itemFind => itemFind.id == item_data.id);
-				if(findIt) {
-					// изменение существующего
-					let id = $$("listProject").getSelectedId();
-					projects_data[id - 1] = item_data;
-					$$("listProject").remove(id);
-					$$("listProject").add(item_data, id-1);
-					$$("listProject").updateItem();
-				} else {
-					// добавление нового элемента
-					item_data.id = projects_data.length + 1;
-					projects_data[projects_data.length] = Object.assign({}, item_data);
-					$$("listProject").add(item_data);
-				}
-				// скрываем окна, возвращаем ст. значения форме
-				$$("project_Popup").hide();
-				$$("project_window").hide();
-				$$("project_Form").setValues(originalValues);
-			} else
-				webix.message({ type:"error", text:"Дайте название проекту" });
-		};
+    function addProject() {
+        // валидация заполнения имени проекта
+        if ($$("project_Form").validate()) {
+            // берем значения элемента
+            let item_data = $$("project_Form").getValues();
+            // поиск выбранного элемента в массиве
+            let findIt = projects_data.find(itemFind => itemFind.id == item_data.id);
+            if (findIt) {
+                // изменение существующего
+                let id = $$("listProject").getSelectedId();
+                projects_data[id - 1] = item_data;
+                $$("listProject").remove(id);
+                $$("listProject").add(item_data, id - 1);
+                $$("listProject").updateItem();
+            } else {
+                // добавление нового элемента
+                item_data.id = projects_data.length + 1;
+                projects_data[projects_data.length] = Object.assign({}, item_data);
+                $$("listProject").add(item_data);
+            }
+            // скрываем окна, возвращаем ст. значения форме
+            $$("project_Popup").hide();
+            $$("project_window").hide();
+            $$("project_Form").setValues(originalValues);
+        } else
+            webix.message({type: "error", text: "Дайте название проекту"});
+    };
 
-		function deleteProject() {
-			$$("project_Popup").hide();
-			$$("project_window").hide();
-			let projectValues = $$("listProject").getSelectedItem();
-			// подтверждение удаления
-			webix.confirm({
-				ok:"ОК", cancel:"Отмена",
-				text:"Вы собираетесь удалить проект, вы уверены?"
-			})
-					.then(function(){
-						let id = $$("listProject").getSelectedId();
-						// удаляем элемент в массиве
-						projects_data.splice(id - 1, 1);
-						// удаляем элемент на странице
-						$$("listProject").remove(id);
-						// проходим по оставшимся элементам, после удаленного
-						for (var i = id - 1; i < projects_data.length; i++) {
-							// изменяем id след. элементов
-							projects_data[i].id -= 1;
-							// удаляем оставшиеся элементы на странице
-							$$("listProject").remove(i + 2);
-							// обновляем их с новым id
-							$$("listProject").add(projects_data[i]);
-						}
-					})
-		}
+    function deleteProject() {
+        $$("project_Popup").hide();
+        $$("project_window").hide();
+        let projectValues = $$("listProject").getSelectedItem();
+        // подтверждение удаления
+        webix.confirm({
+            ok: "ОК", cancel: "Отмена",
+            text: "Вы собираетесь удалить проект, вы уверены?"
+        })
+            .then(function () {
+                let id = $$("listProject").getSelectedId();
+                // удаляем элемент в массиве
+                projects_data.splice(id - 1, 1);
+                // удаляем элемент на странице
+                $$("listProject").remove(id);
+                // проходим по оставшимся элементам, после удаленного
+                for (var i = id - 1; i < projects_data.length; i++) {
+                    // изменяем id след. элементов
+                    projects_data[i].id -= 1;
+                    // удаляем оставшиеся элементы на странице
+                    $$("listProject").remove(i + 2);
+                    // обновляем их с новым id
+                    $$("listProject").add(projects_data[i]);
+                }
+            })
+    }
 
-		///////////////////////////////////////////////// Отрисовка ////////////////////////////////////////////////////
+    ///////////////////////////////////////////////// Отрисовка ////////////////////////////////////////////////////
 
-		window.onload = function() {
-			webix.ready(function(){
+    window.onload = function () {
+        webix.ready(function () {
 
-				// Скролл
-				if (!webix.env.touch && webix.env.scrollSize)
-					webix.CustomScroll.init();
+            // Скролл
+            if (!webix.env.touch && webix.env.scrollSize)
+                webix.CustomScroll.init();
 
-				// Разметка
-				webix.ui({
-					rows: [
-						toolbar,
-						{
-							cols: [
-								sidebar,
-								{
-									type:"space",
-									cols: [
-										{
-											gravity:0.3,
-											type:"wide",
-											rows: [
-												projects
-											]
-										},
-										kanban
-									]
-								}
-							]
-						}
-					]
-				});
+            // Разметка
+            webix.ui({
+                rows: [
+                    toolbar,
+                    {
+                        cols: [
+                            sidebar,
+                            {
+                                type: "space",
+                                cols: [
+                                    {
+                                        gravity: 0.3,
+                                        type: "wide",
+                                        rows: [
+                                            projects
+                                        ]
+                                    },
+                                    kanban
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            });
 
-				// Подсветка вкладки
-				$$("sidebar").select("tasks", true);
+            // Подсветка вкладки
+            $$("sidebar").select("tasks", true);
 
-				//////////////////////////////////////////// Обработчики ///////////////////////////////////////////////
+            //////////////////////////////////////////// Обработчики ///////////////////////////////////////////////
 
-				// Переход по вкладкам
-				$$("sidebar").attachEvent("onItemClick", function(id){
-					location.href = id;
-				});
+            // Переход по вкладкам
+            $$("sidebar").attachEvent("onItemClick", function (id) {
+                location.href = id;
+            });
 
-				// Открыть/закрыть sidebar
-				$$("toggleIcon").attachEvent("onItemClick", function(){
-					$$("sidebar").toggle()
-				});
+            // Открыть/закрыть sidebar
+            $$("toggleIcon").attachEvent("onItemClick", function () {
+                $$("sidebar").toggle()
+            });
 
-				// Добавить проект
-				$$("addProjectBtn").attachEvent("onItemClick", function(){
-					$$("titleP").setValue("Добавить проект");
-					$$("dltProjectFormBtn").hide();
-					$$("project_Form").setValues(projects_originalValues);
-					$$("project_window").show();
-				});
+            // Добавить проект
+            $$("addProjectBtn").attachEvent("onItemClick", function () {
+                $$("titleP").setValue("Добавить проект");
+                $$("dltProjectFormBtn").hide();
+                $$("project_Form").setValues(projects_originalValues);
+                $$("project_window").show();
+            });
 
-				// Добавить задачу
-				$$("addTaskBtn").attachEvent("onItemClick", function(){
-					$$("kanban").showEditor();
-				});
+            // Добавить задачу
+            $$("addTaskBtn").attachEvent("onItemClick", function () {
+                $$("kanban").showEditor();
+            });
 
-				// Окно заполнения проекта
-				$$("dltProjectFormBtn").attachEvent("onItemClick", function(){
-					deleteProject();
-				});
-				$$("saveProjectFormBtn").attachEvent("onItemClick", function(){
-					addProject();
-				});
-				$$("closeProjectFormBtn").attachEvent("onItemClick", function(){
-					$$('project_window').hide();
-				});
+            // Окно заполнения проекта
+            $$("dltProjectFormBtn").attachEvent("onItemClick", function () {
+                deleteProject();
+            });
+            $$("saveProjectFormBtn").attachEvent("onItemClick", function () {
+                addProject();
+            });
+            $$("closeProjectFormBtn").attachEvent("onItemClick", function () {
+                $$('project_window').hide();
+            });
 
-				// Показать попап проекта
-				$$("listProject").on_click.listIcon = function(node) {
-					$$("project_Popup").show(node);
-				};
+            // Показать попап проекта
+            $$("listProject").on_click.listIcon = function (node) {
+                $$("project_Popup").show(node);
+            };
 
-				// Действия попапа проекта
-				$$("projectPopup_List").attachEvent("onItemClick", function(id){
-					let value = this.getItem(id).value;
-					switch(value) {
-						case "edit":
-							editProject();
-							break;
-						case "delete":
-							deleteProject();
-							break;
-					}
-				});
+            // Действия попапа проекта
+            $$("projectPopup_List").attachEvent("onItemClick", function (id) {
+                let value = this.getItem(id).value;
+                switch (value) {
+                    case "edit":
+                        editProject();
+                        break;
+                    case "delete":
+                        deleteProject();
+                        break;
+                }
+            });
 
-				// Действия попапа сортировки
-				$$("sortPopup_List").attachEvent("onSelectChange", function(){
-					let value = this.getSelectedItem().value;
-					sortProject(value);
-				});
+            // Действия попапа сортировки
+            $$("sortPopup_List").attachEvent("onSelectChange", function () {
+                let value = this.getSelectedItem().value;
+                sortProject(value);
+            });
 
-				// Click по проекту (Сделать смену задач)
-				$$("listProject").attachEvent("onItemClick", function(){
+            // Click по проекту (Сделать смену задач)
+            $$("listProject").attachEvent("onItemClick", function () {
 
-				});
+            });
 
-				// Редактирование проекта по doubleClick
-				$$("listProject").attachEvent("onItemDblClick", function(){
-					var projectValues = $$("listProject").getSelectedItem();
-					$$("titleP").setValue("Изменить проект");
-					$$("dltProjectFormBtn").show();
-					editProject(projectValues);
-				});
+            // Редактирование проекта по doubleClick
+            $$("listProject").attachEvent("onItemDblClick", function () {
+                var projectValues = $$("listProject").getSelectedItem();
+                $$("titleP").setValue("Изменить проект");
+                $$("dltProjectFormBtn").show();
+                editProject(projectValues);
+            });
 
-				// Валидация заполнения задачи
-				$$("kanban").attachEvent("onBeforeEditorAction", function(action, editor, obj){
-					if (action === "save" && !editor.getForm().validate())
-						return false;
-				});
-				$$("kanban").getEditor().attachEvent("onHide", function(){
-					this.getForm().clearValidation();
-				});
-			});
-		}
-	</script>
+            // Валидация заполнения задачи
+            $$("kanban").attachEvent("onBeforeEditorAction", function (action, editor, obj) {
+                if (action === "save" && !editor.getForm().validate())
+                    return false;
+            });
+            $$("kanban").getEditor().attachEvent("onHide", function () {
+                this.getForm().clearValidation();
+            });
+        });
+    }
+</script>
 </body>
 </html>

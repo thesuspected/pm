@@ -6,6 +6,6 @@ import html from "./html.js";
 import htmltable from "./htmltable";
 import excel from "./excel";
 
-const DataDriver={ json, jsarray, xml, csv, html, htmltable, excel };
+const DataDriver = {json, jsarray, xml, csv, html, htmltable, excel};
 
 export default DataDriver;

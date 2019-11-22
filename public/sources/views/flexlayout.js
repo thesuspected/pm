@@ -5,12 +5,12 @@ import FlexLayout from "../core/flexlayout";
 
 
 const api = {
-	$init:function(){
-		extend(this, FlexLayout, true);
-	},
-	name:"flexlayout"
+    $init: function () {
+        extend(this, FlexLayout, true);
+    },
+    name: "flexlayout"
 };
 
 
-const view = protoUI(api,  layout.view);
+const view = protoUI(api, layout.view);
 export default {api, view};

@@ -1,5 +1,5 @@
 import {callEvent} from "./customevents";
 
-export function editStop(){
-	callEvent("onEditEnd", []);
+export function editStop() {
+    callEvent("onEditEnd", []);
 }

@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"github.com/revel/revel"
-	"my-app/app/routes"
+	"pm/app/routes"
 )
 
 type App struct {

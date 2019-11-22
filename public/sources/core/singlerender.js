@@ -12,17 +12,17 @@ import type from "../webix/type";
 */
 
 const SingleRender = proto({
-	template_setter:function(value){
-		this.type.template=template(value);
-	},
-	//convert item to the HTML text
-	_toHTML:function(obj){
-		var type = this.type;
-		return (type.templateStart?type.templateStart(obj,type):"") + type.template(obj,type) + (type.templateEnd?type.templateEnd(obj,type):"");
-	},
-	customize:function(obj){
-		type(this,obj);
-	}
+    template_setter: function (value) {
+        this.type.template = template(value);
+    },
+    //convert item to the HTML text
+    _toHTML: function (obj) {
+        var type = this.type;
+        return (type.templateStart ? type.templateStart(obj, type) : "") + type.template(obj, type) + (type.templateEnd ? type.templateEnd(obj, type) : "");
+    },
+    customize: function (obj) {
+        type(this, obj);
+    }
 }, AtomRender);
 
 

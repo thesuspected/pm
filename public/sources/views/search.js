@@ -5,22 +5,22 @@ import text from "./text";
 
 
 const api = {
-	name:"search",
-	on_click:{
-		"webix_input_icon":function(e){
-			this.getInputNode().focus();
-			this.callEvent("onSearchIconClick", [e]);
-		}
-	},
-	$skin:function(){
-		text.api.$skin.call(this);
+    name: "search",
+    on_click: {
+        "webix_input_icon": function (e) {
+            this.getInputNode().focus();
+            this.callEvent("onSearchIconClick", [e]);
+        }
+    },
+    $skin: function () {
+        text.api.$skin.call(this);
 
-		this.defaults.inputPadding = $active.inputPadding;
-	},
-	defaults:{
-		type:"text",
-		icon:"wxi-search"
-	}
+        this.defaults.inputPadding = $active.inputPadding;
+    },
+    defaults: {
+        type: "text",
+        icon: "wxi-search"
+    }
 };
 
 const view = protoUI(api, text.view);

@@ -13,6 +13,34 @@ export * from "./api";
 export * from "./init";
 
 import "./ie8";
+//	import * as html from "./html";
+import {
+    _getClassName,
+    addCss,
+    addMeta,
+    addStyle,
+    allowSelect,
+    create,
+    createCss,
+    denySelect,
+    download,
+    getSelectionRange,
+    getTextSize,
+    getValue,
+    index,
+    insertBefore,
+    locate,
+    offset,
+    pos,
+    posRelative,
+    preventEvent,
+    remove,
+    removeCss,
+    removeStyle,
+    setSelectionRange,
+    stopEvent,
+    triggerEvent
+} from "./html";
 
 /*
 	Next two ugly blocks are here for IE8 compatibility
@@ -21,13 +49,37 @@ import "./ie8";
 	for modern browsers it can be replaced with 
 */
 
-//	import * as html from "./html";
-import { denySelect, allowSelect, index, createCss, addStyle, removeStyle, create, getValue, remove, insertBefore, locate, offset, posRelative, pos, preventEvent, stopEvent, triggerEvent, addCss, removeCss, getTextSize, download, _getClassName, setSelectionRange, getSelectionRange, addMeta } from "./html";
-const html = { denySelect, allowSelect, index, createCss, addStyle, removeStyle, create, getValue, remove, insertBefore, locate, offset, posRelative, pos, preventEvent, stopEvent, triggerEvent, addCss, removeCss, getTextSize, download, _getClassName, setSelectionRange, getSelectionRange, addMeta };
-export { html };
+const html = {
+    denySelect,
+    allowSelect,
+    index,
+    createCss,
+    addStyle,
+    removeStyle,
+    create,
+    getValue,
+    remove,
+    insertBefore,
+    locate,
+    offset,
+    posRelative,
+    pos,
+    preventEvent,
+    stopEvent,
+    triggerEvent,
+    addCss,
+    removeCss,
+    getTextSize,
+    download,
+    _getClassName,
+    setSelectionRange,
+    getSelectionRange,
+    addMeta
+};
+export {html};
 
 //	import * as skin from "./skin";
-export { skin } from "./skin";
+export {skin} from "./skin";
 
 export {debug} from "./debug";
 

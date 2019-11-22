@@ -5,136 +5,136 @@ var queue = {};
 var isRunningTask = false;
 
 if (!global.setImmediate && global.addEventListener)
-	global.addEventListener("message", function (e) {
-		if (e.source == global){
-			if (isRunningTask)
-				nextTick(queue[e.data]);
-			else {
-				isRunningTask = true;
-				try {
-					queue[e.data]();
-				} catch (e) {
-					// eslint-disable-line
-				}
+    global.addEventListener("message", function (e) {
+        if (e.source == global) {
+            if (isRunningTask)
+                nextTick(queue[e.data]);
+            else {
+                isRunningTask = true;
+                try {
+                    queue[e.data]();
+                } catch (e) {
+                    // eslint-disable-line
+                }
 
-				delete queue[e.data];
-				isRunningTask = false;
-			}
-		}
-	});
+                delete queue[e.data];
+                isRunningTask = false;
+            }
+        }
+    });
 
 function nextTick(fn) {
-	if (global.setImmediate) global.setImmediate(fn);
-	// if inside of web worker
-	else if (global.importScripts || !global.addEventListener) setTimeout(fn);
-	else {
-		queueId++;
-		queue[queueId] = fn;
-		global.postMessage(queueId, "*");
-	}
+    if (global.setImmediate) global.setImmediate(fn);
+    // if inside of web worker
+    else if (global.importScripts || !global.addEventListener) setTimeout(fn);
+    else {
+        queueId++;
+        queue[queueId] = fn;
+        global.postMessage(queueId, "*");
+    }
 }
 
 Deferred.resolve = function (value) {
-	if (!(this._d == 1))
-		throw TypeError();
+    if (!(this._d == 1))
+        throw TypeError();
 
-	if (value instanceof Deferred)
-		return value;
+    if (value instanceof Deferred)
+        return value;
 
-	return new Deferred(function (resolve) {
-		resolve(value);
-	});
+    return new Deferred(function (resolve) {
+        resolve(value);
+    });
 };
 
 Deferred.reject = function (value) {
-	if (!(this._d == 1))
-		throw TypeError();
+    if (!(this._d == 1))
+        throw TypeError();
 
-	return new Deferred(function (resolve, reject) {
-		reject(value);
-	});
+    return new Deferred(function (resolve, reject) {
+        reject(value);
+    });
 };
 
 Deferred.all = function (arr) {
-	if (!(this._d == 1))
-		throw TypeError();
+    if (!(this._d == 1))
+        throw TypeError();
 
-	if (!(arr instanceof Array))
-		return Deferred.reject(TypeError());
+    if (!(arr instanceof Array))
+        return Deferred.reject(TypeError());
 
-	var d = new Deferred();
+    var d = new Deferred();
 
-	function done(e, v) {
-		if (v)
-			return d.resolve(v);
+    function done(e, v) {
+        if (v)
+            return d.resolve(v);
 
-		if (e)
-			return d.reject(e);
+        if (e)
+            return d.reject(e);
 
-		var unresolved = arr.reduce(function (cnt, v) {
-			if (v && v.then)
-				return cnt + 1;
-			return cnt;
-		}, 0);
+        var unresolved = arr.reduce(function (cnt, v) {
+            if (v && v.then)
+                return cnt + 1;
+            return cnt;
+        }, 0);
 
-		if(unresolved == 0)
-			d.resolve(arr);
+        if (unresolved == 0)
+            d.resolve(arr);
 
 
-		arr.map(function (v, i) {
-			if (v && v.then)
-				v.then(function (r) {
-					arr[i] = r;
-					done();
-					return r;
-				}, done);
-		});
-	}
+        arr.map(function (v, i) {
+            if (v && v.then)
+                v.then(function (r) {
+                    arr[i] = r;
+                    done();
+                    return r;
+                }, done);
+        });
+    }
 
-	done();
+    done();
 
-	return d;
+    return d;
 };
 
 Deferred.race = function (arr) {
-	if (!(this._d == 1))
-		throw TypeError();
+    if (!(this._d == 1))
+        throw TypeError();
 
-	if (!(arr instanceof Array))
-		return Deferred.reject(TypeError());
+    if (!(arr instanceof Array))
+        return Deferred.reject(TypeError());
 
-	if (arr.length == 0)
-		return new Deferred();
+    if (arr.length == 0)
+        return new Deferred();
 
-	var d = new Deferred();
+    var d = new Deferred();
 
-	function done(e, v) {
-		if (v)
-			return d.resolve(v);
+    function done(e, v) {
+        if (v)
+            return d.resolve(v);
 
-		if (e)
-			return d.reject(e);
+        if (e)
+            return d.reject(e);
 
-		var unresolved = arr.reduce(function (cnt, v) {
-			if (v && v.then)
-				return cnt + 1;
-			return cnt;
-		}, 0);
+        var unresolved = arr.reduce(function (cnt, v) {
+            if (v && v.then)
+                return cnt + 1;
+            return cnt;
+        }, 0);
 
-		if(unresolved == 0)
-			d.resolve(arr);
+        if (unresolved == 0)
+            d.resolve(arr);
 
-		arr.map(function (v) {
-			if (v && v.then)
-				v.then(function (r) {
-					done(null, r);
-				}, done);
-		});
-	}
+        arr.map(function (v) {
+            if (v && v.then)
+                v.then(function (r) {
+                    done(null, r);
+                }, done);
+        });
+    }
 
-	done();
+    done();
 
-	return d;
+    return d;
 };
 
 Deferred._d = 1;
@@ -144,199 +144,195 @@ Deferred._d = 1;
  * @constructor
  */
 function Deferred(resolver) {
-	"use strict";
-	if (typeof resolver != "function" && resolver != undefined)
-		throw TypeError();
-		
-	if (typeof this != "object" || (this && this.then))
-		throw TypeError();
+    "use strict";
+    if (typeof resolver != "function" && resolver != undefined)
+        throw TypeError();
 
-	// states
-	// 0: pending
-	// 1: resolving
-	// 2: rejecting
-	// 3: resolved
-	// 4: rejected
-	var self = this,
-		state = 0,
-		val = 0,
-		next = [],
-		fn, er;
+    if (typeof this != "object" || (this && this.then))
+        throw TypeError();
 
-	self["promise"] = self;
+    // states
+    // 0: pending
+    // 1: resolving
+    // 2: rejecting
+    // 3: resolved
+    // 4: rejected
+    var self = this,
+        state = 0,
+        val = 0,
+        next = [],
+        fn, er;
 
-	self["resolve"] = function (v) {
-		fn = self.fn;
-		er = self.er;
-		if (!state) {
-			val = v;
-			state = 1;
+    self["promise"] = self;
 
-			nextTick(fire);
-		}
-		return self;
-	};
+    self["resolve"] = function (v) {
+        fn = self.fn;
+        er = self.er;
+        if (!state) {
+            val = v;
+            state = 1;
 
-	self["reject"] = function (v) {
-		fn = self.fn;
-		er = self.er;
-		if (!state) {
-			val = v;
-			state = 2;
+            nextTick(fire);
+        }
+        return self;
+    };
 
-			nextTick(fire);
+    self["reject"] = function (v) {
+        fn = self.fn;
+        er = self.er;
+        if (!state) {
+            val = v;
+            state = 2;
 
-		}
-		return self;
-	};
+            nextTick(fire);
 
-	self["_d"] = 1;
+        }
+        return self;
+    };
 
-	self["then"] = function (_fn, _er) {
-		if (!(this._d == 1))
-			throw TypeError();
+    self["_d"] = 1;
 
-		var d = new Deferred();
+    self["then"] = function (_fn, _er) {
+        if (!(this._d == 1))
+            throw TypeError();
 
-		d.fn = _fn;
-		d.er = _er;
-		if (state == 3) {
-			d.resolve(val);
-		}
-		else if (state == 4) {
-			d.reject(val);
-		}
-		else {
-			next.push(d);
-		}
+        var d = new Deferred();
 
-		return d;
-	};
+        d.fn = _fn;
+        d.er = _er;
+        if (state == 3) {
+            d.resolve(val);
+        } else if (state == 4) {
+            d.reject(val);
+        } else {
+            next.push(d);
+        }
 
-	self["finally"] = function(_handler){
-		var _value;
-		const handler = function(value){
-			_value = value;
-			return _handler();
-		};
-		
-		const value = function(){
-			const d = new Deferred();
-			if(state == 4)
-				return d.reject(_value);
-			else
-				return d.resolve(_value);
-		};
+        return d;
+    };
 
-		return self.then(handler, handler).then(value, value);
-	};
+    self["finally"] = function (_handler) {
+        var _value;
+        const handler = function (value) {
+            _value = value;
+            return _handler();
+        };
 
-	self["catch"] = function (_er) {
-		return self["then"](null, _er);
-	};
+        const value = function () {
+            const d = new Deferred();
+            if (state == 4)
+                return d.reject(_value);
+            else
+                return d.resolve(_value);
+        };
 
-	//compatibility with old version of promiz lib
-	self["fail"] = function (_er) {
-		return self["then"](null, _er);
-	};
+        return self.then(handler, handler).then(value, value);
+    };
 
-	var finish = function (type) {
-		state = type || 4;
-		for (var i=0; i<next.length; i++){
-			var p = next[i];
-			state == 3 && p.resolve(val) || p.reject(val);
-		}
-	};
+    self["catch"] = function (_er) {
+        return self["then"](null, _er);
+    };
 
-	try {
-		if (typeof resolver == "function")
-			resolver(self["resolve"], self["reject"]);
-	} catch (e) {
-		self["reject"](e);
-	}
+    //compatibility with old version of promiz lib
+    self["fail"] = function (_er) {
+        return self["then"](null, _er);
+    };
 
-	return self;
+    var finish = function (type) {
+        state = type || 4;
+        for (var i = 0; i < next.length; i++) {
+            var p = next[i];
+            state == 3 && p.resolve(val) || p.reject(val);
+        }
+    };
 
-	// ref : reference to 'then' function
-	// cb, ec, cn : successCallback, failureCallback, notThennableCallback
-	function thennable (ref, cb, ec, cn) {
-		// Promises can be rejected with other promises, which should pass through
-		if (state == 2) {
-			return cn();
-		}
-		if ((typeof val == "object" || typeof val == "function") && typeof ref == "function") {
-			try {
+    try {
+        if (typeof resolver == "function")
+            resolver(self["resolve"], self["reject"]);
+    } catch (e) {
+        self["reject"](e);
+    }
 
-				// cnt protects against abuse calls from spec checker
-				var cnt = 0;
-				ref.call(val, function (v) {
-					if (cnt++) return;
-					val = v;
-					cb();
-				}, function (v) {
-					if (cnt++) return;
-					val = v;
-					ec();
-				});
-			} catch (e) {
-				val = e;
-				ec();
-			}
-		} else {
-			cn();
-		}
-	}
+    return self;
 
-	function fire() {
-		// check if it's a thenable
-		var ref;
-		try {
-			ref = val && val.then;
-		} catch (e) {
-			val = e;
-			state = 2;
-			return fire();
-		}
+    // ref : reference to 'then' function
+    // cb, ec, cn : successCallback, failureCallback, notThennableCallback
+    function thennable(ref, cb, ec, cn) {
+        // Promises can be rejected with other promises, which should pass through
+        if (state == 2) {
+            return cn();
+        }
+        if ((typeof val == "object" || typeof val == "function") && typeof ref == "function") {
+            try {
 
-		thennable(ref, function () {
-			state = 1;
-			fire();
-		}, function () {
-			state = 2;
-			fire();
-		}, function () {
-			try {
-				if (state == 1 && typeof fn == "function") {
-					val = fn(val);
-				}
+                // cnt protects against abuse calls from spec checker
+                var cnt = 0;
+                ref.call(val, function (v) {
+                    if (cnt++) return;
+                    val = v;
+                    cb();
+                }, function (v) {
+                    if (cnt++) return;
+                    val = v;
+                    ec();
+                });
+            } catch (e) {
+                val = e;
+                ec();
+            }
+        } else {
+            cn();
+        }
+    }
 
-				else if (state == 2 && typeof er == "function") {
-					val = er(val);
-					state = 1;
-				}
-			} catch (e) {
-				val = e;
-				return finish();
-			}
+    function fire() {
+        // check if it's a thenable
+        var ref;
+        try {
+            ref = val && val.then;
+        } catch (e) {
+            val = e;
+            state = 2;
+            return fire();
+        }
 
-			if (val == self) {
-				val = TypeError();
-				finish();
-			} else thennable(ref, function () {
-				finish(3);
-			}, finish, function () {
-				finish(state == 1 && 3);
-			});
+        thennable(ref, function () {
+            state = 1;
+            fire();
+        }, function () {
+            state = 2;
+            fire();
+        }, function () {
+            try {
+                if (state == 1 && typeof fn == "function") {
+                    val = fn(val);
+                } else if (state == 2 && typeof er == "function") {
+                    val = er(val);
+                    state = 1;
+                }
+            } catch (e) {
+                val = e;
+                return finish();
+            }
 
-		});
-	}
+            if (val == self) {
+                val = TypeError();
+                finish();
+            } else thennable(ref, function () {
+                finish(3);
+            }, finish, function () {
+                finish(state == 1 && 3);
+            });
+
+        });
+    }
 
 
 }
 
 // promise factory
 Deferred.defer = function () {
-	return new Deferred(null);
+    return new Deferred(null);
 };
 
 export default Deferred;

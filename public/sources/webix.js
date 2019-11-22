@@ -142,13 +142,12 @@ import "./views/datatable";
 import "./views/treetable";
 
 import "./core/sparklines";
+import "./views/debug";
 
 
 //----------------
 //  Debug console
 //----------------
-
-import "./views/debug";
 
 
 //----------------

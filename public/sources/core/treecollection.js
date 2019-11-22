@@ -8,12 +8,12 @@ import TreeDataMove from "../core/treedatamove";
 
 
 const TreeCollection = proto({
-	name:"TreeCollection",
-	$init:function(){
-		extend(this.data, TreeStore, true);
-		this.data.provideApi(this,true);
-		extend(this, TreeDataMove, true);
-	}
+    name: "TreeCollection",
+    $init: function () {
+        extend(this.data, TreeStore, true);
+        this.data.provideApi(this, true);
+        extend(this, TreeDataMove, true);
+    }
 }, TreeDataLoader, DataCollection);
 
 

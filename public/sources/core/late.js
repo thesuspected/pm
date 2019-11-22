@@ -1,1 +1,1 @@
-export const late = { };
+export const late = {};

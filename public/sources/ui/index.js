@@ -5,11 +5,9 @@ import {ui} from "./core";
 import {animate, animateView} from "./animate";
 import {freeze, resize, zIndex} from "./helpers";
 import fullScreen from "./fullscreen";
-
 // filters
 import datafilter from "./datafilter";
 import "./datafilter_pro";
-
 // detect scroll
 import "./detect";
 

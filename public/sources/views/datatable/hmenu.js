@@ -1,1 +1,2 @@
-const temp = {}; export default temp;
+const temp = {};
+export default temp;
