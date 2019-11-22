@@ -10,7 +10,7 @@ type App struct {
 }
 
 func (c App) Index() revel.Result {
-	return c.Redirect(routes.App.Index())
+	return c.Redirect(routes.App.Tasks())
 }
 
 func (c App) Tasks() revel.Result {
