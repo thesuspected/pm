@@ -215,10 +215,7 @@
 
             // Редактирование проекта по doubleClick
             $$("listProject").attachEvent("onItemDblClick", function () {
-                var projectValues = $$("listProject").getSelectedItem();
-                $$("titleP").setValue("Изменить проект");
-                $$("dltProjectFormBtn").show();
-                editProject(projectValues);
+                editProject();
             });
 
             // Валидация заполнения задачи

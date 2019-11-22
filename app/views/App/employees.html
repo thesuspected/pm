@@ -38,14 +38,22 @@
     import {sortPopup} from "/public/js/sortPopup.js";					    // попап сортировки [по порядку / по имени / по дате]
     webix.ui(sortPopup);
 
+    import {groups_originalValues} from "/public/js/origValuesForm.js";	    // оригинальные значения формы группы
+
     ////////////////////////////////////////////////// Функции /////////////////////////////////////////////////////
 
-    function sortProject(value) {
+    function sortGroup(value) {
         $$("listGroup").sort("#" + value + "#");
     };
 
     function editGroup() {
-
+        let groupValues = $$("listGroup").getSelectedItem();
+        $$("titleG").setValue("Изменить группу");
+        $$("dltGroupFormBtn").show();
+        $$("project_Popup").hide();
+        // заносим значения элемента в форму для изменения
+        $$("groups_Form").setValues(groupValues);
+        $$("groups_window").show();
     };
 
     function addGroup() {
@@ -57,7 +65,9 @@
     };
 
     function editEmployee() {
-
+        let employeeValues = $$("listEmployee").getSelectedItem();
+        $$("titleE").setValue("Изменить проект");
+        $$("dltEmployeeFormBtn").show();
     };
 
     function addEmployee() {
@@ -79,14 +89,10 @@
             // Разметка
             webix.ui({
                 rows: [
-
                     toolbar,
-
                     {
                         cols: [
-
                             sidebar,
-
                             {
                                 type: "space",
                                 cols: [
@@ -94,11 +100,9 @@
                                         gravity: 0.3,
                                         type: "wide",
                                         rows: [
-
                                             groups
                                         ]
                                     },
-
                                     {
                                         type: "wide",
                                         cols: [
@@ -136,11 +140,11 @@
                 $$("groups_window").show();
             });
 
-            // Нанять сотрудника
+            // Добавить сотрудника
             $$("addEmployeeBtn").attachEvent("onItemClick", function () {
                 $$("titleE").setValue("Нанять сотрудника");
                 $$("dltEmployeeFormBtn").hide();
-                $$("employees_Form").setValues(employees_originalValues);
+                //$$("employees_Form").setValues(employees_originalValues);
                 $$("employees_window").show();
             });
 
@@ -176,6 +180,12 @@
                 }
             });
 
+            // Действия попапа сортировки
+            $$("sortPopup_List").attachEvent("onSelectChange", function () {
+                let value = this.getSelectedItem().value;
+                sortGroup(value);
+            });
+
             // Окно заполнения группы
             $$("dltGroupFormBtn").attachEvent("onItemClick", function () {
                 deleteGroup();
@@ -195,7 +205,22 @@
                 addEmployee();
             });
             $$("closeEmployeeFormBtn").attachEvent("onItemClick", function () {
-                $$('groups_window').hide();
+                $$('employees_window').hide();
+            });
+
+            // Click по группе (Сделать смену группы)
+            $$("listGroup").attachEvent("onItemClick", function () {
+
+            });
+
+            // Редактирование группы по doubleClick
+            $$("listGroup").attachEvent("onItemDblClick", function () {
+                editGroup();
+            });
+
+            // Редактирование сотрудника по doubleClick
+            $$("listEmployees").attachEvent("onItemDblClick", function () {
+                editEmployee();
             });
 
             // Поиск сотрудников

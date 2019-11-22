@@ -3,7 +3,7 @@ import {groupForm} from "/public/js/group/groupForm.js";
 export let groupWindow = {
     view: "window",
     id: "groups_window",
-    width: 500,
+    width: 400,
     move: true,
     position: "center",
     head: {

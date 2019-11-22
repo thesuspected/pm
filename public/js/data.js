@@ -12,19 +12,7 @@ let projectPopup_data = [
 let kanban_data = [
     {id: 1, status: "Новые", text: "Task 1", tags: [1, 2]},
     {id: 2, status: "В работе", text: "Task 2", tags: [1], color: 3, user_id: 4},
-    {
-        id: 3,
-        status: "В работе",
-        text: "Task 3",
-        tags: [2, 4, 5],
-        comments: [{id: 1, user_id: 4, date: "2018-06-14 23:01", text: "No worry, I am planning..."}, {
-            id: 2,
-            user_id: 5,
-            date: "2018-06-15 05:01",
-            text: "your plan is dead"
-        }],
-        user_id: 6
-    },
+    {id: 3, status: "В работе", text: "Task 3", tags: [2, 4, 5], user_id: 6},
     {id: 4, status: "В работе", text: "Task 4", tags: [3], user_id: 5},
     {id: 5, status: "В работе", text: "Task 5", tags: [3, 4]},
     {id: 6, status: "Выполнено", text: "Task 6", tags: [4, 5, 6, 7], user_id: 2},
@@ -136,6 +124,7 @@ let colors_set = [
 ];
 
 let projectGroup_data = [
+    {value: "Не назначенные"},
     {value: "Designers"},
     {value: "Developers"},
     {value: "dbEngineers"}

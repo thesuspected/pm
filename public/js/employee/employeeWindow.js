@@ -8,7 +8,7 @@ export let employeeWindow = webix.ui({
     position: "center",
     head: {
         view: "toolbar", padding: {left: 17}, margin: -4, cols: [
-            {view: "label", id: "titleP", label: "Нанять сотрудника"},
+            {view: "label", id: "titleE", label: "Нанять сотрудника"},
             {view: "icon", id: "closeEmployeeFormBtn", icon: "mdi mdi-close"}
         ]
     },
