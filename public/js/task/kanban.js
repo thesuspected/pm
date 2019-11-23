@@ -12,7 +12,7 @@ export let kanban = {
                     padding: {left: 10},
                     elements: [
                         {view: "label", label: "Новые"},
-                        {view: "icon", id: "addTaskBtn", icon: "mdi mdi-plus-circle-outline"}
+                        {view: "icon", id: "addTaskBtn", icon: "mdi mdi-plus-circle-outline", tooltip:"Добавить задачу"}
                     ]
                 },
                 {id: "new", view: "kanbanlist", status: "Новые"}

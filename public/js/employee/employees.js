@@ -9,9 +9,9 @@ export let employees = {
             margin: -4,
             elements: [
                 {view: "label", label: "Все сотрудники"},
-                {view: "icon", id: "addEmployeeBtn", icon: "mdi mdi-plus-circle-outline"},
+                {view: "icon", id: "addEmployeeBtn", icon: "mdi mdi-plus-circle-outline", tooltip:"Добавить сотрудника"},
                 {view: "text", placeholder: "поиск...", id: "search", hidden: true},
-                {view: "icon", id: "openSearchBtn", icon: "mdi mdi-magnify"},
+                {view: "icon", id: "openSearchBtn", icon: "mdi mdi-magnify", tooltip:"Поиск"},
                 {view: "icon", id: "closeSearchBtn", icon: "mdi mdi-close", hidden: true}
             ]
         },

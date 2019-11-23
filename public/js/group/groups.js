@@ -8,8 +8,8 @@ export let groups = {
             margin: -4,
             elements: [
                 {view: "label", label: "Группы"},
-                {view: "icon", id: "addGroupBtn", icon: "mdi mdi-plus-circle-outline"},
-                {view: "icon", icon: "mdi mdi-sort", popup: "sort_Popup"}
+                {view: "icon", id: "addGroupBtn", icon: "mdi mdi-plus-circle-outline", tooltip:"Добавить группу"},
+                {view: "icon", icon: "mdi mdi-sort", popup: "sort_Popup", tooltip:"Сортировать"}
             ]
         },
         {

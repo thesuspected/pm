@@ -8,8 +8,8 @@ export let projects = {
             margin: -4,
             elements: [
                 {view: "label", label: "Проекты"},
-                {view: "icon", id: "addProjectBtn", icon: "mdi mdi-plus-circle-outline"},
-                {view: "icon", icon: "mdi mdi-sort", popup: "sort_Popup"}
+                {view: "icon", id: "addProjectBtn", icon: "mdi mdi-plus-circle-outline", tooltip:"Добавить проект"},
+                {view: "icon", icon: "mdi mdi-sort", popup: "sort_Popup", tooltip:"Сортировать"}
             ]
         },
         // список проектов

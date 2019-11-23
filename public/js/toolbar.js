@@ -11,7 +11,7 @@ export let toolbar = {
         },
         {view: "label", label: "Project Manager"},
         {},
-        {view: "icon", icon: "mdi mdi-account-circle"},
+        {view: "icon", icon: "mdi mdi-account-circle", tooltip:"аккаунт"},
         {view: "icon", icon: "mdi mdi-bell", badge: 3},
         {view: "icon", icon: "mdi mdi-settings"}
     ]
