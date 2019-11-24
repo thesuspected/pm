@@ -148,7 +148,7 @@ func Register() {
 	revel.RegisterController((*controllers1.CProject)(nil),
 		[]*revel.MethodType{
 			&revel.MethodType{
-				Name: "ReadAll",
+				Name: "GetAll",
 				Args: []*revel.MethodArg{ 
 				},
 				RenderArgNames: map[int][]string{ 

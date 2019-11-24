@@ -10,9 +10,9 @@ type CProject struct {
 	provider *project.Provider
 }
 
-func (c *CProject) ReadAll() revel.Result {
+func (c *CProject) GetAll() revel.Result {
 	c.provider = project.New()
-	projects, err := c.provider.ReadAll()
+	projects, err := c.provider.GetAll()
 	if err != nil {
 		c.RenderJSON(err)
 	}

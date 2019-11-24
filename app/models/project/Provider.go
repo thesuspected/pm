@@ -14,7 +14,7 @@ func New() *Provider {
 	return &Provider{projects: new(mappers.ProjectMapper)}
 }
 
-func (p *Provider) ReadAll() ([]*resources.Project, error) {
+func (p *Provider) GetAll() ([]*resources.Project, error) {
 	projects, err := p.projects.Select()
 	if err != nil {
 		return nil, fmt.Errorf("Ошибка чтения списка проектов: %v", err)

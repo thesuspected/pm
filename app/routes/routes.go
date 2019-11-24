@@ -128,11 +128,11 @@ type tCProject struct {}
 var CProject tCProject
 
 
-func (_ tCProject) ReadAll(
+func (_ tCProject) GetAll(
 		) string {
 	args := make(map[string]string)
 	
-	return revel.MainRouter.Reverse("CProject.ReadAll", args).URL
+	return revel.MainRouter.Reverse("CProject.GetAll", args).URL
 }
 
 

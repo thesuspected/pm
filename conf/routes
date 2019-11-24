@@ -12,8 +12,8 @@ GET     /tasks                                  App.Tasks
 GET     /employees                              App.Employees
 
 
-GET     /project                                CProject.ReadAll
-# GET     /project/:id                            CProject.Read
+GET     /project                                CProject.GetAll
+# GET     /project/:id                            CProject.Get
 # PUT     /project                                CProject.Create
 # POST    /project/:id                            CProject.Update
 # DELETE  /project/:id                            CProject.Delete
