@@ -2,6 +2,8 @@ package mappers
 
 import (
 	"database/sql"
+	_ "github.com/lib/pq"
+	. "log"
 	"pm/app/models/resources"
 )
 
@@ -9,6 +11,26 @@ type ProjectMapper struct {
 	db *sql.DB
 }
 
-func (m *ProjectMapper) Select() ([]*resources.Project, error) {
-	return nil, nil
+func (m *ProjectMapper) SelectAll(db *sql.DB) ([]*resources.Project, error) {
+	var projects []*resources.Project
+	rows, err := m.db.Query(`SELECT * FROM projects`)
+	if err != nil {
+		return projects, err
+	}
+	defer rows.Close()
+	for rows.Next() {
+		c := resources.Project{}
+		err := rows.Scan(&c.Id, &c.Name, &c.Date)
+		if err != nil {
+			return projects, err
+		}
+
+		projects = append(projects, &c)
+	}
+
+	if err = rows.Err(); err != nil {
+		Println(err)
+	}
+
+	return projects, err
 }

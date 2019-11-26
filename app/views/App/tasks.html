@@ -21,6 +21,8 @@
     webix.i18n.locales["ru-RU"].kanban = locale;
     webix.i18n.setLocale('ru-RU');
 
+    import {ProjectModel} from "/public/js/project/model/ProjectModel.js"; // get post update delete
+
     ///////////////////////////////////////////////// Виджеты //////////////////////////////////////////////////////
 
     import {toolbar} from "/public/js/toolbar.js";							// шапка
@@ -143,6 +145,12 @@
                         ]
                     }
                 ]
+            });
+
+            ProjectModel.getAll().then(function (result) {
+                $$("listProject").clearAll();
+                $$("listProject").parse(result, 'json');
+                $$("listProject").refresh();
             });
 
             // Подсветка вкладки

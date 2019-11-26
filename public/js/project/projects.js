@@ -17,13 +17,13 @@ export let projects = {
             view: "list",
             id: "listProject",
             template: function (obj) {
-                return "<div class='listBlock'><div class='listName'>" + obj.id + ". " + obj.name + "</div> <div class='listDate'>" + webix.i18n.dateFormatStr(obj.date) + "</div></div> <div class='listBlock'> <div class='listGroup'><div class='listGroupIcon mdi mdi-account-group'></div>" + obj.group + "</div> <div class='listIcon webix_kanban_icon kbi-cogs '></div></div>"
+                return "<div class='listBlock'><div class='listName'>" + obj.id + ". " + obj.name + "</div> <div class='listDate'>" + webix.i18n.dateFormatStr(obj.date) + "</div></div> <div class='listBlock'> <div class='listGroup'><div class='listGroupIcon mdi mdi-account-group'></div>" + "obj.group" + "</div> <div class='listIcon webix_kanban_icon kbi-cogs '></div></div>"
             },
             type: {
                 height: 80
             },
             select: true,
-            data: projects_data
+            //data: projects_data
         }
     ]
 };

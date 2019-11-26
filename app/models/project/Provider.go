@@ -2,6 +2,7 @@ package project
 
 import (
 	"fmt"
+	"pm/app/connection"
 	"pm/app/models/mappers"
 	"pm/app/models/resources"
 )
@@ -15,9 +16,10 @@ func New() *Provider {
 }
 
 func (p *Provider) GetAll() ([]*resources.Project, error) {
-	projects, err := p.projects.Select()
+	db, err := connection.DatabaseConnect()
 	if err != nil {
 		return nil, fmt.Errorf("Ошибка чтения списка проектов: %v", err)
 	}
-	return projects, nil
+	defer db.Close()
+	return p.projects.SelectAll(db)
 }
