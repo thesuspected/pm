@@ -12,8 +12,7 @@ type ProjectMapper struct {
 }
 
 func (m *ProjectMapper) SelectAll(db *sql.DB) (projects []*resources.Project, err error) {
-	//var projects []*resources.Project
-	rows, err := m.db.Query(`SELECT * FROM projects`)
+	rows, err := db.Query(`SELECT * FROM projects`)
 	if err != nil {
 		return projects, err
 	}
