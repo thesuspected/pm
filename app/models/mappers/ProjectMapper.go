@@ -11,8 +11,8 @@ type ProjectMapper struct {
 	db *sql.DB
 }
 
-func (m *ProjectMapper) SelectAll(db *sql.DB) ([]*resources.Project, error) {
-	var projects []*resources.Project
+func (m *ProjectMapper) SelectAll(db *sql.DB) (projects []*resources.Project, err error) {
+	//var projects []*resources.Project
 	rows, err := m.db.Query(`SELECT * FROM projects`)
 	if err != nil {
 		return projects, err
