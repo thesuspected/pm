@@ -81,7 +81,7 @@
             // скрываем окна, возвращаем ст. значения форме
             $$("project_Popup").hide();
             $$("project_window").hide();
-            $$("project_Form").setValues(originalValues);
+            $$("project_Form").setValues(projects_originalValues);
         } else
             webix.message({type: "error", text: "Дайте название проекту"});
     };
@@ -153,6 +153,19 @@
                 $$("listProject").refresh();
             });
 
+            function insertProject() {
+                let project = $$("project_Form").getValues();
+                console.log(project);
+
+                ProjectModel.create(project).then(function (result) {
+                    $$("listProject").add({
+                        id: result[0]['id'],
+                        name: result[0]['name'],
+                        date: result[0]['date']
+                    });
+                });
+            };
+
             // Подсветка вкладки
             $$("sidebar").select("tasks", true);
 
@@ -172,7 +185,6 @@
             $$("addProjectBtn").attachEvent("onItemClick", function () {
                 $$("titleP").setValue("Добавить проект");
                 $$("dltProjectFormBtn").hide();
-                $$("project_Form").setValues(projects_originalValues);
                 $$("project_window").show();
             });
 
@@ -186,6 +198,7 @@
                 deleteProject();
             });
             $$("saveProjectFormBtn").attachEvent("onItemClick", function () {
+                insertProject();
                 addProject();
             });
             $$("closeProjectFormBtn").attachEvent("onItemClick", function () {
