@@ -34,12 +34,12 @@ func (m *ProjectMapper) SelectAll(db *sql.DB) (projects []*resources.Project, er
 	return projects, err
 }
 
-func (m *ProjectMapper) Insert(db *sql.DB, newProject resources.Project) (projects []*resources.Project, err error) {
+func (m *ProjectMapper) Insert(db *sql.DB, project resources.Project) (projects []*resources.Project, err error) {
 	c := resources.Project{}
-	_, err = db.Exec(`
+	err = db.QueryRow(`
 		INSERT INTO t_projects (c_name, c_date) 
-		VALUES ($1, NOW())
-	`, newProject.Name)
+		VALUES ($1, NOW()) returning c_id, c_name, c_date
+	`, project.Name).Scan(&c.Id, &c.Name, &c.Date)
 	if err != nil {
 		return projects, err
 	}

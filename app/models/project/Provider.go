@@ -24,11 +24,11 @@ func (p *Provider) GetAll() ([]*resources.Project, error) {
 	return p.projects.SelectAll(db)
 }
 
-func (p *Provider) Create(newProject resources.Project) ([]*resources.Project, error) {
+func (p *Provider) Create(project resources.Project) ([]*resources.Project, error) {
 	db, err := connection.DatabaseConnect()
 	if err != nil {
 		return nil, err
 	}
 	defer db.Close()
-	return p.projects.Insert(db, newProject)
+	return p.projects.Insert(db, project)
 }

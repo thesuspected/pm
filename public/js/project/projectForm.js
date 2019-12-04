@@ -7,17 +7,16 @@ export let projectForm = {
         "name": webix.rules.isNotEmpty
     },
     elements: [
-        {view: "text", label: "Название", labelPosition: "top", name: "name"},
         {
-            margin: 10, cols: [
-                {view: "datepicker", value: new Date(), label: "Дата", labelPosition: "top", name: "date"},
+            margin:10, cols: [
+                {view: "text", label: "Название", labelPosition: "top", name: "name"},
                 {
                     view: "select",
                     margin: 20,
                     label: "Пр. группа",
                     options: projectGroup_data,
                     labelPosition: "top",
-                    name: "group"
+                    name: "group",
                 }
             ]
         },

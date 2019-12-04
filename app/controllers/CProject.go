@@ -1,9 +1,7 @@
 package controllers
 
 import (
-	"encoding/json"
 	"github.com/revel/revel"
-	"io/ioutil"
 	"pm/app/models/project"
 	"pm/app/models/resources"
 )
@@ -23,13 +21,7 @@ func (c *CProject) GetAll() revel.Result {
 }
 
 func (c *CProject) Create(project resources.Project) revel.Result {
-	postBody, err := ioutil.ReadAll(c.Request.GetBody())
-	if err != nil {
-		return c.RenderError(err)
-	}
-	var newProject resources.Project
-	err = json.Unmarshal(postBody, &newProject)
-	projects, err := c.provider.Create(newProject)
+	projects, err := c.provider.Create(project)
 	if err != nil {
 		return c.RenderError(err)
 	}

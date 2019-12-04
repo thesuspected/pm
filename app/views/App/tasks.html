@@ -78,10 +78,9 @@
                 projects_data[projects_data.length] = Object.assign({}, item_data);
                 $$("listProject").add(item_data);
             }
-            // скрываем окна, возвращаем ст. значения форме
+            // скрываем окна
             $$("project_Popup").hide();
             $$("project_window").hide();
-            $$("project_Form").setValues(projects_originalValues);
         } else
             webix.message({type: "error", text: "Дайте название проекту"});
     };
@@ -154,14 +153,19 @@
             });
 
             function insertProject() {
-                let project = $$("project_Form").getValues();
-                console.log(project);
+                let projec = $$("project_Form").getValues();
+                let project = {
+                    Id: $$("listProject").getSelectedId(),
+                    Name: projec.name,
+                    Group: projec.group
+                }
+                console.log(project.Id);
 
                 ProjectModel.create(project).then(function (result) {
                     $$("listProject").add({
                         id: result[0]['id'],
                         name: result[0]['name'],
-                        date: result[0]['date']
+                        date: new Date(result[0]['date'])
                     });
                 });
             };
@@ -186,6 +190,7 @@
                 $$("titleP").setValue("Добавить проект");
                 $$("dltProjectFormBtn").hide();
                 $$("project_window").show();
+                $$("project_Form").setValues(projects_originalValues);
             });
 
             // Добавить задачу
@@ -199,7 +204,7 @@
             });
             $$("saveProjectFormBtn").attachEvent("onItemClick", function () {
                 insertProject();
-                addProject();
+                //addProject();
             });
             $$("closeProjectFormBtn").attachEvent("onItemClick", function () {
                 $$('project_window').hide();
