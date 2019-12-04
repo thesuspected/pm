@@ -12,7 +12,7 @@ type ProjectMapper struct {
 }
 
 func (m *ProjectMapper) SelectAll(db *sql.DB) (projects []*resources.Project, err error) {
-	rows, err := db.Query(`SELECT * FROM projects`)
+	rows, err := db.Query(`SELECT * FROM t_projects`)
 	if err != nil {
 		return projects, err
 	}
@@ -30,6 +30,21 @@ func (m *ProjectMapper) SelectAll(db *sql.DB) (projects []*resources.Project, er
 	if err = rows.Err(); err != nil {
 		Println(err)
 	}
+
+	return projects, err
+}
+
+func (m *ProjectMapper) Insert(db *sql.DB, newProject resources.Project) (projects []*resources.Project, err error) {
+	c := resources.Project{}
+	_, err = db.Exec(`
+		INSERT INTO t_projects (c_name, c_date) 
+		VALUES ($1, NOW())
+	`, newProject.Name)
+	if err != nil {
+		return projects, err
+	}
+
+	projects = append(projects, &c)
 
 	return projects, err
 }

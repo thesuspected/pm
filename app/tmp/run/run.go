@@ -12,6 +12,7 @@ import (
 	controllers0 "github.com/revel/modules/testrunner/app/controllers"
 	_ "pm/app"
 	controllers1 "pm/app/controllers"
+	resources "pm/app/models/resources"
 	tests "pm/tests"
 	"github.com/revel/revel/testing"
 )
@@ -150,6 +151,14 @@ func Register() {
 			&revel.MethodType{
 				Name: "GetAll",
 				Args: []*revel.MethodArg{ 
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "Create",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "project", Type: reflect.TypeOf((*resources.Project)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
 				},

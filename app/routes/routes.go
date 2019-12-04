@@ -135,4 +135,13 @@ func (_ tCProject) GetAll(
 	return revel.MainRouter.Reverse("CProject.GetAll", args).URL
 }
 
+func (_ tCProject) Create(
+		project interface{},
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "project", project)
+	return revel.MainRouter.Reverse("CProject.Create", args).URL
+}
+
 
