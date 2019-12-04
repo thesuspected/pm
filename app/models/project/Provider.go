@@ -23,12 +23,3 @@ func (p *Provider) GetAll() ([]*resources.Project, error) {
 	defer db.Close()
 	return p.projects.SelectAll(db)
 }
-
-func (p *Provider) Create(newProject resources.Project) ([]*resources.Project, error) {
-	db, err := connection.DatabaseConnect()
-	if err != nil {
-		return nil, err
-	}
-	defer db.Close()
-	return p.projects.Insert(db, newProject)
-}
