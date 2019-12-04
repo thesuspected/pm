@@ -32,3 +32,12 @@ func (p *Provider) Create(project resources.Project) ([]*resources.Project, erro
 	defer db.Close()
 	return p.projects.Insert(db, project)
 }
+
+func (p *Provider) Delete(id int) (int, error) {
+	db, err := connection.DatabaseConnect()
+	if err != nil {
+		return id, err
+	}
+	defer db.Close()
+	return p.projects.Delete(db, id)
+}

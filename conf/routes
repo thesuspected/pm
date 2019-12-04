@@ -16,7 +16,7 @@ GET     /project                                CProject.GetAll
 # GET     /project/:id                            CProject.Get
 PUT     /project                                CProject.Create
 # POST    /project/:id                            CProject.Update
-# DELETE  /project/:id                            CProject.Delete
+DELETE  /project/:id                            CProject.Delete
 
 
 # Ignore favicon requests

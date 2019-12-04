@@ -153,22 +153,34 @@
             });
 
             function insertProject() {
-                let projec = $$("project_Form").getValues();
+                let project_form = $$("project_Form").getValues();
                 let project = {
-                    Id: $$("listProject").getSelectedId(),
-                    Name: projec.name,
-                    Group: projec.group
+                    Id: null,
+                    Name: project_form.name,
+                    Group: project_form.group
                 }
-                console.log(project.Id);
 
                 ProjectModel.create(project).then(function (result) {
                     $$("listProject").add({
                         id: result[0]['id'],
                         name: result[0]['name'],
-                        date: new Date(result[0]['date'])
+                        date: new Date(result[0]['date']),
+                        group: result[0]['group']
                     });
                 });
-            };
+            }
+
+            function delProject() {
+                let id = $$("listProject").getSelectedId();
+
+                ProjectModel.delete(id).then(function(result) {
+                    $$("listProject").remove(result);
+                    //taskTree.clearAll();
+                    //taskTree.refresh();
+                    $$("listProject").clearAll();
+                    $$("listProject").refresh();
+                });
+            }
 
             // Подсветка вкладки
             $$("sidebar").select("tasks", true);
@@ -200,7 +212,8 @@
 
             // Окно заполнения проекта
             $$("dltProjectFormBtn").attachEvent("onItemClick", function () {
-                deleteProject();
+                delProject();
+                //deleteProject();
             });
             $$("saveProjectFormBtn").attachEvent("onItemClick", function () {
                 insertProject();
@@ -223,7 +236,8 @@
                         editProject();
                         break;
                     case "delete":
-                        deleteProject();
+                        delProject();
+                        //deleteProject();
                         break;
                 }
             });

@@ -124,7 +124,7 @@ let colors_set = [
 ];
 
 let projectGroup_data = [
-    {value: "Не назначенные"},
+    {value: "Без группы"},
     {value: "Designers"},
     {value: "Developers"},
     {value: "dbEngineers"}

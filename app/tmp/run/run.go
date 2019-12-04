@@ -163,6 +163,14 @@ func Register() {
 				RenderArgNames: map[int][]string{ 
 				},
 			},
+			&revel.MethodType{
+				Name: "Delete",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "id", Type: reflect.TypeOf((*int)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
 			
 		})
 	

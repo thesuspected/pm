@@ -27,3 +27,11 @@ func (c *CProject) Create(project resources.Project) revel.Result {
 	}
 	return c.RenderJSON(projects)
 }
+
+func (c *CProject) Delete(id int) revel.Result {
+	id, err := c.provider.Delete(id)
+	if err != nil {
+		return c.RenderError(err)
+	}
+	return c.RenderJSON(id)
+}
