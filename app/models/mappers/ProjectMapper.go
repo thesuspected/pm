@@ -61,3 +61,22 @@ func (m *ProjectMapper) Delete(db *sql.DB, id int) (int, error) {
 
 	return id, err
 }
+
+func (m *ProjectMapper) Update(db *sql.DB, project resources.Project) (projects []*resources.Project, err error) {
+	c := resources.Project{}
+	err = db.QueryRow(
+		`UPDATE t_projects 
+				SET (c_name, fk_group) =
+					(SELECT $2, g.c_id 
+					 FROM t_groups AS g 
+					 WHERE $3 = g.c_name)
+				 WHERE c_id = $1`,
+				project.Id, project.Name, project.Group).Scan(&c.Id, &c.Name, &c.Date, &c.Group)
+	if err != nil {
+		return projects, err
+	}
+
+	projects = append(projects, &c)
+
+	return projects, err
+}

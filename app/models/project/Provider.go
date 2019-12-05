@@ -41,3 +41,12 @@ func (p *Provider) Delete(id int) (int, error) {
 	defer db.Close()
 	return p.projects.Delete(db, id)
 }
+
+func (p *Provider) Update(project resources.Project) ([]*resources.Project, error) {
+	db, err := connection.DatabaseConnect()
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+	return p.projects.Update(db, project)
+}

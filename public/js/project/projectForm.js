@@ -25,6 +25,7 @@ export let projectForm = {
                 {view: "button", id: "dltProjectFormBtn", width: 111, value: "Удалить"},
                 {},
                 {view: "button", id: "saveProjectFormBtn", width: 111, value: "Сохранить", css: "webix_primary"},
+                {view: "button", id: "createProjectFormBtn", width: 111, value: "Создать", css: "webix_primary"}
             ]
         }
     ]

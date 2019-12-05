@@ -50,7 +50,9 @@
 
     function editProject() {
         $$("titleP").setValue("Изменить проект");
-        $$("dltProjectFormBtn").show();
+        $$("createProjectFormBtn").hide();
+        $$("dltProjectFormBtn").enable();
+        $$("saveProjectFormBtn").show();
         $$("project_Popup").hide();
         let projectValues = $$("listProject").getSelectedItem();
         // заносим значения элемента в форму для изменения
@@ -155,10 +157,10 @@
             function insertProject() {
                 let project_form = $$("project_Form").getValues();
                 let project = {
-                    Id: null,
+                    //Id: null,
                     Name: project_form.name,
                     Group: project_form.group
-                }
+                };
 
                 ProjectModel.create(project).then(function (result) {
                     $$("listProject").add({
@@ -175,9 +177,23 @@
 
                 ProjectModel.delete(id).then(function(result) {
                     $$("listProject").remove(result);
-                    //taskTree.clearAll();
-                    //taskTree.refresh();
-                    $$("listProject").clearAll();
+                });
+            }
+
+            function updateProject() {
+                let id = $$("listProject").getSelectedId();
+                let project_form = $$("project_Form").getValues();
+
+                let project = {
+                    Id: id,
+                    Name: project_form.name,
+                    Group: project_form.group
+                };
+
+                ProjectModel.update(id, project).then(function(result) {
+                    let item = $$("listProject").getItem(result[0]['id']);
+                    item.name = result[0]['name'];
+                    item.group = result[0]['group'];
                     $$("listProject").refresh();
                 });
             }
@@ -200,7 +216,9 @@
             // Добавить проект
             $$("addProjectBtn").attachEvent("onItemClick", function () {
                 $$("titleP").setValue("Добавить проект");
-                $$("dltProjectFormBtn").hide();
+                $$("dltProjectFormBtn").disable();
+                $$("saveProjectFormBtn").hide();
+                $$("createProjectFormBtn").show();
                 $$("project_window").show();
                 $$("project_Form").setValues(projects_originalValues);
             });
@@ -215,8 +233,12 @@
                 delProject();
                 //deleteProject();
             });
-            $$("saveProjectFormBtn").attachEvent("onItemClick", function () {
+            $$("createProjectFormBtn").attachEvent("onItemClick", function () {
                 insertProject();
+                //addProject();
+            });
+            $$("saveProjectFormBtn").attachEvent("onItemClick", function () {
+                updateProject();
                 //addProject();
             });
             $$("closeProjectFormBtn").attachEvent("onItemClick", function () {

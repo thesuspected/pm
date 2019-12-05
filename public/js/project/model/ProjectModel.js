@@ -14,4 +14,9 @@ export const ProjectModel = {
         return fetch(`/project/${Id}`, {method: 'DELETE'})
             .then(response => response.json())
     },
+
+    update: (id, project) => {
+        return fetch(`/project/${id}`, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(project)})
+            .then(response => response.json())
+    }
 }

@@ -153,4 +153,15 @@ func (_ tCProject) Delete(
 	return revel.MainRouter.Reverse("CProject.Delete", args).URL
 }
 
+func (_ tCProject) Update(
+		id int,
+		project interface{},
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "id", id)
+	revel.Unbind(args, "project", project)
+	return revel.MainRouter.Reverse("CProject.Update", args).URL
+}
+
 

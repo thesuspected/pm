@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7b133205-48b5-4e04-9f68-b8c3c73cadf9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/models/resources/Group.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/controllers/CProject.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/CProject.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/models/mappers/ProjectMapper.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/mappers/ProjectMapper.go" afterDir="false" />
@@ -11,10 +10,8 @@
       <change beforePath="$PROJECT_DIR$/app/tmp/run/run.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/tmp/run/run.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/views/App/tasks.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/App/tasks.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/conf/routes" beforeDir="false" afterPath="$PROJECT_DIR$/conf/routes" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/data.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/data.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/origValuesForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/origValuesForm.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/js/project/model/ProjectModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/project/model/ProjectModel.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/project/projects.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/project/projects.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/project/projectForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/project/projectForm.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -67,7 +64,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="go.import.settings.migrated" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../other projects/my-app" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.standard" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
