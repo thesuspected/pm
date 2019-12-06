@@ -36,7 +36,7 @@ func (c *CProject) Delete(id int) revel.Result {
 	return c.RenderJSON(id)
 }
 
-func (c *CProject) Update(id int, project resources.Project) revel.Result {
+func (c *CProject) Update(project resources.Project) revel.Result {
 	projects, err := c.provider.Update(project)
 	if err != nil {
 		return c.RenderError(err)

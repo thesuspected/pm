@@ -189,8 +189,9 @@
                     Name: project_form.name,
                     Group: project_form.group
                 };
+                console.log(project);
 
-                ProjectModel.update(id, project).then(function(result) {
+                ProjectModel.update(project).then(function(result) {
                     let item = $$("listProject").getItem(result[0]['id']);
                     item.name = result[0]['name'];
                     item.group = result[0]['group'];

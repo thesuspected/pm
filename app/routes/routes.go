@@ -154,12 +154,10 @@ func (_ tCProject) Delete(
 }
 
 func (_ tCProject) Update(
-		id int,
 		project interface{},
 		) string {
 	args := make(map[string]string)
 	
-	revel.Unbind(args, "id", id)
 	revel.Unbind(args, "project", project)
 	return revel.MainRouter.Reverse("CProject.Update", args).URL
 }

@@ -15,7 +15,8 @@ func (m *ProjectMapper) SelectAll(db *sql.DB) (projects []*resources.Project, er
 	rows, err := db.Query(
 		`SELECT p.c_id, p.c_name, p.c_date, g.c_name
 				FROM t_projects AS p, t_groups AS g
-				WHERE p.fk_group = g.c_id`)
+				WHERE p.fk_group = g.c_id
+				GROUP BY p.c_id, g.c_name`)
 	if err != nil {
 		return projects, err
 	}
@@ -67,10 +68,11 @@ func (m *ProjectMapper) Update(db *sql.DB, project resources.Project) (projects 
 	err = db.QueryRow(
 		`UPDATE t_projects 
 				SET (c_name, fk_group) =
-					(SELECT $2, g.c_id 
-					 FROM t_groups AS g 
-					 WHERE $3 = g.c_name)
-				 WHERE c_id = $1`,
+					(SELECT $2, c_id 
+					 FROM t_groups
+					 WHERE $3 = c_name)
+				WHERE $1 = c_id
+				RETURNING c_id, c_name, c_date, $3`,
 				project.Id, project.Name, project.Group).Scan(&c.Id, &c.Name, &c.Date, &c.Group)
 	if err != nil {
 		return projects, err
