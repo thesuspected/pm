@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="/public/css/style.css" type="text/css">
     <link rel="stylesheet" href="/public/codebase/webix.css" type="text/css">
     <link rel="stylesheet" href="/public/kanban/codebase/kanban.css" type="text/css">
-    <link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.5.95/css/materialdesignicons.css" type="text/css"
+    <link rel="stylesheet" href="/public/MaterialDesign/css/materialdesignicons.css" type="text/css"
           charset="utf-8">
     <script src="/public/codebase/webix.js" type="text/javascript"></script>
     <script src="/public/kanban/codebase/kanban.js" type="text/javascript"></script>
@@ -48,70 +48,103 @@
         $$("listProject").sort("#" + value + "#");
     };
 
-    function editProject() {
+    function addProjectForm() {
+        // Изменяем форму
+        $$("titleP").setValue("Добавить проект");
+        $$("dltProjectFormBtn").disable();
+        $$("saveProjectFormBtn").hide();
+        $$("createProjectFormBtn").show();
+        // заносим стандартные значения в форму
+        $$("project_Form").setValues(projects_originalValues);
+        $$("project_window").show();
+    }
+
+    function editProjectForm() {
+        // Изменяем форму
         $$("titleP").setValue("Изменить проект");
         $$("createProjectFormBtn").hide();
         $$("dltProjectFormBtn").enable();
         $$("saveProjectFormBtn").show();
         $$("project_Popup").hide();
+        // заносим данные проекта в форму
         let projectValues = $$("listProject").getSelectedItem();
-        // заносим значения элемента в форму для изменения
         $$("project_Form").setValues(projectValues);
         $$("project_window").show();
     }
 
-    function addProject() {
-        // валидация заполнения имени проекта
-        if ($$("project_Form").validate()) {
-            // берем значения элемента
-            let item_data = $$("project_Form").getValues();
-            // поиск выбранного элемента в массиве
-            let findIt = projects_data.find(itemFind => itemFind.id == item_data.id);
-            if (findIt) {
-                // изменение существующего
-                let id = $$("listProject").getSelectedId();
-                projects_data[id - 1] = item_data;
-                $$("listProject").remove(id);
-                $$("listProject").add(item_data, id - 1);
-                $$("listProject").updateItem();
-            } else {
-                // добавление нового элемента
-                item_data.id = projects_data.length + 1;
-                projects_data[projects_data.length] = Object.assign({}, item_data);
-                $$("listProject").add(item_data);
-            }
-            // скрываем окна
-            $$("project_Popup").hide();
-            $$("project_window").hide();
-        } else
-            webix.message({type: "error", text: "Дайте название проекту"});
-    };
+    function getAllProjects() {
+        ProjectModel.getAll().then(function (result) {
+            $$("listProject").parse(result, 'json');
+        });
+    }
 
-    function deleteProject() {
+    function createProject() {
+        // Валидация заполнения
+        if ($$("project_Form").validate()) {
+            // берем значения формы
+            let project_form = $$("project_Form").getValues();
+            let project = {
+                Name: project_form.name,
+                Group: project_form.group
+            };
+            // делаем запрос
+            ProjectModel.create(project).then(function (result) {
+                $$("listProject").add({
+                    id: result[0]['id'],
+                    name: result[0]['name'],
+                    date: new Date(result[0]['date']),
+                    group: result[0]['group']
+                });
+            });
+            // закрываем окно
+            $$("project_window").hide();
+        }
+        else
+            webix.message({type: "error", text: "Дайте название проекту"});
+    }
+
+    function delProject() {
+        // закрываем окна
         $$("project_Popup").hide();
         $$("project_window").hide();
-        let projectValues = $$("listProject").getSelectedItem();
         // подтверждение удаления
         webix.confirm({
             ok: "ОК", cancel: "Отмена",
             text: "Вы собираетесь удалить проект, вы уверены?"
         })
             .then(function () {
+                // Берем id проекта
                 let id = $$("listProject").getSelectedId();
-                // удаляем элемент в массиве
-                projects_data.splice(id - 1, 1);
-                // удаляем элемент на странице
-                $$("listProject").remove(id);
-                // проходим по оставшимся элементам, после удаленного
-                for (var i = id - 1; i < projects_data.length; i++) {
-                    // изменяем id след. элементов
-                    projects_data[i].id -= 1;
-                    // удаляем оставшиеся элементы на странице
-                    $$("listProject").remove(i + 2);
-                    // обновляем их с новым id
-                    $$("listProject").add(projects_data[i]);
-                }
+                // делаем запрос
+                ProjectModel.delete(id).then(function(result) {
+                    $$("listProject").remove(result);
+                });
             })
+    }
+
+    function updateProject() {
+        // Валидация заполнения
+        if ($$("project_Form").validate()) {
+            // берем значения формы
+            let id = $$("listProject").getSelectedId();
+            let project_form = $$("project_Form").getValues();
+            let project = {
+                Id: id,
+                Name: project_form.name,
+                Group: project_form.group
+            };
+            // делаем запрос
+            ProjectModel.update(project).then(function(result) {
+                let item = $$("listProject").getItem(result[0]['id']);
+                item.name = result[0]['name'];
+                item.group = result[0]['group'];
+                $$("listProject").refresh();
+            });
+            // закрываем окно
+            $$("project_window").hide();
+        }
+        else
+            webix.message({type: "error", text: "Дайте название проекту"});
     }
 
     ///////////////////////////////////////////////// Отрисовка ////////////////////////////////////////////////////
@@ -148,58 +181,9 @@
                 ]
             });
 
-            ProjectModel.getAll().then(function (result) {
-                $$("listProject").clearAll();
-                $$("listProject").parse(result, 'json');
-                $$("listProject").refresh();
-            });
+            getAllProjects();    // Получаем все проекты из бд
 
-            function insertProject() {
-                let project_form = $$("project_Form").getValues();
-                let project = {
-                    //Id: null,
-                    Name: project_form.name,
-                    Group: project_form.group
-                };
-
-                ProjectModel.create(project).then(function (result) {
-                    $$("listProject").add({
-                        id: result[0]['id'],
-                        name: result[0]['name'],
-                        date: new Date(result[0]['date']),
-                        group: result[0]['group']
-                    });
-                });
-            }
-
-            function delProject() {
-                let id = $$("listProject").getSelectedId();
-
-                ProjectModel.delete(id).then(function(result) {
-                    $$("listProject").remove(result);
-                });
-            }
-
-            function updateProject() {
-                let id = $$("listProject").getSelectedId();
-                let project_form = $$("project_Form").getValues();
-
-                let project = {
-                    Id: id,
-                    Name: project_form.name,
-                    Group: project_form.group
-                };
-                console.log(project);
-
-                ProjectModel.update(project).then(function(result) {
-                    let item = $$("listProject").getItem(result[0]['id']);
-                    item.name = result[0]['name'];
-                    item.group = result[0]['group'];
-                    $$("listProject").refresh();
-                });
-            }
-
-            // Подсветка вкладки
+            // Подсветка текущей вкладки
             $$("sidebar").select("tasks", true);
 
             //////////////////////////////////////////// Обработчики ///////////////////////////////////////////////
@@ -216,12 +200,7 @@
 
             // Добавить проект
             $$("addProjectBtn").attachEvent("onItemClick", function () {
-                $$("titleP").setValue("Добавить проект");
-                $$("dltProjectFormBtn").disable();
-                $$("saveProjectFormBtn").hide();
-                $$("createProjectFormBtn").show();
-                $$("project_window").show();
-                $$("project_Form").setValues(projects_originalValues);
+                addProjectForm()
             });
 
             // Добавить задачу
@@ -232,18 +211,17 @@
             // Окно заполнения проекта
             $$("dltProjectFormBtn").attachEvent("onItemClick", function () {
                 delProject();
-                //deleteProject();
+                $$('project_Form').clearValidation();
             });
             $$("createProjectFormBtn").attachEvent("onItemClick", function () {
-                insertProject();
-                //addProject();
+                createProject();
             });
             $$("saveProjectFormBtn").attachEvent("onItemClick", function () {
                 updateProject();
-                //addProject();
             });
             $$("closeProjectFormBtn").attachEvent("onItemClick", function () {
                 $$('project_window').hide();
+                $$('project_Form').clearValidation();
             });
 
             // Показать попап проекта
@@ -256,11 +234,10 @@
                 let value = this.getItem(id).value;
                 switch (value) {
                     case "edit":
-                        editProject();
+                        editProjectForm();
                         break;
                     case "delete":
                         delProject();
-                        //deleteProject();
                         break;
                 }
             });
@@ -278,7 +255,7 @@
 
             // Редактирование проекта по doubleClick
             $$("listProject").attachEvent("onItemDblClick", function () {
-                editProject();
+                editProjectForm();
             });
 
             // Валидация заполнения задачи
