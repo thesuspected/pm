@@ -35,7 +35,7 @@ let imagePath = "https://docs.webix.com/samples/63_kanban/common/imgs/";
 let users_set = [
     {
         id: 1,
-        value: "Rick Lopes",
+        value: "Мищенко",
         position: "Руководитель отдела",
         image: imagePath + "1.jpg",
         date: new Date(2019, 3, 1),

@@ -124,6 +124,27 @@ func (_ tApp) Employees(
 }
 
 
+type tCGroup struct {}
+var CGroup tCGroup
+
+
+func (_ tCGroup) GetAll(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("CGroup.GetAll", args).URL
+}
+
+func (_ tCGroup) Create(
+		group interface{},
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "group", group)
+	return revel.MainRouter.Reverse("CGroup.Create", args).URL
+}
+
+
 type tCProject struct {}
 var CProject tCProject
 

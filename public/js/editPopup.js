@@ -1,12 +1,12 @@
 import {projectPopup_data,} from '/public/js/data.js';
 
-export let projectPopup = {
+export let editPopup = {
     view: "popup",
-    id: "project_Popup",
+    id: "edit_Popup",
     width: 150,
     body: {
         view: "menu",
-        id: "projectPopup_List",
+        id: "editPopup_List",
         data: projectPopup_data,
         layout: "y",
         template: "#name#",

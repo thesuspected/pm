@@ -7,10 +7,9 @@ export let groupForm = {
         "name": webix.rules.isNotEmpty
     },
     elements: [
-        {view: "text", label: "Название", labelPosition: "top", name: "name"},
         {
-            margin: 10, cols: [
-                {view: "datepicker", value: new Date(), label: "Дата", labelPosition: "top", name: "date"},
+            margin:10, cols: [
+                {view: "text", label: "Название", labelPosition: "top", name: "name"},
                 {
                     view: "select",
                     margin: 20,
@@ -30,6 +29,7 @@ export let groupForm = {
                 {view: "button", id: "dltGroupFormBtn", width: 111, value: "Удалить"},
                 {},
                 {view: "button", id: "saveGroupFormBtn", value: "Сохранить", width: 111, css: "webix_primary"},
+                {view: "button", id: "createGroupFormBtn", value: "Создать", width: 111, css: "webix_primary"}
             ]
         }
     ]

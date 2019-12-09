@@ -22,7 +22,7 @@ export let groups = {
                 height: 80
             },
             select: true,
-            data: groups_data
+            //data: groups_data
         }
     ]
 };

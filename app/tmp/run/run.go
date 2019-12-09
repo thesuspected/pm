@@ -146,6 +146,26 @@ func Register() {
 			
 		})
 	
+	revel.RegisterController((*controllers1.CGroup)(nil),
+		[]*revel.MethodType{
+			&revel.MethodType{
+				Name: "GetAll",
+				Args: []*revel.MethodArg{ 
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "Create",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "group", Type: reflect.TypeOf((*resources.Group)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			
+		})
+	
 	revel.RegisterController((*controllers1.CProject)(nil),
 		[]*revel.MethodType{
 			&revel.MethodType{

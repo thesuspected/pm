@@ -19,6 +19,13 @@ POST    /project/:id                            CProject.Update
 DELETE  /project/:id                            CProject.Delete
 
 
+GET     /group                                  CGroup.GetAll
+# GET     /group/:id                            CProject.Get
+PUT     /group                                  CGroup.Create
+# POST    /group/:id                            CProject.Update
+# DELETE  /group/:id                            CProject.Delete
+
+
 # Ignore favicon requests
 GET     /favicon.ico                            404
 

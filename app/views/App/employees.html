@@ -17,6 +17,8 @@
 
     webix.i18n.setLocale('ru-RU');
 
+    import {GroupModel} from "/public/js/group/model/GroupModel.js"; // get post update delete
+
     ///////////////////////////////////////////////// Виджеты //////////////////////////////////////////////////////
 
     import {toolbar} from "/public/js/toolbar.js";						    // шапка
@@ -32,8 +34,8 @@
     import {employeeWindow} from "/public/js/employee/employeeWindow.js";	// окно сотрудника
     webix.ui(employeeWindow);
 
-    import {projectPopup} from "/public/js/project/projectPopup.js";	    // попап списка [редактировать / удалить]
-    webix.ui(projectPopup);
+    import {editPopup} from "/public/js/editPopup.js";	    // попап списка [редактировать / удалить]
+    webix.ui(editPopup);
 
     import {sortPopup} from "/public/js/sortPopup.js";					    // попап сортировки [по порядку / по имени / по дате]
     webix.ui(sortPopup);
@@ -44,39 +46,86 @@
 
     function sortGroup(value) {
         $$("listGroup").sort("#" + value + "#");
-    };
+    }
 
-    function editGroup() {
-        let groupValues = $$("listGroup").getSelectedItem();
+    function addGroupForm() {
+        // Изменяем форму
+        $$("titleG").setValue("Добавить группу");
+        $$("dltGroupFormBtn").disable();
+        $$("saveGroupFormBtn").hide();
+        $$("createGroupFormBtn").show();
+        // заносим стандартные значения в форму
+        $$("groups_Form").setValues(groups_originalValues);
+        $$("groups_window").show();
+    }
+
+    function editGroupForm() {
+        // Изменяем форму
         $$("titleG").setValue("Изменить группу");
-        $$("dltGroupFormBtn").show();
-        $$("project_Popup").hide();
-        // заносим значения элемента в форму для изменения
+        $$("createGroupFormBtn").hide();
+        $$("dltGroupFormBtn").enable();
+        $$("saveGroupFormBtn").show();
+        $$("edit_Popup").hide();
+        // заносим данные группы в форму
+        let groupValues = $$("listGroup").getSelectedItem();
         $$("groups_Form").setValues(groupValues);
         $$("groups_window").show();
-    };
+    }
+
+    function getAllGroups() {
+        GroupModel.getAll().then(function (result) {
+            $$("listGroup").parse(result, 'json');
+        });
+    }
+
+    function createGroup() {
+        // Валидация заполнения
+        if ($$("groups_Form").validate()) {
+            // берем значения формы
+            let group_form = $$("groups_Form").getValues();
+            let group = {
+                Name: group_form.name,
+                Lead: group_form.lead,
+            };
+            // делаем запрос
+            GroupModel.create(group).then(function (result) {
+                $$("listProject").add({
+                    id: result[0]['id'],
+                    name: result[0]['name'],
+                    date: new Date(result[0]['date']),
+                    lead: result[0]['lead']
+                });
+            });
+            // закрываем окно
+            $$("groups_window").hide();
+        }
+        else
+            webix.message({type: "error", text: "Дайте название проектной группе"});
+    }
 
     function addGroup() {
 
-    };
+    }
 
     function deleteGroup() {
 
-    };
+    }
 
     function editEmployee() {
         let employeeValues = $$("listEmployee").getSelectedItem();
         $$("titleE").setValue("Изменить проект");
         $$("dltEmployeeFormBtn").show();
-    };
+    }
 
     function addEmployee() {
 
-    };
+    }
 
     function deleteEmployee() {
 
-    };
+    }
+
+
 
     ///////////////////////////////////////////////// Отрисовка ////////////////////////////////////////////////////
 
@@ -117,6 +166,8 @@
                 ]
             });
 
+            getAllGroups(); // Получаем все группы из бд
+
             // подсветка вкладки
             $$("sidebar").select("employees", true);
 
@@ -134,10 +185,7 @@
 
             // Добавить группу
             $$("addGroupBtn").attachEvent("onItemClick", function () {
-                $$("titleG").setValue("Добавить группу");
-                $$("dltGroupFormBtn").hide();
-                //$$("groups_Form").setValues(groups_originalValues);
-                $$("groups_window").show();
+                addGroupForm();
             });
 
             // Добавить сотрудника
@@ -164,15 +212,15 @@
 
             // Показать попап группы
             $$("listGroup").on_click.listIcon = function (node) {
-                $$("project_Popup").show(node);
+                $$("edit_Popup").show(node);
             };
 
             // Действия попапа группы
-            $$("projectPopup_List").attachEvent("onItemClick", function (id) {
+            $$("editPopup_List").attachEvent("onItemClick", function (id) {
                 let value = this.getItem(id).value;
                 switch (value) {
                     case "edit":
-                        editGroup();
+                        editGroupForm();
                         break;
                     case "delete":
                         deleteGroup();
@@ -189,12 +237,17 @@
             // Окно заполнения группы
             $$("dltGroupFormBtn").attachEvent("onItemClick", function () {
                 deleteGroup();
+                $$('groups_Form').clearValidation();
             });
             $$("saveGroupFormBtn").attachEvent("onItemClick", function () {
                 addGroup();
             });
+            $$("createGroupFormBtn").attachEvent("onItemClick", function () {
+                createGroup();
+            });
             $$("closeGroupFormBtn").attachEvent("onItemClick", function () {
                 $$('groups_window').hide();
+                $$('groups_Form').clearValidation();
             });
 
             // Окно заполнения сотрудника
@@ -215,7 +268,7 @@
 
             // Редактирование группы по doubleClick
             $$("listGroup").attachEvent("onItemDblClick", function () {
-                editGroup();
+                editGroupForm();
             });
 
             // Редактирование сотрудника по doubleClick
