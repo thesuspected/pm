@@ -16,7 +16,7 @@ func (m *ProjectMapper) SelectAll(db *sql.DB) (projects []*resources.Project, er
 		`SELECT p.c_id, p.c_name, p.c_date, g.c_name
 				FROM t_projects AS p, t_groups AS g
 				WHERE p.fk_group = g.c_id
-				GROUP BY p.c_id, g.c_name`)
+				ORDER BY p.c_id`)
 	if err != nil {
 		return projects, err
 	}

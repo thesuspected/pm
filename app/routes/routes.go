@@ -144,6 +144,24 @@ func (_ tCGroup) Create(
 	return revel.MainRouter.Reverse("CGroup.Create", args).URL
 }
 
+func (_ tCGroup) Delete(
+		id int,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "id", id)
+	return revel.MainRouter.Reverse("CGroup.Delete", args).URL
+}
+
+func (_ tCGroup) Update(
+		group interface{},
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "group", group)
+	return revel.MainRouter.Reverse("CGroup.Update", args).URL
+}
+
 
 type tCProject struct {}
 var CProject tCProject

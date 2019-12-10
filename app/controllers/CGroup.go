@@ -27,3 +27,19 @@ func (c *CGroup) Create(group resources.Group) revel.Result {
 	}
 	return c.RenderJSON(groups)
 }
+
+func (c *CGroup) Delete(id int) revel.Result {
+	id, err := c.provider.Delete(id)
+	if err != nil {
+		return c.RenderError(err)
+	}
+	return c.RenderJSON(id)
+}
+
+func (c *CGroup) Update(group resources.Group) revel.Result {
+	groups, err := c.provider.Update(group)
+	if err != nil {
+		return c.RenderError(err)
+	}
+	return c.RenderJSON(groups)
+}

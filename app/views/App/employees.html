@@ -87,14 +87,59 @@
                 Name: group_form.name,
                 Lead: group_form.lead,
             };
+            console.log(group);
             // делаем запрос
             GroupModel.create(group).then(function (result) {
-                $$("listProject").add({
+                $$("listGroup").add({
                     id: result[0]['id'],
                     name: result[0]['name'],
                     date: new Date(result[0]['date']),
                     lead: result[0]['lead']
                 });
+            });
+            // закрываем окно
+            $$("groups_window").hide();
+        }
+        else
+            webix.message({type: "error", text: "Дайте название проектной группе"});
+    }
+
+    function delGroup() {
+        // закрываем окна
+        $$("edit_Popup").hide();
+        $$("groups_window").hide();
+        // подтверждение удаления
+        webix.confirm({
+            ok: "ОК", cancel: "Отмена",
+            text: "Вы собираетесь удалить группу, вы уверены?"
+        })
+            .then(function () {
+                // Берем id группы
+                let id = $$("listGroup").getSelectedId();
+                // делаем запрос
+                GroupModel.delete(id).then(function(result) {
+                    $$("listGroup").remove(result);
+                });
+            })
+    }
+
+    function updateGroup() {
+        // Валидация заполнения
+        if ($$("groups_Form").validate()) {
+            // берем значения формы
+            let id = $$("listGroup").getSelectedId();
+            let group_form = $$("groups_Form").getValues();
+            let group = {
+                Id: id,
+                Name: group_form.name,
+                Lead: group_form.lead
+            };
+            // делаем запрос
+            GroupModel.update(group).then(function(result) {
+                let item = $$("listGroup").getItem(result[0]['id']);
+                item.name = result[0]['name'];
+                item.lead = result[0]['lead'];
+                $$("listGroup").refresh();
             });
             // закрываем окно
             $$("groups_window").hide();
@@ -223,7 +268,7 @@
                         editGroupForm();
                         break;
                     case "delete":
-                        deleteGroup();
+                        delGroup();
                         break;
                 }
             });
@@ -236,11 +281,11 @@
 
             // Окно заполнения группы
             $$("dltGroupFormBtn").attachEvent("onItemClick", function () {
-                deleteGroup();
+                delGroup();
                 $$('groups_Form').clearValidation();
             });
             $$("saveGroupFormBtn").attachEvent("onItemClick", function () {
-                addGroup();
+                updateGroup()
             });
             $$("createGroupFormBtn").attachEvent("onItemClick", function () {
                 createGroup();

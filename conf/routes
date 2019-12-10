@@ -20,10 +20,10 @@ DELETE  /project/:id                            CProject.Delete
 
 
 GET     /group                                  CGroup.GetAll
-# GET     /group/:id                            CProject.Get
+# GET     /group/:id                            CGroup.Get
 PUT     /group                                  CGroup.Create
-# POST    /group/:id                            CProject.Update
-# DELETE  /group/:id                            CProject.Delete
+POST    /group/:id                              CGroup.Update
+DELETE  /group/:id                              CGroup.Delete
 
 
 # Ignore favicon requests

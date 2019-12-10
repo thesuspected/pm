@@ -10,13 +10,13 @@ export const GroupModel = {
             .then(response => response.json())
     },
 
-    // delete: (Id) => {
-    //     return fetch(`/project/${Id}`, {method: 'DELETE'})
-    //         .then(response => response.json())
-    // },
-    //
-    // update: (project) => {
-    //     return fetch(`/project/${project.id}`, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(project)})
-    //         .then(response => response.json())
-    // }
+    delete: (Id) => {
+        return fetch(`/group/${Id}`, {method: 'DELETE'})
+            .then(response => response.json())
+    },
+
+    update: (group) => {
+        return fetch(`/group/${group.id}`, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(group)})
+            .then(response => response.json())
+    }
 }
