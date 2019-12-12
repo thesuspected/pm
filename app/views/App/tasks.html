@@ -21,8 +21,8 @@
     webix.i18n.locales["ru-RU"].kanban = locale;
     webix.i18n.setLocale('ru-RU');
 
-    import {ProjectModel} from "/public/js/project/model/ProjectModel.js";  // get post update delete
-    import {GroupModel} from "/public/js/group/model/GroupModel.js";        // get post update delete
+    import {ProjectModel} from "/public/js/project/model/ProjectModel.js";  // db requests для Проектов
+    import {GroupModel} from "/public/js/group/model/GroupModel.js";        // db requests для Групп
 
     ///////////////////////////////////////////////// Виджеты //////////////////////////////////////////////////////
 
@@ -74,6 +74,7 @@
     }
 
     function getAllProjects() {
+        // запрос на получение всех проектов
         ProjectModel.getAll().then(function (result) {
             $$("listProject").parse(result, 'json');
         });
@@ -148,9 +149,17 @@
             webix.message({type: "error", text: "Дайте название проекту"});
     }
 
-    function getAllGroups() {
+    function getGroupSelect() {
         GroupModel.getAll().then(function (result) {
-            $$("groupSelect").parse(result, 'json');
+            // создаем переменную для select
+            let values = [];
+            // заполняем группы
+            for (let i = 0; i < result.length; i++) {
+                values[i] = result[i].name;
+            }
+            // заносим в select
+            $$("groupSelect").define("options", values);
+            $$("groupSelect").refresh();
         });
     }
 
@@ -189,7 +198,7 @@
             });
 
             getAllProjects();    // Получаем все проекты из бд
-            getAllGroups();    // Получаем все проекты из бд
+            getGroupSelect();    // Получаем все группы в select проекта
 
             // Подсветка текущей вкладки
             $$("sidebar").select("tasks", true);

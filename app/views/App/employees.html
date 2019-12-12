@@ -17,7 +17,8 @@
 
     webix.i18n.setLocale('ru-RU');
 
-    import {GroupModel} from "/public/js/group/model/GroupModel.js"; // get post update delete
+    import {GroupModel} from "/public/js/group/model/GroupModel.js";            // db requests для Групп
+    import {EmployeeModel} from "/public/js/employee/model/EmployeeModel.js";   // db requests для Сотрудников
 
     ///////////////////////////////////////////////// Виджеты //////////////////////////////////////////////////////
 
@@ -148,12 +149,18 @@
             webix.message({type: "error", text: "Дайте название проектной группе"});
     }
 
-    function addGroup() {
-
-    }
-
-    function deleteGroup() {
-
+    function getLeadSelect() {
+        GroupModel.getAll().then(function (result) {
+            // создаем переменную для select
+            let values = [];
+            // заполняем группы
+            for (let i = 0; i < result.length; i++) {
+                values[i] = result[i].name;
+            }
+            // заносим в select
+            $$("groupSelect").define("options", values);
+            $$("groupSelect").refresh();
+        });
     }
 
     function editEmployee() {
@@ -170,7 +177,25 @@
 
     }
 
+    function getAllEmployees() {
+        EmployeeModel.getAll().then(function (result) {
+            $$("listEmployees").parse(result, 'json');
+        });
+    }
 
+    function getEmployeeSelect() {
+        EmployeeModel.getAll().then(function (result) {
+            // создаем переменную для select
+            let values = [];
+            // заполняем сотрудников
+            for (let i = 0; i < result.length; i++) {
+                values[i] = result[i].lastName + " " + result[i].firstName;
+            }
+            // заносим в select
+            $$("employeeSelect").define("options", values);
+            $$("employeeSelect").refresh();
+        });
+    }
 
     ///////////////////////////////////////////////// Отрисовка ////////////////////////////////////////////////////
 
@@ -212,6 +237,8 @@
             });
 
             getAllGroups(); // Получаем все группы из бд
+            getAllEmployees();
+            getEmployeeSelect();
 
             // подсветка вкладки
             $$("sidebar").select("employees", true);

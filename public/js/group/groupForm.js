@@ -12,9 +12,10 @@ export let groupForm = {
                 {view: "text", label: "Название", labelPosition: "top", name: "name"},
                 {
                     view: "select",
+                    id: "employeeSelect",
                     margin: 20,
                     label: "Руководитель",
-                    options: users_set,
+                    options: [],
                     labelPosition: "top",
                     name: "lead"
                 }

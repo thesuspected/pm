@@ -15,7 +15,7 @@ export let projectForm = {
                     id: "groupSelect",
                     margin: 20,
                     label: "Пр. группа",
-                    options: projectGroup_data,
+                    options: [],
                     labelPosition: "top",
                     name: "group",
                 }

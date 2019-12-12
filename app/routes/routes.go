@@ -124,6 +124,18 @@ func (_ tApp) Employees(
 }
 
 
+type tCEmployee struct {}
+var CEmployee tCEmployee
+
+
+func (_ tCEmployee) GetAll(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("CEmployee.GetAll", args).URL
+}
+
+
 type tCGroup struct {}
 var CGroup tCGroup
 

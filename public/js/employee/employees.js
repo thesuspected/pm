@@ -20,13 +20,13 @@ export let employees = {
             id: "listEmployees",
             css: "listEmployees",
             template: function (obj) {
-                return "<img class='listImg pad' src='" + obj.image + "'></img><div class='listBlock'><div class='listName pad'>" + obj.value + "</div></div> <div class='listBlock'> <div class='listPos pad'>" + obj.position + "</div></div>"
+                return "<img class='listImg pad' src='./public/img/employees/" + obj.imgSrc + "'></img><div class='listBlock'><div class='listName pad'>" + obj.lastName + " " + obj.firstName + " " + obj.patronymic + "</div></div> <div class='listBlock'> <div class='listPos pad'>" + obj.position + "</div></div>"
             },
             type: {
                 height: 80
             },
             select: true,
-            data: users_set
+            //data: users_set
         }
     ]
 };
