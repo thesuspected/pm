@@ -22,8 +22,12 @@ export let groupForm = {
             ]
         },
         {
-            view: "multicombo", name: "tags", label: "Сотрудники", labelPosition: "top",
-            options: users_set
+            view: "multicombo",
+            id: "employeeCombo",
+            name: "tags",
+            label: "Сотрудники",
+            labelPosition: "top",
+            options: []
         },
         {
             margin: 10, cols: [

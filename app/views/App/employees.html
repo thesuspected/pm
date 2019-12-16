@@ -88,7 +88,6 @@
                 Name: group_form.name,
                 Lead: group_form.lead,
             };
-            console.log(group);
             // делаем запрос
             GroupModel.create(group).then(function (result) {
                 $$("listGroup").add({
@@ -149,20 +148,6 @@
             webix.message({type: "error", text: "Дайте название проектной группе"});
     }
 
-    function getLeadSelect() {
-        GroupModel.getAll().then(function (result) {
-            // создаем переменную для select
-            let values = [];
-            // заполняем группы
-            for (let i = 0; i < result.length; i++) {
-                values[i] = result[i].name;
-            }
-            // заносим в select
-            $$("groupSelect").define("options", values);
-            $$("groupSelect").refresh();
-        });
-    }
-
     function editEmployee() {
         let employeeValues = $$("listEmployee").getSelectedItem();
         $$("titleE").setValue("Изменить проект");
@@ -189,11 +174,11 @@
             let values = [];
             // заполняем сотрудников
             for (let i = 0; i < result.length; i++) {
-                values[i] = result[i].lastName + " " + result[i].firstName;
+                values[i] = result[i].lastName;
             }
             // заносим в select
             $$("employeeSelect").define("options", values);
-            $$("employeeSelect").refresh();
+            $$("employeeCombo").define("options", values);
         });
     }
 

@@ -22,3 +22,12 @@ func (p *Provider) GetAll() ([]*resources.Employee, error) {
 	defer db.Close()
 	return p.employees.SelectAll(db)
 }
+
+func (p *Provider) GetGroup(id int) ([]*resources.Employee, error) {
+	db, err := connection.DatabaseConnect()
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+	return p.employees.SelectGroup(id, db)
+}

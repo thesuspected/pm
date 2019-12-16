@@ -135,6 +135,15 @@ func (_ tCEmployee) GetAll(
 	return revel.MainRouter.Reverse("CEmployee.GetAll", args).URL
 }
 
+func (_ tCEmployee) GetGroup(
+		id int,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "id", id)
+	return revel.MainRouter.Reverse("CEmployee.GetGroup", args).URL
+}
+
 
 type tCGroup struct {}
 var CGroup tCGroup

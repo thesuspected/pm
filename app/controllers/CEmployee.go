@@ -18,3 +18,12 @@ func (c *CEmployee) GetAll() revel.Result {
 	}
 	return c.RenderJSON(employees)
 }
+
+func (c *CEmployee) GetGroup(id int) revel.Result {
+	c.provider = employee.New()
+	employees, err := c.provider.GetGroup(id)
+	if err != nil {
+		c.RenderJSON(err)
+	}
+	return c.RenderJSON(employees)
+}
