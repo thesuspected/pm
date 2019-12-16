@@ -38,7 +38,8 @@ export let kanban = {
             user_id: webix.rules.isNotEmpty
         },
         elements: [
-            {view: "textarea", name: "text", height: 90, label: "Текст"},
+            {view: "textarea", name: "text", label: "Название"},
+            {view: "textarea", name: "description", height: 100, label: "Описание"},
             {
                 view: "multicombo", name: "tags", label: "Метки",
                 options: tags_set
@@ -69,7 +70,37 @@ export let kanban = {
                         ]
                     }
                 ]
-            }
+            },
+            {
+                view: "label",
+                label: "Подзадачи"
+            },
+            {
+                view:"datatable",
+                height:280,
+                footer:true,
+                //autoheight: true,
+                columns:[
+                    { id:"check", header:{ content:"masterCheckbox" }, template:"{common.checkbox()}", width:50},
+                    {
+                        id:"value",
+                        sort:"string",
+                        header:"Значение",
+                        fillspace:true,
+                        footer:{
+                            cols: [
+                                {view: "button", id: "dltSubtaskBtn", width: 111, value: "Удалить"},
+                                {view: "button", id: "addSubtaskBtn", width: 111, value: "Добавить"}
+                            ]
+                        }
+                    }
+                ],
+                data: [
+                    { check:0, value:"Допилить базу данных"},
+                    { check:1, value:"Реализовать подзадачи на фронтенде"},
+                    { check:0, value:"Связать бэк с фронтом"},
+                ]
+            },
         ]
     },
     userList: true, // настроить вывод должности?

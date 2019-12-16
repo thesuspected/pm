@@ -16,18 +16,25 @@ export let employeeForm = {
                 },
                 {
                     rows: [
-                        {view: "text", label: "ФИО", labelPosition: "top", name: "name"},
-                        {view: "datepicker", value: new Date(), label: "Дата", labelPosition: "top", name: "date"}
-
+                        {view: "text", label: "Фамилия", labelPosition: "top", name: "lastName"},
+                        {view: "text", label: "Имя", labelPosition: "top", name: "firstName"},
+                        {view: "text", label: "Отчество", labelPosition: "top", name: "patronymic"}
                     ]
                 }
             ]
         },
         {
+          margin: 10,
+          cols: [
+              {view: "datepicker", value: new Date(), label: "Дата рождения", labelPosition: "top", name: "date"},
+              {view: "text", label: "Почта", labelPosition: "top", name: "email"}
+          ]
+        },
+        {
             margin: 10,
             cols: [
-                {view: "select", label: "Группа", options: projectGroup_data, labelPosition: "top", name: "group"},
-                {view: "select", label: "Должность", options: positions, labelPosition: "top", name: "position"}
+                {view: "select", id:"groupSelect", label: "Группа", options: [], labelPosition: "top", name: "group"},
+                {view: "select", label: "Должность", options: [], labelPosition: "top", name: "position"}
             ]
         },
         {

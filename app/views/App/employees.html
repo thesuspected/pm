@@ -182,6 +182,20 @@
         });
     }
 
+    function getGroupSelect() {
+        GroupModel.getAll().then(function (result) {
+            // создаем переменную для select
+            let values = [];
+            // заполняем группы
+            for (let i = 0; i < result.length; i++) {
+                values[i] = result[i].name;
+            }
+            // заносим в select
+            $$("groupSelect").define("options", values);
+            $$("groupSelect").refresh();
+        });
+    }
+
     ///////////////////////////////////////////////// Отрисовка ////////////////////////////////////////////////////
 
     window.onload = function () {
@@ -224,6 +238,7 @@
             getAllGroups(); // Получаем все группы из бд
             getAllEmployees();
             getEmployeeSelect();
+            getGroupSelect();
 
             // подсветка вкладки
             $$("sidebar").select("employees", true);
