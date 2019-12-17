@@ -2,11 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7b133205-48b5-4e04-9f68-b8c3c73cadf9" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/public/img/upload.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/js/task/uploadApi.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routes/routes.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/routes.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/tmp/run/run.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/tmp/run/run.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/views/App/employees.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/App/employees.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views/App/tasks.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/App/tasks.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/style.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/js/employee/employeeForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/employee/employeeForm.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/employee/employeeWindow.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/employee/employeeWindow.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/js/task/kanban.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/task/kanban.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -75,7 +78,11 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1Tp69FH5QqvLkEgNzWXqQk1j2wB" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="DatabaseDriversLRU" value="postgresql" />
     <property name="DefaultGoTemplateProperty" value="Go File" />
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
@@ -130,6 +137,7 @@
         </treeState>
       </serviceView>
     </option>
+    <option name="showServicesTree" value="false" />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
@@ -146,5 +154,8 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
 </project>

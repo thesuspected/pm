@@ -1,4 +1,6 @@
 import {colors_set, kanban_data, tags_set, users_set} from '/public/js/data.js';
+let addIcon = "<div class='webix_view webix_control webix_el_icon addSubtaskBtn' style='display: inline-block; vertical-align: top; border-width: 0px; margin-top: 2px; margin-left: 4px; width: 38px; height: 38px;'><div class='webix_el_box' style='width:38px;height:38px;line-height:38px;margin-top:0px'><button type='button' style='height:38px;width:38px;' class='webix_icon_button'><span class='webix_icon mdi mdi-plus-circle-outline'></span></button></div></div>";
+let delIcon = "<div class='webix_view webix_control webix_el_icon delSubtaskBtn' style='display: inline-block; vertical-align: top; border-width: 0px; margin-top: 2px; margin-left: -4px; width: 38px; height: 38px;'><div class='webix_el_box' style='width:38px;height:38px;line-height:38px;margin-top:0px'><button type='button' style='height:38px;width:38px;' class='webix_icon_button'><span class='webix_icon mdi mdi-trash-can'></span></button></div></div>";
 
 export let kanban = {
     view: "kanban",
@@ -77,28 +79,20 @@ export let kanban = {
             },
             {
                 view:"datatable",
-                height:280,
-                footer:true,
-                //autoheight: true,
+                id:"subTasksTable",
+                editable: true,
+                select: true,
+                multiselect:true,
+                height:220,
                 columns:[
                     { id:"check", header:{ content:"masterCheckbox" }, template:"{common.checkbox()}", width:50},
-                    {
-                        id:"value",
-                        sort:"string",
-                        header:"Значение",
-                        fillspace:true,
-                        footer:{
-                            cols: [
-                                {view: "button", id: "dltSubtaskBtn", width: 111, value: "Удалить"},
-                                {view: "button", id: "addSubtaskBtn", width: 111, value: "Добавить"}
-                            ]
-                        }
-                    }
+                    { id:"value", header:"Значение", editor:"text", fillspace:true},
+                    { id:"buttons", header:addIcon + delIcon, width:100}
                 ],
                 data: [
-                    { check:0, value:"Допилить базу данных"},
-                    { check:1, value:"Реализовать подзадачи на фронтенде"},
-                    { check:0, value:"Связать бэк с фронтом"},
+                    { id: 1, check:0, value:"Допилить базу данных"},
+                    { id: 2, check:1, value:"Реализовать подзадачи на фронтенде"},
+                    { id: 3, check:0, value:"Связать бэк с фронтом"},
                 ]
             },
         ]

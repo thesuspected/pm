@@ -1,6 +1,6 @@
 import {employeeForm} from "/public/js/employee/employeeForm.js";
 
-export let employeeWindow = webix.ui({
+export let employeeWindow = {
     view: "window",
     id: "employees_window",
     width: 400,
@@ -15,4 +15,4 @@ export let employeeWindow = webix.ui({
     close: true,
     modal: true,
     body: employeeForm
-});
+};

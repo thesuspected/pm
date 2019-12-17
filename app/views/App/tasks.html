@@ -35,7 +35,7 @@
     import {projectWindow} from "/public/js/project/projectWindow.js";		// окно проекта
     webix.ui(projectWindow);
 
-    import {editPopup} from "/public/js/editPopup.js";		// попап списка [редактировать / удалить]
+    import {editPopup} from "/public/js/editPopup.js";		                // попап списка [редактировать / удалить]
     webix.ui(editPopup);
 
     import {sortPopup} from "/public/js/sortPopup.js";						// попап сортировки [по порядку / по имени / по дате]
@@ -199,6 +199,8 @@
 
             getAllProjects();    // Получаем все проекты из бд
             getGroupSelect();    // Получаем все группы в select проекта
+            let subtasks = $$('subTasksTable').data.pull;
+            console.log(subtasks);
 
             // Подсветка текущей вкладки
             $$("sidebar").select("tasks", true);
@@ -274,6 +276,17 @@
             $$("listProject").attachEvent("onItemDblClick", function () {
                 editProjectForm();
             });
+
+            // Добавить подзадачу
+            $$("subTasksTable").on_click.addSubtaskBtn = function (node) {
+                $$('subTasksTable').add({id:$$('subTasksTable').length,check:0, value:''});
+            };
+
+            // Удалить подзадачу
+            $$("subTasksTable").on_click.delSubtaskBtn = function (node) {
+                let id = $$('subTasksTable').getSelectedId();
+                $$('subTasksTable').remove(id);
+            };
 
             // Валидация заполнения задачи
             $$("kanban").attachEvent("onBeforeEditorAction", function (action, editor, obj) {

@@ -29,17 +29,22 @@
     import {groupTable} from "/public/js/group/groupTable.js";		        // островок сотрудники Группы
     import {employees} from "/public/js/employee/employees.js";			    // островок Сотрудники
 
+    import {employeeForm} from "/public/js/employee/employeeForm.js";
+
     import {groupWindow} from "/public/js/group/groupWindow.js";		    // окно группы
     webix.ui(groupWindow);
 
     import {employeeWindow} from "/public/js/employee/employeeWindow.js";	// окно сотрудника
     webix.ui(employeeWindow);
 
-    import {editPopup} from "/public/js/editPopup.js";	    // попап списка [редактировать / удалить]
+    import {editPopup} from "/public/js/editPopup.js";	                    // попап списка [редактировать / удалить]
     webix.ui(editPopup);
 
     import {sortPopup} from "/public/js/sortPopup.js";					    // попап сортировки [по порядку / по имени / по дате]
     webix.ui(sortPopup);
+
+    import {uploadApi} from "/public/js/task/uploadApi.js";                 // загрузка фото
+    webix.ui(uploadApi);
 
     import {groups_originalValues} from "/public/js/origValuesForm.js";	    // оригинальные значения формы группы
 
@@ -235,10 +240,10 @@
                 ]
             });
 
-            getAllGroups(); // Получаем все группы из бд
-            getAllEmployees();
-            getEmployeeSelect();
-            getGroupSelect();
+            getAllGroups();         // Получаем все группы из бд
+            getAllEmployees();      // Получаем всех сотрудников из бд
+            getEmployeeSelect();    // Заполняем select сотрудников
+            getGroupSelect();       // Заполняем select групп
 
             // подсветка вкладки
             $$("sidebar").select("employees", true);
@@ -347,6 +352,9 @@
             $$("listEmployees").attachEvent("onItemDblClick", function () {
                 editEmployee();
             });
+
+            // Загрузка фотографии
+            // В employeesForm.js
 
             // Поиск сотрудников
             $$("search").attachEvent("onTimedKeyPress", function () {
