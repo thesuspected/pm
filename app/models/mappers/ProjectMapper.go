@@ -44,8 +44,8 @@ func (m *ProjectMapper) Insert(db *sql.DB, project resources.Project) (projects 
 		`INSERT INTO t_projects (c_id, c_name, c_date, fk_group)
 				SELECT nextval('t_projects_id_seq'), $1, NOW(), g.c_id
 				FROM t_groups AS g
-				WHERE $2 = g.c_name
-				RETURNING c_id, c_name, c_date, $2`,
+				WHERE $2 = g.c_id
+				RETURNING *`,
 				project.Name, project.Group).Scan(&c.Id, &c.Name, &c.Date, &c.Group)
 	if err != nil {
 		return projects, err

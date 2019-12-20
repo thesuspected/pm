@@ -150,15 +150,17 @@
     }
 
     function getGroupSelect() {
-        GroupModel.getAll().then(function (result) {
-            // создаем переменную для select
-            let values = [];
+        let fuck = GroupModel.getAll().then(function (result) {
+            // создаем массив для Select
+            let selectGroup = [];
             // заполняем группы
             for (let i = 0; i < result.length; i++) {
-                values[i] = result[i].name;
+                selectGroup[i] = {};
+                selectGroup[i].id = result[i].id;
+                selectGroup[i].value = result[i].name;
             }
             // заносим в select
-            $$("groupSelect").define("options", values);
+            $$("groupSelect").define("options", selectGroup);
             $$("groupSelect").refresh();
         });
     }
