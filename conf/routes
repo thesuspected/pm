@@ -13,21 +13,26 @@ GET     /employees                              App.Employees
 
 
 GET     /project                                CProject.GetAll
-# GET     /project/:id                          CProject.Get
+GET     /project/:id                            CProject.Get
+GET     /projectFk/:id                          CProject.GetFk
 PUT     /project                                CProject.Create
 POST    /project/:id                            CProject.Update
 DELETE  /project/:id                            CProject.Delete
 
 
 GET     /group                                  CGroup.GetAll
-# GET     /group/:id                            CGroup.Get
+GET     /group/:id                              CGroup.Get
+GET     /groupFk/:id                            CGroup.GetFk
 PUT     /group                                  CGroup.Create
 POST    /group/:id                              CGroup.Update
 DELETE  /group/:id                              CGroup.Delete
 
 
 GET     /employee                               CEmployee.GetAll
-# GET     /employee/:id                         CEmployee.Get
+GET     /employee/:id                           CEmployee.Get
+GET     /employeeFk/:id                         CEmployee.GetFk
+GET     /employeeByGroup/:id                    CEmployee.GetByGroup
+GET     /employeeByGroupFk/:id                  CEmployee.GetByGroupFk
 # PUT     /employee                             CEmployee.Create
 # POST    /employee/:id                         CEmployee.Update
 # DELETE  /employee/:id                         CEmployee.Delete

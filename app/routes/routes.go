@@ -135,13 +135,40 @@ func (_ tCEmployee) GetAll(
 	return revel.MainRouter.Reverse("CEmployee.GetAll", args).URL
 }
 
-func (_ tCEmployee) GetGroup(
+func (_ tCEmployee) Get(
 		id int,
 		) string {
 	args := make(map[string]string)
 	
 	revel.Unbind(args, "id", id)
-	return revel.MainRouter.Reverse("CEmployee.GetGroup", args).URL
+	return revel.MainRouter.Reverse("CEmployee.Get", args).URL
+}
+
+func (_ tCEmployee) GetFk(
+		id int,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "id", id)
+	return revel.MainRouter.Reverse("CEmployee.GetFk", args).URL
+}
+
+func (_ tCEmployee) GetByGroup(
+		id int,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "id", id)
+	return revel.MainRouter.Reverse("CEmployee.GetByGroup", args).URL
+}
+
+func (_ tCEmployee) GetByGroupFk(
+		id int,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "id", id)
+	return revel.MainRouter.Reverse("CEmployee.GetByGroupFk", args).URL
 }
 
 
@@ -154,6 +181,24 @@ func (_ tCGroup) GetAll(
 	args := make(map[string]string)
 	
 	return revel.MainRouter.Reverse("CGroup.GetAll", args).URL
+}
+
+func (_ tCGroup) Get(
+		id int,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "id", id)
+	return revel.MainRouter.Reverse("CGroup.Get", args).URL
+}
+
+func (_ tCGroup) GetFk(
+		id int,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "id", id)
+	return revel.MainRouter.Reverse("CGroup.GetFk", args).URL
 }
 
 func (_ tCGroup) Create(
@@ -193,6 +238,24 @@ func (_ tCProject) GetAll(
 	args := make(map[string]string)
 	
 	return revel.MainRouter.Reverse("CProject.GetAll", args).URL
+}
+
+func (_ tCProject) Get(
+		id int,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "id", id)
+	return revel.MainRouter.Reverse("CProject.Get", args).URL
+}
+
+func (_ tCProject) GetFk(
+		id int,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "id", id)
+	return revel.MainRouter.Reverse("CProject.GetFk", args).URL
 }
 
 func (_ tCProject) Create(

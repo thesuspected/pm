@@ -50,6 +50,8 @@
     };
 
     function addProjectForm() {
+        // получаем актуальные группы
+        getGroupSelect();
         // Изменяем форму
         $$("titleP").setValue("Добавить проект");
         $$("dltProjectFormBtn").disable();
@@ -61,6 +63,8 @@
     }
 
     function editProjectForm() {
+        // получаем актуальные группы
+        getGroupSelect();
         // Изменяем форму
         $$("titleP").setValue("Изменить проект");
         $$("createProjectFormBtn").hide();
@@ -68,8 +72,9 @@
         $$("saveProjectFormBtn").show();
         $$("edit_Popup").hide();
         // заносим данные проекта в форму
-        let projectValues = $$("listProject").getSelectedItem();
-        $$("project_Form").setValues(projectValues);
+        let id = $$("listProject").getSelectedId();
+        fillProjectForm(id);
+        // открываем окно проекта
         $$("project_window").show();
     }
 
@@ -89,14 +94,9 @@
                 Name: project_form.name,
                 Group: project_form.group
             };
-            // делаем запрос
+            // делаем запрос в бд
             ProjectModel.create(project).then(function (result) {
-                $$("listProject").add({
-                    id: result[0]['id'],
-                    name: result[0]['name'],
-                    date: new Date(result[0]['date']),
-                    group: result[0]['group']
-                });
+                getLastProject(result[0].id);
             });
             // закрываем окно
             $$("project_window").hide();
@@ -117,7 +117,7 @@
             .then(function () {
                 // Берем id проекта
                 let id = $$("listProject").getSelectedId();
-                // делаем запрос
+                // делаем запрос в бд
                 ProjectModel.delete(id).then(function(result) {
                     $$("listProject").remove(result);
                 });
@@ -135,12 +135,9 @@
                 Name: project_form.name,
                 Group: project_form.group
             };
-            // делаем запрос
+            // делаем запрос в бд
             ProjectModel.update(project).then(function(result) {
-                let item = $$("listProject").getItem(result[0]['id']);
-                item.name = result[0]['name'];
-                item.group = result[0]['group'];
-                $$("listProject").refresh();
+                refreshProject(result[0].id);
             });
             // закрываем окно
             $$("project_window").hide();
@@ -149,8 +146,45 @@
             webix.message({type: "error", text: "Дайте название проекту"});
     }
 
+    function getLastProject(id) {
+        // делаем запрос в бд
+        ProjectModel.get(id).then(function (result) {
+            // Добавляем проект в конец списка
+            $$("listProject").add({
+                id: result[0]['id'],
+                name: result[0]['name'],
+                date: new Date(result[0]['date']),
+                group: result[0]['group']
+            });
+        });
+    }
+
+    function refreshProject(id) {
+        // делаем запрос в бд
+        ProjectModel.get(id).then(function (result) {
+            // обновляем данные о проекте
+            let item = $$("listProject").getItem(result[0]['id']);
+            item.name = result[0]['name'];
+            item.group = result[0]['group'];
+            $$("listProject").refresh();
+        });
+    }
+
+    function fillProjectForm(id) {
+        // делаем запрос в бд
+        ProjectModel.getFk(id).then(function (result) {
+            // Создаем массив для формы
+            let values = {};
+            values["name"] = result[0]["name"];
+            values["group"] = result[0]["group"];
+            // Заполняем форму проекта
+            $$("project_Form").setValues(values);
+        });
+    }
+
     function getGroupSelect() {
-        let fuck = GroupModel.getAll().then(function (result) {
+        // делаем запрос в бд
+        GroupModel.getAll().then(function (result) {
             // создаем массив для Select
             let selectGroup = [];
             // заполняем группы

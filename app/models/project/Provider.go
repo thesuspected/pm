@@ -24,6 +24,24 @@ func (p *Provider) GetAll() ([]*resources.Project, error) {
 	return p.projects.SelectAll(db)
 }
 
+func (p *Provider) Get(id int) ([]*resources.Project, error) {
+	db, err := connection.DatabaseConnect()
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+	return p.projects.Select(id, db)
+}
+
+func (p *Provider) GetFk(id int) ([]*resources.Project, error) {
+	db, err := connection.DatabaseConnect()
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+	return p.projects.SelectFk(id, db)
+}
+
 func (p *Provider) Create(project resources.Project) ([]*resources.Project, error) {
 	db, err := connection.DatabaseConnect()
 	if err != nil {

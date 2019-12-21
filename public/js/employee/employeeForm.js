@@ -50,7 +50,8 @@ export let employeeForm = {
             cols: [
                 {view: "button", id: "dltEmployeeFormBtn", width: 111, value: "Уволить"},
                 {},
-                {view: "button", id: "saveEmployeeFormBtn", value: "Нанять", width: 111, css: "webix_primary"},
+                {view: "button", id: "saveEmployeeFormBtn", value: "Сохранить", width: 111, css: "webix_primary"},
+                {view: "button", id: "createEmployeeFormBtn", value: "Нанять", width: 111, css: "webix_primary"}
             ]
         }
     ]

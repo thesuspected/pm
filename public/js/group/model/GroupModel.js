@@ -5,6 +5,16 @@ export const GroupModel = {
             .then(response => response.json())
     },
 
+    get: (Id) => {
+        return fetch(`/group/${Id}`, {method: 'GET'})
+            .then(response => response.json())
+    },
+
+    getFk: (Id) => {
+        return fetch(`/groupFk/${Id}`, {method: 'GET'})
+            .then(response => response.json())
+    },
+
     create: (group) => {
         return fetch('/group', {method: 'PUT', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(group)})
             .then(response => response.json())

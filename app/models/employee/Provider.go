@@ -23,11 +23,38 @@ func (p *Provider) GetAll() ([]*resources.Employee, error) {
 	return p.employees.SelectAll(db)
 }
 
-func (p *Provider) GetGroup(id int) ([]*resources.Employee, error) {
+func (p *Provider) Get(id int) ([]*resources.Employee, error) {
 	db, err := connection.DatabaseConnect()
 	if err != nil {
 		return nil, err
 	}
 	defer db.Close()
-	return p.employees.SelectGroup(id, db)
+	return p.employees.Select(id, db)
+}
+
+func (p *Provider) GetFk(id int) ([]*resources.Employee, error) {
+	db, err := connection.DatabaseConnect()
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+	return p.employees.SelectFk(id, db)
+}
+
+func (p *Provider) GetByGroup(id int) ([]*resources.Employee, error) {
+	db, err := connection.DatabaseConnect()
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+	return p.employees.SelectByGroup(id, db)
+}
+
+func (p *Provider) GetByGroupFk(id int) ([]*resources.Employee, error) {
+	db, err := connection.DatabaseConnect()
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+	return p.employees.SelectByGroupFk(id, db)
 }

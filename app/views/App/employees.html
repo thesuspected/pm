@@ -47,6 +47,7 @@
     webix.ui(uploadApi);
 
     import {groups_originalValues} from "/public/js/origValuesForm.js";	    // оригинальные значения формы группы
+    import {employees_originalValues} from "/public/js/origValuesForm.js";	    // оригинальные значения формы сотрудника
 
     ////////////////////////////////////////////////// Функции /////////////////////////////////////////////////////
 
@@ -54,7 +55,11 @@
         $$("listGroup").sort("#" + value + "#");
     }
 
+    //************************************************** Группы ***************************************************//
+
     function addGroupForm() {
+        // получаем актуальных сотрудников
+        getEmployeeSelect();
         // Изменяем форму
         $$("titleG").setValue("Добавить группу");
         $$("dltGroupFormBtn").disable();
@@ -66,6 +71,8 @@
     }
 
     function editGroupForm() {
+        // получаем актуальных сотрудников
+        getEmployeeSelect();
         // Изменяем форму
         $$("titleG").setValue("Изменить группу");
         $$("createGroupFormBtn").hide();
@@ -73,12 +80,14 @@
         $$("saveGroupFormBtn").show();
         $$("edit_Popup").hide();
         // заносим данные группы в форму
-        let groupValues = $$("listGroup").getSelectedItem();
-        $$("groups_Form").setValues(groupValues);
+        let id = $$("listGroup").getSelectedId();
+        fillGroupForm(id);
+        // открываем окно группы
         $$("groups_window").show();
     }
 
     function getAllGroups() {
+        // запрос на получение всех групп
         GroupModel.getAll().then(function (result) {
             $$("listGroup").parse(result, 'json');
         });
@@ -93,14 +102,9 @@
                 Name: group_form.name,
                 Lead: group_form.lead,
             };
-            // делаем запрос
+            // далем запрос в бд
             GroupModel.create(group).then(function (result) {
-                $$("listGroup").add({
-                    id: result[0]['id'],
-                    name: result[0]['name'],
-                    date: new Date(result[0]['date']),
-                    lead: result[0]['lead']
-                });
+                getLastGroup(result[0].id);
             });
             // закрываем окно
             $$("groups_window").hide();
@@ -121,7 +125,7 @@
             .then(function () {
                 // Берем id группы
                 let id = $$("listGroup").getSelectedId();
-                // делаем запрос
+                // далем запрос в бд
                 GroupModel.delete(id).then(function(result) {
                     $$("listGroup").remove(result);
                 });
@@ -139,12 +143,9 @@
                 Name: group_form.name,
                 Lead: group_form.lead
             };
-            // делаем запрос
+            // далем запрос в бд
             GroupModel.update(group).then(function(result) {
-                let item = $$("listGroup").getItem(result[0]['id']);
-                item.name = result[0]['name'];
-                item.lead = result[0]['lead'];
-                $$("listGroup").refresh();
+                refreshGroup(result[0].id);
             });
             // закрываем окно
             $$("groups_window").hide();
@@ -153,13 +154,90 @@
             webix.message({type: "error", text: "Дайте название проектной группе"});
     }
 
-    function editEmployee() {
-        let employeeValues = $$("listEmployee").getSelectedItem();
-        $$("titleE").setValue("Изменить проект");
-        $$("dltEmployeeFormBtn").show();
+    function getLastGroup(id) {
+        // делаем запрос в бд
+        GroupModel.get(id).then(function (result) {
+            // Добавляем проект в конец списка
+            $$("listGroup").add({
+                id: result[0]['id'],
+                name: result[0]['name'],
+                date: new Date(result[0]['date']),
+                lead: result[0]['lead']
+            });
+        });
     }
 
-    function addEmployee() {
+    function refreshGroup(id) {
+        // делаем запрос в бд
+        GroupModel.get(id).then(function (result) {
+            // обновляем данные о проекте
+            let item = $$("listGroup").getItem(result[0]['id']);
+            item.name = result[0]['name'];
+            item.lead = result[0]['lead'];
+            $$("listGroup").refresh();
+        });
+    }
+
+    function fillGroupForm(id) {
+        // запрос на получение имени и лидера
+        GroupModel.getFk(id).then(function (result) {
+            // Создаем массив для формы
+            let values = {};
+            values["name"] = result[0]["name"];
+            values["lead"] = result[0]["lead"];
+            // Заполняем форму проекта
+            $$("groups_Form").setValues(values);
+        });
+        // запрос на получение сотрудников данной группы
+        EmployeeModel.getByGroupFk(id).then(function (result) {
+            // проверяем на ноль
+            if (result != null) {
+                let tags = "";
+                // записываем сотрудников
+                for (let i = 0; i < result.length; i++) {
+                    if (i != result.length - 1) tags += result[i]["id"] + ",";
+                    else tags += result[i]["id"];
+                }
+                // заполняем комбо
+                $$('employeeCombo').setValue(tags);
+            }
+        });
+    }
+
+    //************************************************ Сотрудники *************************************************//
+
+    function addEmployeeForm() {
+        // Изменяем форму
+        $$("titleE").setValue("Добавить сотрудника");
+        $$("dltEmployeeFormBtn").disable();
+        $$("saveEmployeeFormBtn").hide();
+        $$("createEmployeeFormBtn").show();
+        // заносим стандартные значения в форму
+        $$("employees_Form").setValues(employees_originalValues);
+        $$("employees_window").show();
+    }
+
+    function editEmployeeForm() {
+        // Изменяем форму
+        $$("titleE").setValue("Изменить данные сотрудника");
+        $$("dltEmployeeFormBtn").enable();
+        $$("saveEmployeeFormBtn").show();
+        $$("createEmployeeFormBtn").hide();
+        $$("edit_Popup").hide();
+        // заносим данные группы в форму
+        let employeeValues = $$("listEmployees").getSelectedItem();
+        $$("employees_Form").setValues(employeeValues);
+        $$("employees_window").show();
+    }
+
+    function getAllEmployees() {
+        // далем запрос в бд
+        EmployeeModel.getAll().then(function (result) {
+            $$("listEmployees").parse(result, 'json');
+        });
+    }
+
+    function createEmployee() {
 
     }
 
@@ -167,23 +245,38 @@
 
     }
 
-    function getAllEmployees() {
-        EmployeeModel.getAll().then(function (result) {
-            $$("listEmployees").parse(result, 'json');
-        });
+    function updateEmployee() {
+
     }
 
+    function getLastEmployee() {
+
+    }
+
+    function refreshEmployee() {
+
+    }
+
+    function fillEmployeeForm() {
+
+    }
+
+    //************************************************** Select ***************************************************//
+
     function getEmployeeSelect() {
+        // далем запрос в бд
         EmployeeModel.getAll().then(function (result) {
             // создаем переменную для select
-            let values = [];
+            let selectEmployee = [];
             // заполняем сотрудников
             for (let i = 0; i < result.length; i++) {
-                values[i] = result[i].lastName;
+                selectEmployee[i] = {};
+                selectEmployee[i].id = result[i].id;
+                selectEmployee[i].value = result[i].lastName;
             }
             // заносим в select
-            $$("employeeSelect").define("options", values);
-            $$("employeeCombo").define("options", values);
+            $$("employeeSelect").define("options", selectEmployee);
+            $$("employeeCombo").define("options", selectEmployee);
         });
     }
 
@@ -267,10 +360,7 @@
 
             // Добавить сотрудника
             $$("addEmployeeBtn").attachEvent("onItemClick", function () {
-                $$("titleE").setValue("Нанять сотрудника");
-                $$("dltEmployeeFormBtn").hide();
-                //$$("employees_Form").setValues(employees_originalValues);
-                $$("employees_window").show();
+                addEmployeeForm();
             });
 
             // Открыть поиск сотрудников
@@ -350,7 +440,7 @@
 
             // Редактирование сотрудника по doubleClick
             $$("listEmployees").attachEvent("onItemDblClick", function () {
-                editEmployee();
+                editEmployeeForm();
             });
 
             // Загрузка фотографии

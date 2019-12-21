@@ -20,6 +20,22 @@ func (c *CProject) GetAll() revel.Result {
 	return c.RenderJSON(projects)
 }
 
+func (c *CProject) Get(id int) revel.Result {
+	project, err := c.provider.Get(id)
+	if err != nil {
+		return c.RenderError(err)
+	}
+	return c.RenderJSON(project)
+}
+
+func (c *CProject) GetFk(id int) revel.Result {
+	project, err := c.provider.GetFk(id)
+	if err != nil {
+		return c.RenderError(err)
+	}
+	return c.RenderJSON(project)
+}
+
 func (c *CProject) Create(project resources.Project) revel.Result {
 	projects, err := c.provider.Create(project)
 	if err != nil {

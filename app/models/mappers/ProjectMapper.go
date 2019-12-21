@@ -38,15 +38,45 @@ func (m *ProjectMapper) SelectAll(db *sql.DB) (projects []*resources.Project, er
 	return projects, err
 }
 
+func (m *ProjectMapper) Select(id int, db *sql.DB) (projects []*resources.Project, err error) {
+	c := resources.Project{}
+	err = db.QueryRow(
+		`SELECT p.c_id, p.c_name, p.c_date, g.c_name
+				FROM t_projects p, t_groups g
+				WHERE p.fk_group = g.c_id
+				GROUP BY p.c_id, g.c_name
+				HAVING p.c_id = $1`, id).Scan(&c.Id, &c.Name, &c.Date, &c.Group)
+	if err != nil {
+		return projects, err
+	}
+
+	projects = append(projects, &c)
+
+	return projects, err
+}
+
+func (m *ProjectMapper) SelectFk(id int, db *sql.DB) (projects []*resources.Project, err error) {
+	c := resources.Project{}
+	err = db.QueryRow(
+		`SELECT c_id, c_name, c_date, fk_group
+				FROM t_projects
+				WHERE c_id = $1`, id).Scan(&c.Id, &c.Name, &c.Date, &c.Group)
+	if err != nil {
+		return projects, err
+	}
+
+	projects = append(projects, &c)
+
+	return projects, err
+}
+
 func (m *ProjectMapper) Insert(db *sql.DB, project resources.Project) (projects []*resources.Project, err error) {
 	c := resources.Project{}
 	err = db.QueryRow(
 		`INSERT INTO t_projects (c_id, c_name, c_date, fk_group)
-				SELECT nextval('t_projects_id_seq'), $1, NOW(), g.c_id
-				FROM t_groups AS g
-				WHERE $2 = g.c_id
-				RETURNING *`,
-				project.Name, project.Group).Scan(&c.Id, &c.Name, &c.Date, &c.Group)
+				SELECT nextval('t_projects_id_seq'), $1, NOW(), $2
+				RETURNING c_id`,
+				project.Name, project.Group).Scan(&c.Id)
 	if err != nil {
 		return projects, err
 	}
@@ -67,12 +97,9 @@ func (m *ProjectMapper) Update(db *sql.DB, project resources.Project) (projects 
 	c := resources.Project{}
 	err = db.QueryRow(
 		`UPDATE t_projects 
-				SET (c_name, fk_group) =
-					(SELECT $2, c_id 
-					 FROM t_groups
-					 WHERE $3 = c_name)
-				WHERE $1 = c_id
-				RETURNING c_id, c_name, c_date, $3`,
+				SET (c_name, fk_group) = ($2, $3)
+				WHERE c_id = $1
+				RETURNING *`,
 				project.Id, project.Name, project.Group).Scan(&c.Id, &c.Name, &c.Date, &c.Group)
 	if err != nil {
 		return projects, err

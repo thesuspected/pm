@@ -5,6 +5,16 @@ export const ProjectModel = {
             .then(response => response.json())
     },
 
+    get: (Id) => {
+        return fetch(`/project/${Id}`, {method: 'GET'})
+            .then(response => response.json())
+    },
+
+    getFk: (Id) => {
+        return fetch(`/projectFk/${Id}`, {method: 'GET'})
+            .then(response => response.json())
+    },
+
     create: (project) => {
         return fetch('/project', {method: 'PUT', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(project)})
             .then(response => response.json())

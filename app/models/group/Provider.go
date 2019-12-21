@@ -23,6 +23,24 @@ func (p *Provider) GetAll() ([]*resources.Group, error) {
 	return p.groups.SelectAll(db)
 }
 
+func (p *Provider) Get(id int) ([]*resources.Group, error) {
+	db, err := connection.DatabaseConnect()
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+	return p.groups.Select(id, db)
+}
+
+func (p *Provider) GetFk(id int) ([]*resources.Group, error) {
+	db, err := connection.DatabaseConnect()
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+	return p.groups.SelectFk(id, db)
+}
+
 func (p *Provider) Create(group resources.Group) ([]*resources.Group, error) {
 	db, err := connection.DatabaseConnect()
 	if err != nil {

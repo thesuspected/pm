@@ -37,6 +37,7 @@
     float: left;
     font-weight: 500;
     padding-top: 6px;
+    z-index: 0;
 }
 
 .listDate {
@@ -66,6 +67,12 @@
 
 .listBlock {
     height: 40px;
+    overflow: hidden;
+}
+
+.listBlock2 {
+    height: 28px;
+    overflow: hidden;
 }
 
 .listImg {
@@ -93,6 +100,7 @@
     float: left;
     line-height: 10px;
     color: #475466;
+    padding-top:10px;
 }
 
 .listGroupIcon {
@@ -135,6 +143,7 @@
 }
 
 .uploadBtn:hover {
-    background: #f4f5f9;
+    //background: #f4f5f9;
     cursor: pointer;
+    transform: scale(1.2);
 }
