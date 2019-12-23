@@ -304,8 +304,9 @@
             });
 
             // Click по проекту (Сделать смену задач)
-            $$("listProject").attachEvent("onItemClick", function () {
-
+            $$("listProject").attachEvent("onSelectChange", function () {
+                let id = $$('listProject').getSelectedId();
+                console.log(id);
             });
 
             // Редактирование проекта по doubleClick

@@ -26,6 +26,7 @@ export let employees = {
                 height: 80
             },
             select: true,
+            drag:"source"
             //data: users_set
         }
     ]

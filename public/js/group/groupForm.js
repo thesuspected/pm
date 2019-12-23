@@ -21,14 +21,14 @@ export let groupForm = {
                 }
             ]
         },
-        {
-            view: "multicombo",
-            id: "employeeCombo",
-            name: "tags",
-            label: "Сотрудники",
-            labelPosition: "top",
-            options: []
-        },
+        // {
+        //     view: "multicombo",
+        //     id: "employeeCombo",
+        //     name: "tags",
+        //     label: "Сотрудники",
+        //     labelPosition: "top",
+        //     options: []
+        // },
         {
             margin: 10, cols: [
                 {view: "button", id: "dltGroupFormBtn", width: 111, value: "Удалить"},

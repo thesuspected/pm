@@ -188,25 +188,34 @@
             // Заполняем форму проекта
             $$("groups_Form").setValues(values);
         });
-        // запрос на получение сотрудников данной группы
-        EmployeeModel.getByGroupFk(id).then(function (result) {
-            // проверяем на ноль
-            if (result != null) {
-                let tags = "";
-                // записываем сотрудников
-                for (let i = 0; i < result.length; i++) {
-                    if (i != result.length - 1) tags += result[i]["id"] + ",";
-                    else tags += result[i]["id"];
-                }
-                // заполняем комбо
-                $$('employeeCombo').setValue(tags);
-            }
+        // // запрос на получение сотрудников данной группы
+        // EmployeeModel.getByGroupFk(id).then(function (result) {
+        //     // проверяем на ноль
+        //     if (result != null) {
+        //         let tags = "";
+        //         // записываем сотрудников
+        //         for (let i = 0; i < result.length; i++) {
+        //             if (i != result.length - 1) tags += result[i]["id"] + ",";
+        //             else tags += result[i]["id"];
+        //         }
+        //         // заполняем комбо
+        //         $$('employeeCombo').setValue(tags);
+        //     }
+        // });
+    }
+
+    function getGroupEmployees(id) {
+        $$('groupsTable').clearAll();
+        EmployeeModel.getByGroup(id).then(function (result) {
+            $$('groupsTable').parse(result);
         });
     }
 
     //************************************************ Сотрудники *************************************************//
 
     function addEmployeeForm() {
+        // получаем актуальные группы
+        getGroupSelect();
         // Изменяем форму
         $$("titleE").setValue("Добавить сотрудника");
         $$("dltEmployeeFormBtn").disable();
@@ -218,6 +227,8 @@
     }
 
     function editEmployeeForm() {
+        // получаем актуальные группы
+        getGroupSelect();
         // Изменяем форму
         $$("titleE").setValue("Изменить данные сотрудника");
         $$("dltEmployeeFormBtn").enable();
@@ -276,7 +287,9 @@
             }
             // заносим в select
             $$("employeeSelect").define("options", selectEmployee);
-            $$("employeeCombo").define("options", selectEmployee);
+            $$("employeeSelect").refresh();
+            // $$("employeeCombo").define("options", selectEmployee);
+            // $$("employeeCombo").refresh();
         });
     }
 
@@ -335,8 +348,10 @@
 
             getAllGroups();         // Получаем все группы из бд
             getAllEmployees();      // Получаем всех сотрудников из бд
-            getEmployeeSelect();    // Заполняем select сотрудников
-            getGroupSelect();       // Заполняем select групп
+
+            // выводим сотрудников без группы
+            $$('listGroup').select(1);
+            getGroupEmployees(1);
 
             // подсветка вкладки
             $$("sidebar").select("employees", true);
@@ -373,8 +388,13 @@
             // Закрыть поиск сотрудников
             $$("closeSearchBtn").attachEvent("onItemClick", function () {
                 $$("search").hide();
+                $$("search").setValue("");
+                $$("listEmployees").filter(function (obj) {
+                    return obj;
+                });
                 $$("openSearchBtn").show();
                 $$("closeSearchBtn").hide();
+
             });
 
             // Показать попап группы
@@ -429,8 +449,9 @@
             });
 
             // Click по группе (Сделать смену группы)
-            $$("listGroup").attachEvent("onItemClick", function () {
-
+            $$("listGroup").attachEvent("onSelectChange", function () {
+                let id = $$('listGroup').getSelectedId();
+                getGroupEmployees(id);
             });
 
             // Редактирование группы по doubleClick
@@ -448,12 +469,55 @@
 
             // Поиск сотрудников
             $$("search").attachEvent("onTimedKeyPress", function () {
-                var value = this.getValue().toLowerCase();
+                let value = this.getValue().toLowerCase();
 
                 $$("listEmployees").filter(function (obj) {
                     //return obj.value.toLowerCase().indexOf(value)==0; Начинается с букв
-                    return obj.value.toLowerCase().indexOf(value) != -1; // Имеются буквы
+                    return obj.lastName.toLowerCase().indexOf(value) != -1 || obj.firstName.toLowerCase().indexOf(value) != -1 || obj.patronymic.toLowerCase().indexOf(value) != -1 || obj.position.toLowerCase().indexOf(value) != -1; // Имеются буквы
                 })
+            });
+
+            /////////////////////////////////////////// Drag and drop /////////////////////////////////////////////////
+
+            $$("groupsTable").attachEvent("onBeforeDrop", function(context, ev){
+                for (let i=0; i< context.source.length; i++) {
+                    if (context.from != context.to) {
+                        if ($$('groupsTable').exists(context.source)) {
+                            webix.message({type: "error", text: "Сотрудник уже в группе"});
+                            return false;
+                        } else {
+                            let item = $$('listEmployees').getItem(context.source);
+                            let group = $$('listGroup').getSelectedItem();
+                            context.from.copy(context.source[i], context.start, this, {newId: context.source});
+                            webix.message({type: "success", text: item.lastName + " " + item.firstName + " назначен(а) в группу <i>'" + group.name +"'</i>"});
+                        }
+                        }
+                    }
+                return false;
+            });
+
+            // $$("listEmployees").attachEvent("onBeforeDrop", function(context, ev){
+            //     console.log("asfasfds");
+            //     $$('listEmployees').clearAll();
+            //     for (let i=0; i< context.source.length; i++) {
+            //         context.from.delete();
+            //     }
+            // });
+
+            // $$("listEmployees").attachEvent("onAfterDrop", function(context, native_event){
+            //     console.log(context);
+            //     webix.message("Сброс");
+            // });
+
+            $$("listEmployees").attachEvent("onSelectChange", function () {
+                let item = $$("listEmployees").getSelectedItem();
+                console.log(item);
+            });
+
+            webix.attachEvent("onDragMode",function(signal){
+                //webix.message(signal + " of dnd");
+                var context = webix.DragControl.getContext();
+                //console.log(context);
             });
         });
     }
