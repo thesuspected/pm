@@ -171,6 +171,33 @@ func (_ tCEmployee) GetByGroupFk(
 	return revel.MainRouter.Reverse("CEmployee.GetByGroupFk", args).URL
 }
 
+func (_ tCEmployee) Create(
+		employee interface{},
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "employee", employee)
+	return revel.MainRouter.Reverse("CEmployee.Create", args).URL
+}
+
+func (_ tCEmployee) Delete(
+		id int,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "id", id)
+	return revel.MainRouter.Reverse("CEmployee.Delete", args).URL
+}
+
+func (_ tCEmployee) Update(
+		employee interface{},
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "employee", employee)
+	return revel.MainRouter.Reverse("CEmployee.Update", args).URL
+}
+
 
 type tCGroup struct {}
 var CGroup tCGroup
@@ -283,6 +310,18 @@ func (_ tCProject) Update(
 	
 	revel.Unbind(args, "project", project)
 	return revel.MainRouter.Reverse("CProject.Update", args).URL
+}
+
+
+type tCRef struct {}
+var CRef tCRef
+
+
+func (_ tCRef) GetPos(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("CRef.GetPos", args).URL
 }
 
 

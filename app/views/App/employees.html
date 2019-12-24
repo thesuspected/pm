@@ -19,6 +19,7 @@
 
     import {GroupModel} from "/public/js/group/model/GroupModel.js";            // db requests для Групп
     import {EmployeeModel} from "/public/js/employee/model/EmployeeModel.js";   // db requests для Сотрудников
+    import {RefModel} from "/public/js/ref/model/RefModel.js";                  // db requests для Сотрудников
 
     ///////////////////////////////////////////////// Виджеты //////////////////////////////////////////////////////
 
@@ -43,11 +44,12 @@
     import {sortPopup} from "/public/js/sortPopup.js";					    // попап сортировки [по порядку / по имени / по дате]
     webix.ui(sortPopup);
 
-    import {uploadApi} from "/public/js/task/uploadApi.js";                 // загрузка фото
+    import {uploadApi} from "/public/js/uploadApi.js";                 // загрузка фото
     webix.ui(uploadApi);
 
     import {groups_originalValues} from "/public/js/origValuesForm.js";	    // оригинальные значения формы группы
     import {employees_originalValues} from "/public/js/origValuesForm.js";	    // оригинальные значения формы сотрудника
+    import {uploadForm} from "/public/js/employee/employeeForm.js";
 
     ////////////////////////////////////////////////// Функции /////////////////////////////////////////////////////
 
@@ -214,9 +216,11 @@
     //************************************************ Сотрудники *************************************************//
 
     function addEmployeeForm() {
-        // получаем актуальные группы
+        // получаем актуальные группы и должности
         getGroupSelect();
+        getPosSelect();
         // Изменяем форму
+        $$("uploadForm").setHTML(uploadForm);
         $$("titleE").setValue("Добавить сотрудника");
         $$("dltEmployeeFormBtn").disable();
         $$("saveEmployeeFormBtn").hide();
@@ -227,17 +231,19 @@
     }
 
     function editEmployeeForm() {
-        // получаем актуальные группы
+        // получаем актуальные группы и должности
         getGroupSelect();
+        getPosSelect();
         // Изменяем форму
         $$("titleE").setValue("Изменить данные сотрудника");
         $$("dltEmployeeFormBtn").enable();
         $$("saveEmployeeFormBtn").show();
         $$("createEmployeeFormBtn").hide();
         $$("edit_Popup").hide();
-        // заносим данные группы в форму
-        let employeeValues = $$("listEmployees").getSelectedItem();
-        $$("employees_Form").setValues(employeeValues);
+        // заносим данные сотрудника в форму
+        let id = $$("listEmployees").getSelectedId();
+        fillEmployeeForm(id);
+        // открываем окно сотрудника
         $$("employees_window").show();
     }
 
@@ -249,27 +255,112 @@
     }
 
     function createEmployee() {
-
+        // Валидация заполнения
+        if ($$("employees_Form").validate()) {
+            // берем значения формы
+            let em_form = $$("employees_Form").getValues();
+            // imgSrc выставляется 0, т.к. не реализован uploadApi
+            let employee = {
+                lastName:   em_form.lastName,
+                firstName:  em_form.firstName,
+                patronymic: em_form.patronymic,
+                date:       webix.i18n.dateFormatStr(em_form.date),
+                email:      em_form.email,
+                imgSrc:     '0.png',
+                user:       '1',
+                position:   em_form.position,
+                group:      em_form.group
+            };
+            // далем запрос в бд
+            EmployeeModel.create(employee).then(function (result) {
+                getLastEmployee(result[0].id);
+            });
+            // закрываем окно
+            $$("employees_window").hide();
+        }
+        else
+            webix.message({type: "error", text: "Заполните все данные сотрудника"});
     }
 
     function deleteEmployee() {
-
+        // закрываем окна
+        $$("edit_Popup").hide();
+        $$("employees_window").hide();
+        // подтверждение удаления
+        webix.confirm({
+            ok: "ОК", cancel: "Отмена",
+            text: "Вы собираетесь удалить сотрудника, вы уверены?"
+        })
+            .then(function () {
+                // Берем id сотрудника
+                let id = $$("listEmployees").getSelectedId();
+                // далем запрос в бд
+                EmployeeModel.delete(id).then(function(result) {
+                    $$("listEmployees").remove(result);
+                });
+            })
     }
 
     function updateEmployee() {
-
+        // Валидация заполнения
+        if ($$("employees_Form").validate()) {
+            // берем значения формы
+            let id = $$("listEmployees").getSelectedId();
+            let em_form = $$("employees_Form").getValues();
+            let employee = {
+                Id: id,
+                lastName:   em_form.lastName,
+                firstName:  em_form.firstName,
+                patronymic: em_form.patronymic,
+                date:       webix.i18n.dateFormatStr(em_form.date),
+                email:      em_form.email,
+                imgSrc:     '0.png',
+                user:       '1',
+                position:   em_form.position,
+                group:      em_form.group
+            };
+            // далем запрос в бд
+            EmployeeModel.update(employee).then(function(result) {
+                refreshEmployee(result[0].id);
+            });
+            // закрываем окно
+            $$("employees_window").hide();
+        }
+        else
+            webix.message({type: "error", text: "Заполните все данные сотрудника"});
     }
 
-    function getLastEmployee() {
-
+    function getLastEmployee(id) {
+        // делаем запрос в бд
+        EmployeeModel.get(id).then(function (result) {
+            result[0].date = new Date(result[0].date);
+            // Добавляем проект в конец списка
+            $$("listEmployees").add(result[0]);
+        });
     }
 
-    function refreshEmployee() {
-
+    function refreshEmployee(id) {
+        // делаем запрос в бд
+        EmployeeModel.get(id).then(function (result) {
+            // обновляем данные о проекте
+            let item = $$("listEmployees").getItem(result[0]['id']);
+            item.lastName = result[0].lastName;
+            item.firstName = result[0].firstName;
+            item.patronymic = result[0].patronymic;
+            item.position = result[0].position;
+            $$("listEmployees").updateItem(result[0]['id']);
+        });
     }
 
-    function fillEmployeeForm() {
-
+    function fillEmployeeForm(id) {
+        // запрос на получение данных сотрудника
+        EmployeeModel.getFk(id).then(function (result) {
+            // Заполняем форму проекта
+            //let employeeImg = "<img src='/public/img/employees/#imgSrc#'>";
+            $$("uploadForm").setHTML("<img class='upload employeeImg' src='/public/img/employees/" + result[0].imgSrc + "'>");
+            result[0].date = new Date(result[0].date);
+            $$("employees_Form").setValues(result[0]);
+        });
     }
 
     //************************************************** Select ***************************************************//
@@ -296,14 +387,24 @@
     function getGroupSelect() {
         GroupModel.getAll().then(function (result) {
             // создаем переменную для select
-            let values = [];
+            let selectGroup = [];
             // заполняем группы
             for (let i = 0; i < result.length; i++) {
-                values[i] = result[i].name;
+                selectGroup[i] = {};
+                selectGroup[i].id = result[i].id;
+                selectGroup[i].value = result[i].name;
             }
             // заносим в select
-            $$("groupSelect").define("options", values);
+            $$("groupSelect").define("options", selectGroup);
             $$("groupSelect").refresh();
+        });
+    }
+
+    function getPosSelect() {
+        RefModel.getPos().then(function (result) {
+            // заносим в select
+            $$("positionSelect").define("options", result);
+            $$("positionSelect").refresh();
         });
     }
 
@@ -442,13 +543,16 @@
                 deleteEmployee();
             });
             $$("saveEmployeeFormBtn").attachEvent("onItemClick", function () {
-                addEmployee();
+                updateEmployee();
+            });
+            $$("createEmployeeFormBtn").attachEvent("onItemClick", function () {
+                createEmployee();
             });
             $$("closeEmployeeFormBtn").attachEvent("onItemClick", function () {
                 $$('employees_window').hide();
             });
 
-            // Click по группе (Сделать смену группы)
+            // сотрудники группы по клику
             $$("listGroup").attachEvent("onSelectChange", function () {
                 let id = $$('listGroup').getSelectedId();
                 getGroupEmployees(id);
@@ -511,7 +615,6 @@
 
             $$("listEmployees").attachEvent("onSelectChange", function () {
                 let item = $$("listEmployees").getSelectedItem();
-                console.log(item);
             });
 
             webix.attachEvent("onDragMode",function(signal){

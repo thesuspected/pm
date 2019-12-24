@@ -1,7 +1,7 @@
 export let uploadApi = {
     id:"uploadAPI",
     view:"uploader",
-    upload:"Сделать POST запрос в бэк",
+    upload:"/upload",
     on:{
         onBeforeFileAdd:function(item){
             let type = item.type.toLowerCase();

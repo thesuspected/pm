@@ -3,6 +3,7 @@ package controllers
 import (
 	"github.com/revel/revel"
 	"pm/app/models/employee"
+	"pm/app/models/resources"
 )
 
 type CEmployee struct {
@@ -51,6 +52,30 @@ func (c *CEmployee) GetByGroupFk(id int) revel.Result {
 	employees, err := c.provider.GetByGroupFk(id)
 	if err != nil {
 		c.RenderJSON(err)
+	}
+	return c.RenderJSON(employees)
+}
+
+func (c *CEmployee) Create(employee resources.Employee) revel.Result {
+	employees, err := c.provider.Create(employee)
+	if err != nil {
+		return c.RenderError(err)
+	}
+	return c.RenderJSON(employees)
+}
+
+func (c *CEmployee) Delete(id int) revel.Result {
+	id, err := c.provider.Delete(id)
+	if err != nil {
+		return c.RenderError(err)
+	}
+	return c.RenderJSON(id)
+}
+
+func (c *CEmployee) Update(employee resources.Employee) revel.Result {
+	employees, err := c.provider.Update(employee)
+	if err != nil {
+		return c.RenderError(err)
 	}
 	return c.RenderJSON(employees)
 }

@@ -58,3 +58,30 @@ func (p *Provider) GetByGroupFk(id int) ([]*resources.Employee, error) {
 	defer db.Close()
 	return p.employees.SelectByGroupFk(id, db)
 }
+
+func (p *Provider) Create(employee resources.Employee) ([]*resources.Employee, error) {
+	db, err := connection.DatabaseConnect()
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+	return p.employees.Insert(db, employee)
+}
+
+func (p *Provider) Delete(id int) (int, error) {
+	db, err := connection.DatabaseConnect()
+	if err != nil {
+		return id, err
+	}
+	defer db.Close()
+	return p.employees.Delete(db, id)
+}
+
+func (p *Provider) Update(employee resources.Employee) ([]*resources.Employee, error) {
+	db, err := connection.DatabaseConnect()
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+	return p.employees.Update(db, employee)
+}

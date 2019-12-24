@@ -75,8 +75,8 @@ func (m *GroupMapper) Insert(db *sql.DB, group resources.Group) (groups []*resou
 	err = db.QueryRow(
 		`INSERT INTO t_groups (c_id, c_name, c_date, fk_lead)
 				SELECT nextval('t_groups_id_seq'), $1, NOW(), $2
-				RETURNING *`,
-		group.Name, group.Lead).Scan(&c.Id, &c.Name, &c.Date, &c.Lead)
+				RETURNING c_id`,
+		group.Name, group.Lead).Scan(&c.Id)
 	if err != nil {
 		return groups, err
 	}
@@ -99,8 +99,8 @@ func (m *GroupMapper) Update(db *sql.DB, group resources.Group) (groups []*resou
 		`UPDATE t_groups
 				SET (c_name, fk_lead) = ($2, $3)
 				WHERE c_id = $1
-				RETURNING *`,
-		group.Id, group.Name, group.Lead).Scan(&c.Id, &c.Name, &c.Date, &c.Lead)
+				RETURNING c_id`,
+		group.Id, group.Name, group.Lead).Scan(&c.Id)
 	if err != nil {
 		return groups, err
 	}

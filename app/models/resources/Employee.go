@@ -1,7 +1,7 @@
 package resources
 
 type Employee struct {
-	Id   			int64			`json:"id,string"`
+	Id   			int64		`json:"id,string"`
 	LastName 		string		`json:"lastName"`
 	FirstName 		string		`json:"firstName"`
 	Patronymic 		string		`json:"patronymic"`

@@ -187,6 +187,30 @@ func Register() {
 				RenderArgNames: map[int][]string{ 
 				},
 			},
+			&revel.MethodType{
+				Name: "Create",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "employee", Type: reflect.TypeOf((*resources.Employee)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "Delete",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "id", Type: reflect.TypeOf((*int)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "Update",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "employee", Type: reflect.TypeOf((*resources.Employee)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
 			
 		})
 	
@@ -287,6 +311,18 @@ func Register() {
 				Name: "Update",
 				Args: []*revel.MethodArg{ 
 					&revel.MethodArg{Name: "project", Type: reflect.TypeOf((*resources.Project)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			
+		})
+	
+	revel.RegisterController((*controllers1.CRef)(nil),
+		[]*revel.MethodType{
+			&revel.MethodType{
+				Name: "GetPos",
+				Args: []*revel.MethodArg{ 
 				},
 				RenderArgNames: map[int][]string{ 
 				},

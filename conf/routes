@@ -11,6 +11,12 @@ GET     /                                       App.Index
 GET     /tasks                                  App.Tasks
 GET     /employees                              App.Employees
 
+GET     /positions                              CRef.GetPos
+# GET     /tags                                   CRef.GetTags
+# GET     /priority                               CRef.GetPriority
+# GET     /status                                 CRef.GetStatus
+
+# POST    /upload                                 CRef.Upload
 
 GET     /project                                CProject.GetAll
 GET     /project/:id                            CProject.Get
@@ -33,9 +39,9 @@ GET     /employee/:id                           CEmployee.Get
 GET     /employeeFk/:id                         CEmployee.GetFk
 GET     /employeeByGroup/:id                    CEmployee.GetByGroup
 GET     /employeeByGroupFk/:id                  CEmployee.GetByGroupFk
-# PUT     /employee                             CEmployee.Create
-# POST    /employee/:id                         CEmployee.Update
-# DELETE  /employee/:id                         CEmployee.Delete
+PUT     /employee                               CEmployee.Create
+POST    /employee/:id                           CEmployee.Update
+DELETE  /employee/:id                           CEmployee.Delete
 
 
 # Ignore favicon requests

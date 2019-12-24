@@ -117,6 +117,16 @@
     height: 70px !important;
 }
 
+.upload {
+    cursor: pointer;
+}
+
+.employeeImg {
+    height: 167px;
+    width: 167px;
+    border-radius: 50%;
+}
+
 .uploadDiv {
     position: relative;
     border: 5px dashed #1992af;

@@ -123,3 +123,43 @@ func (m *EmployeeMapper) SelectByGroupFk(id int, db *sql.DB) (employees []*resou
 
 	return employees, err
 }
+
+func (m *EmployeeMapper) Insert(db *sql.DB, employee resources.Employee) (employees []*resources.Employee, err error) {
+	c := resources.Employee{}
+	err = db.QueryRow(
+		`INSERT INTO t_employees (c_id, c_last_name, c_first_name, c_patronymic, c_date, c_email, c_img_src, fk_user, fk_position, fk_group)
+				SELECT nextval('t_employees_id_seq'), $1, $2, $3, to_date($4, 'DD.MM.YYYY'), $5, $6, $7, $8, $9
+				RETURNING c_id`,
+		employee.LastName, employee.FirstName, employee.Patronymic, employee.Date, employee.Email, employee.ImgSrc, employee.User, employee.Position, employee.Group).Scan(&c.Id)
+	if err != nil {
+		return employees, err
+	}
+
+	employees = append(employees, &c)
+
+	return employees, err
+}
+
+func (m *EmployeeMapper) Delete(db *sql.DB, id int) (int, error) {
+	_, err := db.Exec(
+		`DELETE FROM t_employees WHERE c_id = $1`, id)
+
+	return id, err
+}
+
+func (m *EmployeeMapper) Update(db *sql.DB, employee resources.Employee) (employees []*resources.Employee, err error) {
+	c := resources.Employee{}
+	err = db.QueryRow(
+		`UPDATE t_employees
+				SET (c_last_name, c_first_name, c_patronymic, c_date, c_email, c_img_src, fk_user, fk_position, fk_group) = ($2, $3, $4, to_date($5, 'DD.MM.YYYY'), $6, $7, $8, $9, $10)
+				WHERE c_id = $1
+				RETURNING c_id`,
+		employee.Id, employee.LastName, employee.FirstName, employee.Patronymic, employee.Date, employee.Email, employee.ImgSrc, employee.User, employee.Position, employee.Group).Scan(&c.Id)
+	if err != nil {
+		return employees, err
+	}
+
+	employees = append(employees, &c)
+
+	return employees, err
+}
