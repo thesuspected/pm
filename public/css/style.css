@@ -130,6 +130,7 @@
 .uploadDiv {
     position: relative;
     border: 5px dashed #1992af;
+    border-radius: 10px;
     height: 167px;
     width: 167px;
 }
@@ -156,4 +157,29 @@
     //background: #f4f5f9;
     cursor: pointer;
     transform: scale(1.2);
+}
+
+.basket .webix_template{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 5px dashed red !important;
+    border-radius: 10px;
+    flex-direction: column;
+    transition-duration: 0.2s;
+}
+
+.basket .webix_template:hover {
+    transform: scale(1.2);
+}
+
+.basket .removeImg {
+    height: 80px;
+    width: 80px;
+}
+
+.basket .removeDiv {
+    padding-top: 10px;
+    font-weight: 500;
+    color: red;
 }

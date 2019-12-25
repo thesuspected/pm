@@ -282,7 +282,7 @@
             webix.message({type: "error", text: "Заполните все данные сотрудника"});
     }
 
-    function deleteEmployee() {
+    function deleteEmployee(id) {
         // закрываем окна
         $$("edit_Popup").hide();
         $$("employees_window").hide();
@@ -292,10 +292,10 @@
             text: "Вы собираетесь удалить сотрудника, вы уверены?"
         })
             .then(function () {
-                // Берем id сотрудника
-                let id = $$("listEmployees").getSelectedId();
                 // далем запрос в бд
                 EmployeeModel.delete(id).then(function(result) {
+                    let item = $$('listEmployees').getItem(id);
+                    webix.message({type:"debug", text:"<i>" + item.lastName + " " + item.firstName + "</i> был удалён"});
                     $$("listEmployees").remove(result);
                 });
             })
@@ -436,7 +436,18 @@
                                     {
                                         type: "wide",
                                         cols: [
-                                            groupTable,
+                                            {
+                                                type: 'clean',
+                                                rows: [
+                                                    groupTable,
+                                                    {
+                                                        template: "<img src='/public/img/remove.svg' class='removeImg'><div class='removeDiv'>Удалить</div>",
+                                                        id:"basket",
+                                                        css:"basket",
+                                                        gravity: 0.3,
+                                                        drag:true
+                                                    }
+                                                ]},
                                             employees
                                         ]
                                     },
@@ -456,6 +467,9 @@
 
             // подсветка вкладки
             $$("sidebar").select("employees", true);
+
+            // скрываем корзину
+            $$('basket').hide();
 
             //////////////////////////////////////////// Обработчики ///////////////////////////////////////////////
 
@@ -540,7 +554,9 @@
 
             // Окно заполнения сотрудника
             $$("dltEmployeeFormBtn").attachEvent("onItemClick", function () {
-                deleteEmployee();
+                // Берем id сотрудника
+                let id = $$("listEmployees").getSelectedId();
+                deleteEmployee(id);
             });
             $$("saveEmployeeFormBtn").attachEvent("onItemClick", function () {
                 updateEmployee();
@@ -597,30 +613,39 @@
                         }
                         }
                     }
+                //console.log(context.to)
                 return false;
             });
 
-            // $$("listEmployees").attachEvent("onBeforeDrop", function(context, ev){
-            //     console.log("asfasfds");
-            //     $$('listEmployees').clearAll();
-            //     for (let i=0; i< context.source.length; i++) {
-            //         context.from.delete();
-            //     }
-            // });
+            let basket = $$("basket").getNode();
 
-            // $$("listEmployees").attachEvent("onAfterDrop", function(context, native_event){
-            //     console.log(context);
-            //     webix.message("Сброс");
-            // });
+            function handler() {
+                // получаем контекст взятия элемента
+                let dnd = webix.DragControl.getContext();
+                // определяем откуда пришел дроп
+                switch (dnd.from.name) {
+                    case 'list':
+                        deleteEmployee(dnd.start);
+                        break;
+                    case 'datatable':
 
-            $$("listEmployees").attachEvent("onSelectChange", function () {
-                let item = $$("listEmployees").getSelectedItem();
-            });
+                        webix.message({type:"debug", text:"Убрать из группы"});
+                        break;
+                }
+            }
 
             webix.attachEvent("onDragMode",function(signal){
-                //webix.message(signal + " of dnd");
-                var context = webix.DragControl.getContext();
-                //console.log(context);
+                // событие при сбросе элемента над областью корзины
+                basket.addEventListener('mouseup', handler);
+                // показать/скрыть корзину
+                switch (signal) {
+                    case 'start':
+                        $$('basket').show();
+                        break;
+                    case 'stop':
+                        $$('basket').hide();
+                        break;
+                }
             });
         });
     }
