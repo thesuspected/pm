@@ -23,6 +23,8 @@
 
     import {ProjectModel} from "/public/js/project/model/ProjectModel.js";  // db requests для Проектов
     import {GroupModel} from "/public/js/group/model/GroupModel.js";        // db requests для Групп
+    import {EmployeeModel} from "/public/js/employee/model/EmployeeModel.js";// db requests для сотрудников
+    import {RefModel} from "/public/js/ref/model/RefModel.js";              // db requests для селектов
 
     ///////////////////////////////////////////////// Виджеты //////////////////////////////////////////////////////
 
@@ -41,13 +43,15 @@
     import {sortPopup} from "/public/js/sortPopup.js";						// попап сортировки [по порядку / по имени / по дате]
     webix.ui(sortPopup);
 
-    import {projects_originalValues} from "/public/js/origValuesForm.js";	// оригинальные значения формы проекта
+    import {projects_originalValues} from "/public/js/origValuesForm.js";   // оригинальные значения формы проекта
 
     ////////////////////////////////////////////////// Функции /////////////////////////////////////////////////////
 
     function sortProject(value) {
         $$("listProject").sort("#" + value + "#");
     };
+
+    //************************************************** Проекты ***************************************************//
 
     function addProjectForm() {
         // получаем актуальные группы
@@ -182,6 +186,26 @@
         });
     }
 
+    //************************************************** Задачи ***************************************************//
+
+    function getAllTasks() {
+
+    }
+
+    function createTask() {
+
+    }
+
+    function delTask() {
+
+    }
+
+    function updateTask() {
+
+    }
+
+    //************************************************** Select ***************************************************//
+
     function getGroupSelect() {
         // делаем запрос в бд
         GroupModel.getAll().then(function (result) {
@@ -196,6 +220,56 @@
             // заносим в select
             $$("groupSelect").define("options", selectGroup);
             $$("groupSelect").refresh();
+        });
+    }
+
+    function getAssignSelect() {
+        let project = $$('listProject').getSelectedId();
+        // делаем запрос выбранного проекта
+        ProjectModel.getFk(project).then(function (result) {
+            // узнаем нужную группу сотрудников
+            let group = result[0].group;
+            // делаем запрос сотрудников
+            EmployeeModel.getByGroupFk(group).then(function (result) {
+                // создаем массив для Select
+                let selectAssign = [];
+                // заполняем сотрудников
+                for (let i = 0; i < result.length; i++) {
+                    selectAssign[i] = {};
+                    selectAssign[i].id = result[i].id;
+                    selectAssign[i].value = result[i].lastName;
+                }
+                // заносим в select
+                $$("assignSelect").define("options", selectAssign);
+                $$("assignSelect").refresh();
+            });
+        });
+    }
+
+    function getPrioritySelect() {
+        // делаем запрос в бд
+        RefModel.getPriority().then(function (result) {
+            // заносим в select
+            $$("prioritySelect").define("data", result);
+            $$("prioritySelect").refresh();
+        });
+    }
+
+    function getStatusSelect() {
+        // делаем запрос в бд
+        RefModel.getStatus().then(function (result) {
+            // заносим в select
+            $$("statusSelect").define("options", result);
+            $$("statusSelect").refresh();
+        });
+    }
+
+    function getTagsSelect() {
+        // делаем запрос в бд
+        RefModel.getTags().then(function (result) {
+            // заносим в select
+            $$("tagsSelect").define("options", result);
+            $$("tagsSelect").refresh();
         });
     }
 
@@ -233,10 +307,22 @@
                 ]
             });
 
+            // выбираем первый по списку проект
+            //let item = $$('listProject').getFirstChildId();
+            //console.log(item);
+            $$('listProject').select(2);
+
             getAllProjects();    // Получаем все проекты из бд
             getGroupSelect();    // Получаем все группы в select проекта
-            let subtasks = $$('subTasksTable').data.pull;
-            console.log(subtasks);
+
+            // Заполняем селекты для задач
+            getAssignSelect();
+            getPrioritySelect();
+            getStatusSelect();
+            getTagsSelect();
+
+            //let subtasks = $$('subTasksTable').data.pull;
+            //console.log(subtasks);
 
             // Подсветка текущей вкладки
             $$("sidebar").select("tasks", true);
@@ -324,6 +410,18 @@
                 let id = $$('subTasksTable').getSelectedId();
                 $$('subTasksTable').remove(id);
             };
+
+            // Изменение карточки
+            $$('kanban').data.attachEvent("onDataUpdate", function(id, index){
+                webix.message("New record was added!");
+                let task = $$('kanban_form').getValues();
+                console.log(task);
+            });
+
+            // Добавление карточки
+            $$('kanban').data.attachEvent("onBeforeAdd", function () {
+
+            });
 
             // Валидация заполнения задачи
             $$("kanban").attachEvent("onBeforeEditorAction", function (action, editor, obj) {

@@ -18,3 +18,30 @@ func (c *CRef) GetPos() revel.Result {
 	}
 	return c.RenderJSON(values)
 }
+
+func (c *CRef) GetPriority() revel.Result {
+	c.provider = ref.New()
+	values, err := c.provider.GetPriority()
+	if err != nil {
+		c.RenderJSON(err)
+	}
+	return c.RenderJSON(values)
+}
+
+func (c *CRef) GetStatus() revel.Result {
+	c.provider = ref.New()
+	values, err := c.provider.GetStatus()
+	if err != nil {
+		c.RenderJSON(err)
+	}
+	return c.RenderJSON(values)
+}
+
+func (c *CRef) GetTags() revel.Result {
+	c.provider = ref.New()
+	values, err := c.provider.GetTags()
+	if err != nil {
+		c.RenderJSON(err)
+	}
+	return c.RenderJSON(values)
+}

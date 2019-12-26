@@ -342,4 +342,25 @@ func (_ tCRef) GetPos(
 	return revel.MainRouter.Reverse("CRef.GetPos", args).URL
 }
 
+func (_ tCRef) GetPriority(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("CRef.GetPriority", args).URL
+}
+
+func (_ tCRef) GetStatus(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("CRef.GetStatus", args).URL
+}
+
+func (_ tCRef) GetTags(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("CRef.GetTags", args).URL
+}
+
 

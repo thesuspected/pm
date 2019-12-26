@@ -12,9 +12,9 @@ GET     /tasks                                  App.Tasks
 GET     /employees                              App.Employees
 
 GET     /positions                              CRef.GetPos
-# GET     /tags                                   CRef.GetTags
-# GET     /priority                               CRef.GetPriority
-# GET     /status                                 CRef.GetStatus
+GET     /priority                               CRef.GetPriority
+GET     /status                                 CRef.GetStatus
+GET     /tags                                   CRef.GetTags
 
 # POST    /upload                                 CRef.Upload
 
@@ -24,6 +24,17 @@ GET     /projectFk/:id                          CProject.GetFk
 PUT     /project                                CProject.Create
 POST    /project/:id                            CProject.Update
 DELETE  /project/:id                            CProject.Delete
+
+
+# GET     /task                                   CTask.GetAll
+# GET     /task/:id                               CTask.Get
+# GET     /taskFk/:id                             CTask.GetFk
+# PUT     /task                                   CTask.Create
+# POST    /task/:id                               CTask.Update
+# DELETE  /task/:id                               CTask.Delete
+
+
+# PUT     /subTask                                CSubTask.Create
 
 
 GET     /group                                  CGroup.GetAll

@@ -35,3 +35,78 @@ func (m *RefMapper) SelectPos(db *sql.DB) (values []*resources.Ref, err error) {
 
 	return values, err
 }
+
+func (m *RefMapper) SelectPriority(db *sql.DB) (values []*resources.Ref, err error) {
+	rows, err := db.Query(
+		`SELECT c_id, c_name, c_color
+				FROM t_ref_priority`)
+	if err != nil {
+		return values, err
+	}
+	defer rows.Close()
+	for rows.Next() {
+		c := resources.Ref{}
+		err := rows.Scan(&c.Id, &c.Value, &c.Color)
+		if err != nil {
+			return values, err
+		}
+
+		values = append(values, &c)
+	}
+
+	if err = rows.Err(); err != nil {
+		Println(err)
+	}
+
+	return values, err
+}
+
+func (m *RefMapper) SelectStatus(db *sql.DB) (values []*resources.Ref, err error) {
+	rows, err := db.Query(
+		`SELECT c_id, c_name
+				FROM t_ref_status`)
+	if err != nil {
+		return values, err
+	}
+	defer rows.Close()
+	for rows.Next() {
+		c := resources.Ref{}
+		err := rows.Scan(&c.Id, &c.Value)
+		if err != nil {
+			return values, err
+		}
+
+		values = append(values, &c)
+	}
+
+	if err = rows.Err(); err != nil {
+		Println(err)
+	}
+
+	return values, err
+}
+
+func (m *RefMapper) SelectTags(db *sql.DB) (values []*resources.Ref, err error) {
+	rows, err := db.Query(
+		`SELECT c_id, c_name
+				FROM t_ref_tags`)
+	if err != nil {
+		return values, err
+	}
+	defer rows.Close()
+	for rows.Next() {
+		c := resources.Ref{}
+		err := rows.Scan(&c.Id, &c.Value)
+		if err != nil {
+			return values, err
+		}
+
+		values = append(values, &c)
+	}
+
+	if err = rows.Err(); err != nil {
+		Println(err)
+	}
+
+	return values, err
+}

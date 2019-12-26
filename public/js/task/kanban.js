@@ -35,41 +35,46 @@ export let kanban = {
     ],
     // окно задачи
     editor: {
+        id:"kanban_form",
         rules: {
             text: webix.rules.isNotEmpty,
-            user_id: webix.rules.isNotEmpty
+            assign: webix.rules.isNotEmpty,
+            priority: webix.rules.isNotEmpty,
+            status: webix.rules.isNotEmpty,
         },
         elements: [
             {view: "textarea", name: "text", label: "Название"},
             {view: "textarea", name: "description", height: 100, label: "Описание"},
             {
-                view: "multicombo", name: "tags", label: "Метки",
-                options: tags_set
+                view: "multicombo",
+                id:"tagsSelect",
+                name: "tags",
+                label: "Метки",
+                options: []
             },
             {
                 margin: 10,
                 cols: [
                     {
-                        name: "user_id", view: "combo", options: users_set, label: "Назначить"
+                        name: "assign", id:"assignSelect", view: "combo", options: [], label: "Назначить"
                     },
                     {
-                        view: "richselect", name: "color", label: "Приоритет",
+                        view: "richselect", name: "priority", label: "Приоритет",
                         options: {
                             body: {
-                                data: colors_set,
+                                id:"prioritySelect",
+                                data: [],
                                 css: "webix_kanban_colorpicker",
                                 template: "<span class='webix_kanban_color_item' style='background-color: #color#'></span>#value#"
                             }
                         }
                     },
                     {
-                        view: "richselect", name: "$list", label: "Статус",
-                        options: [
-                            {id: "0", value: "Новые"},
-                            {id: "1", value: "В работе"},
-                            {id: "2", value: "На проверку"},
-                            {id: "3", value: "Выполнено"}
-                        ]
+                        view: "richselect",
+                        id: "statusSelect",
+                        name: "status",
+                        label: "Статус",
+                        options: []
                     }
                 ]
             },
