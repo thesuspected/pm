@@ -124,6 +124,31 @@ func (m *EmployeeMapper) SelectByGroupFk(id int, db *sql.DB) (employees []*resou
 	return employees, err
 }
 
+func (m *EmployeeMapper) UpdateGroup(db *sql.DB, employee resources.Employee) (employees []*resources.Employee, err error) {
+	c := resources.Employee{}
+	err = db.QueryRow(
+		`UPDATE t_employees
+				SET fk_group = $2
+				WHERE c_id = $1
+				RETURNING c_id`, employee.Id, employee.Group).Scan(&c.Id)
+	if err != nil {
+		return employees, err
+	}
+
+	employees = append(employees, &c)
+
+	return employees, err
+}
+
+func (m *EmployeeMapper) DeleteGroup(db *sql.DB, id int) (int, error) {
+	_, err := db.Exec(
+		`UPDATE t_employees
+				SET fk_group = 1
+				WHERE c_id = $1`, id)
+
+	return id, err
+}
+
 func (m *EmployeeMapper) Insert(db *sql.DB, employee resources.Employee) (employees []*resources.Employee, err error) {
 	c := resources.Employee{}
 	err = db.QueryRow(

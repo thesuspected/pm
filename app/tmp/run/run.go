@@ -188,6 +188,22 @@ func Register() {
 				},
 			},
 			&revel.MethodType{
+				Name: "UpdateGroup",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "employee", Type: reflect.TypeOf((*resources.Employee)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "DeleteGroup",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "id", Type: reflect.TypeOf((*int)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
 				Name: "Create",
 				Args: []*revel.MethodArg{ 
 					&revel.MethodArg{Name: "employee", Type: reflect.TypeOf((*resources.Employee)(nil)) },

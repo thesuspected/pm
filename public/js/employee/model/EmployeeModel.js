@@ -25,6 +25,16 @@ export const EmployeeModel = {
             .then(response => response.json())
     },
 
+    updateGroup: (employee) => {
+        return fetch(`/employeeUpdateGroup/${employee.id}`, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(employee)})
+            .then(response => response.json())
+    },
+
+    deleteFromGroup: (Id) => {
+        return fetch(`/employeeDeleteGroup/${Id}`, {method: 'POST'})
+            .then(response => response.json())
+    },
+
     create: (employee) => {
         return fetch('/employee', {method: 'PUT', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(employee)})
             .then(response => response.json())
@@ -36,7 +46,7 @@ export const EmployeeModel = {
     },
 
     update: (employee) => {
-        return fetch(`/employee/${employee.id}`, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(employee)})
+        return fetch(`/employee/${employee.group}`, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(employee)})
             .then(response => response.json())
     }
 }

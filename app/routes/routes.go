@@ -171,6 +171,24 @@ func (_ tCEmployee) GetByGroupFk(
 	return revel.MainRouter.Reverse("CEmployee.GetByGroupFk", args).URL
 }
 
+func (_ tCEmployee) UpdateGroup(
+		employee interface{},
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "employee", employee)
+	return revel.MainRouter.Reverse("CEmployee.UpdateGroup", args).URL
+}
+
+func (_ tCEmployee) DeleteGroup(
+		id int,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "id", id)
+	return revel.MainRouter.Reverse("CEmployee.DeleteGroup", args).URL
+}
+
 func (_ tCEmployee) Create(
 		employee interface{},
 		) string {

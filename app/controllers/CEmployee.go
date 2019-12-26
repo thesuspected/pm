@@ -56,6 +56,22 @@ func (c *CEmployee) GetByGroupFk(id int) revel.Result {
 	return c.RenderJSON(employees)
 }
 
+func (c *CEmployee) UpdateGroup(employee resources.Employee) revel.Result {
+	employees, err := c.provider.UpdateGroup(employee)
+	if err != nil {
+		return c.RenderError(err)
+	}
+	return c.RenderJSON(employees)
+}
+
+func (c *CEmployee) DeleteGroup(id int) revel.Result {
+	id, err := c.provider.DeleteGroup(id)
+	if err != nil {
+		return c.RenderError(err)
+	}
+	return c.RenderJSON(id)
+}
+
 func (c *CEmployee) Create(employee resources.Employee) revel.Result {
 	employees, err := c.provider.Create(employee)
 	if err != nil {

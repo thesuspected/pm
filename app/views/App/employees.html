@@ -294,11 +294,24 @@
             .then(function () {
                 // далем запрос в бд
                 EmployeeModel.delete(id).then(function(result) {
-                    let item = $$('listEmployees').getItem(id);
+                    let item = $$('listEmployees').getItem(result);
                     webix.message({type:"debug", text:"<i>" + item.lastName + " " + item.firstName + "</i> был удалён"});
                     $$("listEmployees").remove(result);
+                    $$("groupsTable").remove(result);
                 });
             })
+    }
+
+    function deleteFromGroup(id) {
+        let g_id = $$('listGroup').getSelectedId();
+        if (g_id != 1) {
+            EmployeeModel.deleteFromGroup(id).then(function (id) {
+                console.log(id);
+                let item = $$('groupsTable').getItem(id);
+                webix.message({type: "debug", text: "<i>" + item.lastName + " " + item.firstName + " </i>теперь без группы"});
+                $$("groupsTable").remove(id);
+            });
+        } else webix.message({type: "error", text: "Сотрудник уже без группы"});
     }
 
     function updateEmployee() {
@@ -334,8 +347,13 @@
         // делаем запрос в бд
         EmployeeModel.get(id).then(function (result) {
             result[0].date = new Date(result[0].date);
-            // Добавляем проект в конец списка
+            // Добавляем сотрудника в конец списка
             $$("listEmployees").add(result[0]);
+            // Добавляем сотрудника в таблицу группы
+            let item = $$('listGroup').getSelectedItem();
+            if (result[0].group = item.name) {
+                $$('groupsTable').add(result[0]);
+            }
         });
     }
 
@@ -600,20 +618,30 @@
             /////////////////////////////////////////// Drag and drop /////////////////////////////////////////////////
 
             $$("groupsTable").attachEvent("onBeforeDrop", function(context, ev){
-                for (let i=0; i< context.source.length; i++) {
-                    if (context.from != context.to) {
-                        if ($$('groupsTable').exists(context.source)) {
-                            webix.message({type: "error", text: "Сотрудник уже в группе"});
-                            return false;
-                        } else {
-                            let item = $$('listEmployees').getItem(context.source);
-                            let group = $$('listGroup').getSelectedItem();
-                            context.from.copy(context.source[i], context.start, this, {newId: context.source});
-                            webix.message({type: "success", text: item.lastName + " " + item.firstName + " назначен(а) в группу <i>'" + group.name +"'</i>"});
-                        }
-                        }
+                // Если запись перетаскивается из всех сотрудников в таблицу группы
+                if (context.from != context.to) {
+                    // Если сотрудник уже в группе
+                    if ($$('groupsTable').exists(context.source)) {
+                        webix.message({type: "error", text: "Сотрудник уже в группе"});
+                    } else {
+                        // берем id группы и id сотрудника
+                        let item = $$('listEmployees').getItem(context.source);
+                        let group = $$('listGroup').getSelectedItem();
+                        // создаем массив для отправки
+                        let employee = {};
+                        employee.id = item.id;
+                        employee.group = group.id;
+                        // делаем запрос на обновление группы у сотрудника
+                        EmployeeModel.updateGroup(employee).then(function (result) {
+                            // получаем сотрудника обратно
+                            EmployeeModel.get(result[0].id).then(function (result) {
+                                $$('groupsTable').add(result[0]);
+                            });
+                        });
+                        // оповещаем о действии
+                        webix.message({type: "success", text: item.lastName + " " + item.firstName + " назначен(а) в группу <i>'" + group.name +"'</i>"});
                     }
-                //console.log(context.to)
+                }
                 return false;
             });
 
@@ -628,8 +656,7 @@
                         deleteEmployee(dnd.start);
                         break;
                     case 'datatable':
-
-                        webix.message({type:"debug", text:"Убрать из группы"});
+                        deleteFromGroup(dnd.start);
                         break;
                 }
             }

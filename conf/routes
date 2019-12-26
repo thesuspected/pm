@@ -37,11 +37,15 @@ DELETE  /group/:id                              CGroup.Delete
 GET     /employee                               CEmployee.GetAll
 GET     /employee/:id                           CEmployee.Get
 GET     /employeeFk/:id                         CEmployee.GetFk
-GET     /employeeByGroup/:id                    CEmployee.GetByGroup
-GET     /employeeByGroupFk/:id                  CEmployee.GetByGroupFk
 PUT     /employee                               CEmployee.Create
 POST    /employee/:id                           CEmployee.Update
 DELETE  /employee/:id                           CEmployee.Delete
+
+
+GET     /employeeByGroup/:id                    CEmployee.GetByGroup
+GET     /employeeByGroupFk/:id                  CEmployee.GetByGroupFk
+POST    /employeeUpdateGroup/:id                CEmployee.UpdateGroup
+POST    /employeeDeleteGroup/:id                CEmployee.DeleteGroup
 
 
 # Ignore favicon requests

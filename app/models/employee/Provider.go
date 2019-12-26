@@ -59,6 +59,24 @@ func (p *Provider) GetByGroupFk(id int) ([]*resources.Employee, error) {
 	return p.employees.SelectByGroupFk(id, db)
 }
 
+func (p *Provider) UpdateGroup(employee resources.Employee) ([]*resources.Employee, error) {
+	db, err := connection.DatabaseConnect()
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+	return p.employees.UpdateGroup(db, employee)
+}
+
+func (p *Provider) DeleteGroup(id int) (int, error) {
+	db, err := connection.DatabaseConnect()
+	if err != nil {
+		return id, err
+	}
+	defer db.Close()
+	return p.employees.DeleteGroup(db, id)
+}
+
 func (p *Provider) Create(employee resources.Employee) ([]*resources.Employee, error) {
 	db, err := connection.DatabaseConnect()
 	if err != nil {
