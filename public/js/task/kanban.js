@@ -17,20 +17,20 @@ export let kanban = {
                         {view: "icon", id: "addTaskBtn", icon: "mdi mdi-plus-circle-outline", tooltip:"Добавить задачу"}
                     ]
                 },
-                {id: "new", view: "kanbanlist", status: "Новые"}
+                {id: "new", view: "kanbanlist", status: "0"}
             ]
         },
         {
             header: "<span class='webix_icon mdi mdi-briefcase-outline'></span>В работе",
-            body: {view: "kanbanlist", status: "В работе"}
+            body: {view: "kanbanlist", status: "1"}
         },
         {
             header: "<span class='webix_icon mdi mdi-alert-rhombus-outline'></span>На проверку",
-            body: {view: "kanbanlist", status: "На проверку"}
+            body: {view: "kanbanlist", status: "2"}
         },
         {
             header: "<span class='webix_icon mdi mdi-check'></span>Выполнено",
-            body: {view: "kanbanlist", status: "Выполнено"}
+            body: {view: "kanbanlist", status: "3"}
         }
     ],
     // окно задачи
@@ -102,10 +102,11 @@ export let kanban = {
             },
         ]
     },
-    userList: true, // настроить вывод должности?
+    userList: {
+        width:150
+    }, // настроить вывод должности?
     cardActions: true,
-    //comments:{currentUser:9}, // задать пользователя текущей сессии
-    tags: tags_set,
+    tags: [],
     users: users_set,
     colors: colors_set,
     data: kanban_data

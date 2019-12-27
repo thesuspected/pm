@@ -16,15 +16,15 @@
 <script type="module">
 
     import {locale} from '/public/js/locale.js';						    // локализация канбана
-    import {projects_data} from '/public/js/data.js';					    // массивы
 
     webix.i18n.locales["ru-RU"].kanban = locale;
     webix.i18n.setLocale('ru-RU');
 
-    import {ProjectModel} from "/public/js/project/model/ProjectModel.js";  // db requests для Проектов
-    import {GroupModel} from "/public/js/group/model/GroupModel.js";        // db requests для Групп
-    import {EmployeeModel} from "/public/js/employee/model/EmployeeModel.js";// db requests для сотрудников
-    import {RefModel} from "/public/js/ref/model/RefModel.js";              // db requests для селектов
+    import {ProjectModel} from "/public/js/project/model/ProjectModel.js";  // db requests  -  проекты
+    import {GroupModel} from "/public/js/group/model/GroupModel.js";        // db requests  -  группы
+    import {EmployeeModel} from "/public/js/employee/model/EmployeeModel.js";// db requests -  сотрудники
+    import {RefModel} from "/public/js/ref/model/RefModel.js";              // db requests  -  селекты
+    import {TaskModel} from "/public/js/task/model/TaskModel.js";           // db requests  -  задачи
 
     ///////////////////////////////////////////////// Виджеты //////////////////////////////////////////////////////
 
@@ -189,7 +189,13 @@
     //************************************************** Задачи ***************************************************//
 
     function getAllTasks() {
-
+        let project_id = $$('listProject').getSelectedId();
+        $$('kanban').clearAll();
+        // запрос на получение всех задач
+        TaskModel.getAll(project_id).then(function (result) {
+            console.log(result);
+            $$("kanban").parse(result, 'json');
+        });
     }
 
     function createTask() {
@@ -270,6 +276,8 @@
             // заносим в select
             $$("tagsSelect").define("options", result);
             $$("tagsSelect").refresh();
+            $$("kanban").define("tags", result);
+            $$("kanban").reconstruct();
         });
     }
 
@@ -314,6 +322,7 @@
 
             getAllProjects();    // Получаем все проекты из бд
             getGroupSelect();    // Получаем все группы в select проекта
+            //getAllTasks();
 
             // Заполняем селекты для задач
             getAssignSelect();
@@ -391,8 +400,7 @@
 
             // Click по проекту (Сделать смену задач)
             $$("listProject").attachEvent("onSelectChange", function () {
-                let id = $$('listProject').getSelectedId();
-                console.log(id);
+                getAllTasks();
             });
 
             // Редактирование проекта по doubleClick
@@ -413,14 +421,14 @@
 
             // Изменение карточки
             $$('kanban').data.attachEvent("onDataUpdate", function(id, index){
-                webix.message("New record was added!");
+                webix.message("обновление данных ");
                 let task = $$('kanban_form').getValues();
                 console.log(task);
             });
 
             // Добавление карточки
             $$('kanban').data.attachEvent("onBeforeAdd", function () {
-
+                webix.message("добавление данных");
             });
 
             // Валидация заполнения задачи

@@ -2,7 +2,7 @@ package resources
 
 type Task struct {
 	Id   			int64		`json:"id,string"`
-	Name 			string		`json:"name"`
+	Name 			string		`json:"text"`
 	Description 	string		`json:"description"`
 	Date 			string		`json:"date"`
 	Priority		string		`json:"priority"`

@@ -206,7 +206,8 @@
         // });
     }
 
-    function getGroupEmployees(id) {
+    function getGroupEmployees() {
+        let id = $$('listGroup').getSelectedId();
         $$('groupsTable').clearAll();
         EmployeeModel.getByGroup(id).then(function (result) {
             $$('groupsTable').parse(result);
@@ -588,8 +589,7 @@
 
             // сотрудники группы по клику
             $$("listGroup").attachEvent("onSelectChange", function () {
-                let id = $$('listGroup').getSelectedId();
-                getGroupEmployees(id);
+                getGroupEmployees();
             });
 
             // Редактирование группы по doubleClick

@@ -10,19 +10,19 @@ let projectPopup_data = [
 ];
 
 let kanban_data = [
-    {id: 1, status: "Новые", text: "Task 1", tags: [1, 2]},
-    {id: 2, status: "В работе", text: "Task 2", tags: [1], color: 3, user_id: 4},
-    {id: 3, status: "В работе", text: "Task 3", tags: [2, 4, 5], user_id: 6},
-    {id: 4, status: "В работе", text: "Task 4", tags: [3], user_id: 5},
-    {id: 5, status: "В работе", text: "Task 5", tags: [3, 4]},
-    {id: 6, status: "Выполнено", text: "Task 6", tags: [4, 5, 6, 7], user_id: 2},
-    {id: 7, status: "На проверку", text: "Task 7", tags: [1], user_id: 7},
-    {id: 8, status: "На проверку", text: "Task 8", tags: [7], user_id: 4},
-    {id: 9, status: "На проверку", text: "Task 9", tags: [6], user_id: 2},
-    {id: 10, status: "На проверку", text: "Task 10", tags: [1], user_id: 1},
-    {id: 11, status: "В работе", text: "Task 11", tags: [2], user_id: 8},
-    {id: 12, status: "Выполнено", text: "Task 12", user_id: 8},
-    {id: 13, status: "Новые", text: "Task 14", user_id: 8}
+    {id: 1, status: "0", text: "Task 1", tags: [1, 2]},
+    {id: 2, status: "1", text: "Task 2", tags: [1], color: 3, user_id: 4},
+    {id: 3, status: "1", text: "Task 3", tags: [2, 4, 5], user_id: 6},
+    {id: 4, status: "1", text: "Task 4", tags: [3], user_id: 5},
+    {id: 5, status: "1", text: "Task 5", tags: [3, 4]},
+    {id: 6, status: "3", text: "Task 6", tags: [4, 5, 6, 7], user_id: 2},
+    {id: 7, status: "3", text: "Task 7", tags: [1], user_id: 7},
+    {id: 8, status: "2", text: "Task 8", tags: [7], user_id: 4},
+    {id: 9, status: "2", text: "Task 9", tags: [6], user_id: 2},
+    {id: 10, status: "1", text: "Task 10", tags: [1], user_id: 1},
+    {id: 11, status: "0", text: "Task 11", tags: [2], user_id: 8},
+    {id: 12, status: "3", text: "Task 12", user_id: 8},
+    {id: 13, status: "1", text: "Task 14", user_id: 8}
 ];
 
 let sort_data = [
@@ -108,13 +108,13 @@ let users_set = [
 ];
 
 let tags_set = [
-    {id: 1, value: "webix"},
-    {id: 2, value: "docs"},
-    {id: 3, value: "hard"},
-    {id: 4, value: "easy"},
-    {id: 5, value: "go"},
-    {id: 6, value: "database"},
-    {id: 7, value: "need help"},
+    // {id: 1, value: "webix"},
+    // {id: 2, value: "docs"},
+    // {id: 3, value: "hard"},
+    // {id: 4, value: "easy"},
+    // {id: 5, value: "go"},
+    // {id: 6, value: "database"},
+    // {id: 7, value: "need help"},
 ];
 
 let colors_set = [

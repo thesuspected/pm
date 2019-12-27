@@ -18,45 +18,45 @@ GET     /tags                                   CRef.GetTags
 
 # POST    /upload                                 CRef.Upload
 
-GET     /project                                CProject.GetAll
-GET     /project/:id                            CProject.Get
-GET     /projectFk/:id                          CProject.GetFk
-PUT     /project                                CProject.Create
-POST    /project/:id                            CProject.Update
-DELETE  /project/:id                            CProject.Delete
+GET     /projects                                CProject.GetAll
+GET     /projects/:id                            CProject.Get
+GET     /projectsFk/:id                          CProject.GetFk
+PUT     /projects                                CProject.Create
+POST    /projects/:id                            CProject.Update
+DELETE  /projects/:id                            CProject.Delete
 
 
-# GET     /task                                   CTask.GetAll
-# GET     /task/:id                               CTask.Get
-# GET     /taskFk/:id                             CTask.GetFk
-# PUT     /task                                   CTask.Create
-# POST    /task/:id                               CTask.Update
-# DELETE  /task/:id                               CTask.Delete
+GET     /projects/:id/tasks                      CTask.GetAll
+# GET     /tasks/:id                               CTask.Get
+# GET     /tasksFk/:id                             CTask.GetFk
+# PUT     /tasks                                   CTask.Create
+# POST    /tasks/:id                               CTask.Update
+# DELETE  /tasks/:id                               CTask.Delete
 
 
 # PUT     /subTask                                CSubTask.Create
 
 
-GET     /group                                  CGroup.GetAll
-GET     /group/:id                              CGroup.Get
-GET     /groupFk/:id                            CGroup.GetFk
-PUT     /group                                  CGroup.Create
-POST    /group/:id                              CGroup.Update
-DELETE  /group/:id                              CGroup.Delete
+GET     /groups                                  CGroup.GetAll
+GET     /groups/:id                              CGroup.Get
+GET     /groupsFk/:id                            CGroup.GetFk
+PUT     /groups                                  CGroup.Create
+POST    /groups/:id                              CGroup.Update
+DELETE  /groups/:id                              CGroup.Delete
 
 
-GET     /employee                               CEmployee.GetAll
-GET     /employee/:id                           CEmployee.Get
-GET     /employeeFk/:id                         CEmployee.GetFk
-PUT     /employee                               CEmployee.Create
-POST    /employee/:id                           CEmployee.Update
-DELETE  /employee/:id                           CEmployee.Delete
+GET     /employeess                              CEmployee.GetAll
+GET     /employees/:id                           CEmployee.Get
+GET     /employeesFk/:id                         CEmployee.GetFk
+PUT     /employees                               CEmployee.Create
+POST    /employees/:id                           CEmployee.Update
+DELETE  /employees/:id                           CEmployee.Delete
 
 
-GET     /employeeByGroup/:id                    CEmployee.GetByGroup
-GET     /employeeByGroupFk/:id                  CEmployee.GetByGroupFk
-POST    /employeeUpdateGroup/:id                CEmployee.UpdateGroup
-POST    /employeeDeleteGroup/:id                CEmployee.DeleteGroup
+GET     /employeesByGroup/:id                    CEmployee.GetByGroup
+GET     /employeesByGroupFk/:id                  CEmployee.GetByGroupFk
+POST    /employeesUpdateGroup/:id                CEmployee.UpdateGroup
+POST    /employeesDeleteGroup/:id                CEmployee.DeleteGroup
 
 
 # Ignore favicon requests

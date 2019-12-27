@@ -364,3 +364,17 @@ func (_ tCRef) GetTags(
 }
 
 
+type tCTask struct {}
+var CTask tCTask
+
+
+func (_ tCTask) GetAll(
+		id int,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "id", id)
+	return revel.MainRouter.Reverse("CTask.GetAll", args).URL
+}
+
+
