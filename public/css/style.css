@@ -105,7 +105,7 @@
 
 .listGroupIcon {
     float: left;
-    padding-right: 5px;
+    /*padding-right: 5px;*/
 }
 
 .icon {
@@ -182,4 +182,31 @@
     padding-top: 10px;
     font-weight: 500;
     color: red;
+}
+
+.kanban_item {
+    height: 78px;
+    border: 1px solid #DADEE0 !important;
+    border-left: 3px solid #1CA1C1 !important;
+    margin-top: 8px;
+    overflow: hidden;
+    background: white;
+    cursor: pointer;
+    padding: 0 !important;
+}
+
+.kanban_bg {
+    background: #EBEDF0 !important;
+    border: 0 !important;
+}
+
+.border-1 {
+    border: 1px solid #DADEE0;
+}
+
+.kanban_icon {
+    padding-right: 2px;
+}
+.block {
+    padding: 0 8px;
 }

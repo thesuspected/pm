@@ -5,6 +5,11 @@ export const TaskModel = {
             .then(response => response.json())
     },
 
+    getTags: (Id) => {
+        return fetch(`/projects/id/tasks/${Id}/tags`, {method: 'GET'})
+            .then(response => response.json())
+    },
+
     // get: (Id) => {
     //     return fetch(`/project/${Id}`, {method: 'GET'})
     //         .then(response => response.json())

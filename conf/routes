@@ -27,6 +27,7 @@ DELETE  /projects/:id                            CProject.Delete
 
 
 GET     /projects/:id/tasks                      CTask.GetAll
+GET     /projects/id/tasks/${Id}/tags            CTask.GetTags
 # GET     /tasks/:id                               CTask.Get
 # GET     /tasksFk/:id                             CTask.GetFk
 # PUT     /tasks                                   CTask.Create

@@ -18,3 +18,12 @@ func (c *CTask) GetAll(id int) revel.Result {
 	}
 	return c.RenderJSON(tasks)
 }
+
+func (c *CTask) GetTags(id int) revel.Result {
+	c.provider = task.New()
+	tags, err := c.provider.GetTags(id)
+	if err != nil {
+		c.RenderJSON(err)
+	}
+	return c.RenderJSON(tags)
+}

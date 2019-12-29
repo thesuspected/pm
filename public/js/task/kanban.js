@@ -43,7 +43,13 @@ export let kanban = {
             status: webix.rules.isNotEmpty,
         },
         elements: [
-            {view: "textarea", name: "text", label: "Название"},
+            {
+                margin: 10,
+                cols: [
+                    {view: "textarea", name: "text", label: "Название"},
+                    {view: "datepicker", id:"taskDate", readonly: true, name: "date", label: "Дата", value: new Date(), width:160}
+                ]
+            },
             {view: "textarea", name: "description", height: 100, label: "Описание"},
             {
                 view: "multicombo",
@@ -106,8 +112,8 @@ export let kanban = {
         width:150
     }, // настроить вывод должности?
     cardActions: true,
-    tags: [],
-    users: users_set,
-    colors: colors_set,
+    tags: "/tags",
+    users: "/employeess",
+    colors: "/priority",
     data: kanban_data
 };
