@@ -22,12 +22,3 @@ func (p *Provider) GetAll(id int) ([]*resources.Task, error) {
 	defer db.Close()
 	return p.tasks.SelectAll(db, id)
 }
-
-func (p *Provider) GetTags(id int) ([]*resources.Ref, error) {
-	db, err := connection.DatabaseConnect()
-	if err != nil {
-		return nil, err
-	}
-	defer db.Close()
-	return p.tasks.SelectTags(db, id)
-}

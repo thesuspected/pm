@@ -14,8 +14,7 @@ type RefMapper struct {
 func (m *RefMapper) SelectPos(db *sql.DB) (values []*resources.Ref, err error) {
 	rows, err := db.Query(
 		`SELECT c_id, c_name
-				FROM t_ref_positions
-				ORDER BY c_id`)
+				FROM t_ref_positions`)
 	if err != nil {
 		return values, err
 	}
@@ -40,8 +39,7 @@ func (m *RefMapper) SelectPos(db *sql.DB) (values []*resources.Ref, err error) {
 func (m *RefMapper) SelectPriority(db *sql.DB) (values []*resources.Ref, err error) {
 	rows, err := db.Query(
 		`SELECT c_id, c_name, c_color
-				FROM t_ref_priority
-				ORDER BY c_id`)
+				FROM t_ref_priority`)
 	if err != nil {
 		return values, err
 	}
@@ -66,8 +64,7 @@ func (m *RefMapper) SelectPriority(db *sql.DB) (values []*resources.Ref, err err
 func (m *RefMapper) SelectStatus(db *sql.DB) (values []*resources.Ref, err error) {
 	rows, err := db.Query(
 		`SELECT c_id, c_name
-				FROM t_ref_status
-				ORDER BY c_id`)
+				FROM t_ref_status`)
 	if err != nil {
 		return values, err
 	}
@@ -92,8 +89,7 @@ func (m *RefMapper) SelectStatus(db *sql.DB) (values []*resources.Ref, err error
 func (m *RefMapper) SelectTags(db *sql.DB) (values []*resources.Ref, err error) {
 	rows, err := db.Query(
 		`SELECT c_id, c_name
-				FROM t_ref_tags
-				ORDER BY c_id`)
+				FROM t_ref_tags`)
 	if err != nil {
 		return values, err
 	}

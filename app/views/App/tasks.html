@@ -44,8 +44,6 @@
     webix.ui(sortPopup);
 
     import {projects_originalValues} from "/public/js/origValuesForm.js";   // оригинальные значения формы проекта
-    import {tags_set} from "/public/js/data.js";
-    import {tasks} from "/public/js/task/tasks.js";
 
     ////////////////////////////////////////////////// Функции /////////////////////////////////////////////////////
 
@@ -196,9 +194,6 @@
         // запрос на получение всех задач
         TaskModel.getAll(project_id).then(function (result) {
             console.log(result);
-            for (let i = 0; i < result.length; i++) {
-                result[i].date = new Date(result[i].date);
-            }
             $$("kanban").parse(result, 'json');
         });
     }
@@ -236,11 +231,9 @@
 
     function getAssignSelect() {
         let project = $$('listProject').getSelectedId();
-        console.log(project);
         // делаем запрос выбранного проекта
         ProjectModel.getFk(project).then(function (result) {
             // узнаем нужную группу сотрудников
-            console.log(result);
             let group = result[0].group;
             // делаем запрос сотрудников
             EmployeeModel.getByGroupFk(group).then(function (result) {
@@ -271,7 +264,6 @@
     function getStatusSelect() {
         // делаем запрос в бд
         RefModel.getStatus().then(function (result) {
-            console.log(result);
             // заносим в select
             $$("statusSelect").define("options", result);
             $$("statusSelect").refresh();
@@ -284,26 +276,8 @@
             // заносим в select
             $$("tagsSelect").define("options", result);
             $$("tagsSelect").refresh();
-        });
-    }
-
-    // tags_set[0] = {};
-    // tags_set[0].id = 1;
-    // tags_set[0].value = 'ASS';
-    // console.log(tags_set);
-
-    //getTagsKanban();
-
-    function getTagsKanban() {
-        // делаем запрос в бд
-        RefModel.getTags().then(function (result) {
-            // заполняем массив для прорисовки
-            for (let i = 0; i < result.length; i++) {
-                tags_set[i] = {};
-                tags_set[i].id = parseInt(result[i].id);
-                tags_set[i].value = result[i].value;
-            }
-            console.log(tags_set);
+            $$("kanban").define("tags", result);
+            $$("kanban").reconstruct();
         });
     }
 
@@ -333,35 +307,13 @@
                                             projects
                                         ]
                                     },
-                                    tasks
+                                    kanban
                                 ]
                             }
                         ]
                     }
                 ]
             });
-
-            let item = document.getElementsByClassName("kanban_item");
-            console.log(item);
-            for (let i = 0; i <= item.length; i++) {
-                item[i].parentElement.parentElement.classList.add("kanban_bg");
-            }
-
-            let bg = document.getElementsByClassName("kanban_bg");
-            for (let i = 0; i <= item.length; i++) {
-                bg[i].parentElement.previousElementSibling.classList.add("border-1");
-                bg[i].parentElement.parentElement.style.border = "0";
-            }
-
-
-            // селект для задачи
-            $$("spisok").attachEvent("onSelectChange", function () {
-                let id = $$("spisok").getSelectedId();
-                let item = this.Ti[id];
-                item.classList.add("webix_selected");
-            });
-
-            $$('kanban').updateItem(1);
 
             // выбираем первый по списку проект
             //let item = $$('listProject').getFirstChildId();
@@ -370,7 +322,7 @@
 
             getAllProjects();    // Получаем все проекты из бд
             getGroupSelect();    // Получаем все группы в select проекта
-            getAllTasks();
+            //getAllTasks();
 
             // Заполняем селекты для задач
             getAssignSelect();
@@ -403,7 +355,6 @@
 
             // Добавить задачу
             $$("addTaskBtn").attachEvent("onItemClick", function () {
-                //$$('taskDate').hide();
                 $$("kanban").showEditor();
             });
 
