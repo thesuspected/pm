@@ -23,6 +23,15 @@ func (p *Provider) GetAll() ([]*resources.Employee, error) {
 	return p.employees.SelectAll(db)
 }
 
+func (p *Provider) GetEmp() ([]*resources.Emp, error) {
+	db, err := connection.DatabaseConnect()
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+	return p.employees.SelectEmp(db)
+}
+
 func (p *Provider) Get(id int) ([]*resources.Employee, error) {
 	db, err := connection.DatabaseConnect()
 	if err != nil {

@@ -43,7 +43,10 @@
     import {sortPopup} from "/public/js/sortPopup.js";						// попап сортировки [по порядку / по имени / по дате]
     webix.ui(sortPopup);
 
+    import {basket} from "/public/js/basket.js";                            // корзина для DnD
+
     import {projects_originalValues} from "/public/js/origValuesForm.js";   // оригинальные значения формы проекта
+    import {tasks_originalValues} from "/public/js/origValuesForm.js";         // оригинальные значения формы задачи
 
     ////////////////////////////////////////////////// Функции /////////////////////////////////////////////////////
 
@@ -193,21 +196,50 @@
         $$('kanban').clearAll();
         // запрос на получение всех задач
         TaskModel.getAll(project_id).then(function (result) {
+            if (result != null) {
+                // получаем id выбранного проекта
+                let project = $$('listProject').getSelectedId();
+                // проходимся по каждой задаче
+                for (let i = 0; i < result.length; i++) {
+                    // меняем формат даты
+                    result[i].date = new Date(result[i].date);
+                    // добавляем теги
+                    TaskModel.getTags(result[i].id, project).then(function (tags) {
+                        let str = [];
+                        for (let j = 0; j < tags.length; j++) {
+                            str[j] = parseInt(tags[j].value);
+                        }
+                        result[i].tags = str;
+                    });
+                }
+            }
             console.log(result);
             $$("kanban").parse(result, 'json');
         });
     }
 
     function createTask() {
+        let task = $$('kanban_form').getValues();
+        task.project = "" + $$('listProject').getSelectedId();
+        console.log(task);
+        TaskModel.create(task).then(function (result) {
 
+        });
     }
 
-    function delTask() {
-
+    function delTask(id) {
+        let project = $$('listProject').getSelectedId();
+        console.log(id);
+        console.log(project);
+        TaskModel.delete(id, project).then(function (result) {
+            console.log('успех');
+        });
     }
 
-    function updateTask() {
-
+    function updateTask(task) {
+        TaskModel.update(task).then(function (result) {
+            console.log('успех');
+        });
     }
 
     //************************************************** Select ***************************************************//
@@ -258,6 +290,11 @@
             // заносим в select
             $$("prioritySelect").define("data", result);
             $$("prioritySelect").refresh();
+            // неудачная попытка ранней загрузки
+            // $$("kanban").define("colors", result);
+            // console.log($$("kanban").config.colors);
+            // console.log("^^-----colors-----^^");
+            // $$("kanban").reconstruct();
         });
     }
 
@@ -265,6 +302,7 @@
         // делаем запрос в бд
         RefModel.getStatus().then(function (result) {
             // заносим в select
+            console.log(result);
             $$("statusSelect").define("options", result);
             $$("statusSelect").refresh();
         });
@@ -276,8 +314,6 @@
             // заносим в select
             $$("tagsSelect").define("options", result);
             $$("tagsSelect").refresh();
-            $$("kanban").define("tags", result);
-            $$("kanban").reconstruct();
         });
     }
 
@@ -307,7 +343,12 @@
                                             projects
                                         ]
                                     },
-                                    kanban
+                                    {
+                                        rows: [
+                                            kanban,
+                                            basket
+                                        ]
+                                    }
                                 ]
                             }
                         ]
@@ -315,26 +356,30 @@
                 ]
             });
 
+            setTimeout(getAllTasks, 800);
             // выбираем первый по списку проект
             //let item = $$('listProject').getFirstChildId();
             //console.log(item);
             $$('listProject').select(2);
 
-            getAllProjects();    // Получаем все проекты из бд
-            getGroupSelect();    // Получаем все группы в select проекта
-            //getAllTasks();
+            getAllProjects();       // Получаем все проекты из бд
+            //getAllTasks();          // Получаем все задачи из бд
 
-            // Заполняем селекты для задач
-            getAssignSelect();
-            getPrioritySelect();
-            getStatusSelect();
-            getTagsSelect();
+            getGroupSelect();       // Получаем все группы в select проекта
+
+            getAssignSelect();      // Заполняем
+            //getPrioritySelect();    // селекты
+            getStatusSelect();      // для
+            getTagsSelect();        // задач
 
             //let subtasks = $$('subTasksTable').data.pull;
             //console.log(subtasks);
 
             // Подсветка текущей вкладки
             $$("sidebar").select("tasks", true);
+
+            // скрываем корзину
+            $$('basket').hide();
 
             //////////////////////////////////////////// Обработчики ///////////////////////////////////////////////
 
@@ -348,28 +393,25 @@
                 $$("sidebar").toggle()
             });
 
+            //********************************************** Проекты ***********************************************//
+
             // Добавить проект
             $$("addProjectBtn").attachEvent("onItemClick", function () {
                 addProjectForm()
             });
 
-            // Добавить задачу
-            $$("addTaskBtn").attachEvent("onItemClick", function () {
-                $$("kanban").showEditor();
-            });
-
             // Окно заполнения проекта
-            $$("dltProjectFormBtn").attachEvent("onItemClick", function () {
+            $$("dltProjectFormBtn").attachEvent("onItemClick", function () {    // кнопка удалить
                 delProject();
                 $$('project_Form').clearValidation();
             });
-            $$("createProjectFormBtn").attachEvent("onItemClick", function () {
+            $$("createProjectFormBtn").attachEvent("onItemClick", function () { // кнопка создать
                 createProject();
             });
-            $$("saveProjectFormBtn").attachEvent("onItemClick", function () {
+            $$("saveProjectFormBtn").attachEvent("onItemClick", function () {   // кнопка сохранить
                 updateProject();
             });
-            $$("closeProjectFormBtn").attachEvent("onItemClick", function () {
+            $$("closeProjectFormBtn").attachEvent("onItemClick", function () {  // кнопка закрыть
                 $$('project_window').hide();
                 $$('project_Form').clearValidation();
             });
@@ -408,6 +450,47 @@
                 editProjectForm();
             });
 
+            //********************************************** Задачи ***********************************************//
+
+            // Добавить задачу
+            $$("addTaskBtn").attachEvent("onItemClick", function () {
+                $$("kanban").showEditor();
+                $$('kanban_form').setValues(tasks_originalValues);
+            });
+
+            // Создание задачи
+            $$('kanban').data.attachEvent("onBeforeAdd", function () {
+                createTask();
+            });
+
+            // Удаление задачи
+            $$('kanban').data.attachEvent("onBeforeDelete", function () {
+                let id = $$('kanban').getSelectedId();
+                delTask(id);
+            });
+
+            // Изменение задачи
+            $$('kanban').data.attachEvent("onDataUpdate", function(id, index){
+                let task = $$('kanban').getItem(id);
+                updateTask(task);
+            });
+
+            // Валидация заполнения задачи
+            $$("kanban").attachEvent("onBeforeEditorAction", function (action, editor, obj) {
+                if (action === "save" && !editor.getForm().validate())
+                    return false;
+                else if (action === "save") {
+                    obj.$list = parseInt(obj.status);
+                }
+            });
+
+            // Очищение валидации при закрытии окна
+            $$("kanban").getEditor().attachEvent("onHide", function () {
+                this.getForm().clearValidation();
+            });
+
+            //********************************************** Подзадачи ***********************************************//
+
             // Добавить подзадачу
             $$("subTasksTable").on_click.addSubtaskBtn = function (node) {
                 $$('subTasksTable').add({id:$$('subTasksTable').length,check:0, value:''});
@@ -419,26 +502,39 @@
                 $$('subTasksTable').remove(id);
             };
 
-            // Изменение карточки
-            $$('kanban').data.attachEvent("onDataUpdate", function(id, index){
-                webix.message("обновление данных ");
-                let task = $$('kanban_form').getValues();
-                console.log(task);
+            //********************************************* Drag & Drop **********************************************//
+
+            // получаем node корзины
+            let basket_id = $$("basket").getNode();
+
+            webix.attachEvent("onDragMode",function(signal){
+                // событие при сбросе элемента над областью корзины
+                basket_id.addEventListener('mouseup', handler);
+                // показать/скрыть корзину
+                switch (signal) {
+                    case 'start':
+                        $$('basket').show();
+                        break;
+                    case 'stop':
+                        $$('basket').hide();
+                        break;
+                }
             });
 
-            // Добавление карточки
-            $$('kanban').data.attachEvent("onBeforeAdd", function () {
-                webix.message("добавление данных");
-            });
-
-            // Валидация заполнения задачи
-            $$("kanban").attachEvent("onBeforeEditorAction", function (action, editor, obj) {
-                if (action === "save" && !editor.getForm().validate())
-                    return false;
-            });
-            $$("kanban").getEditor().attachEvent("onHide", function () {
-                this.getForm().clearValidation();
-            });
+            function handler() {
+                // получаем контекст взятия элемента
+                let dnd = webix.DragControl.getContext();
+                // определяем откуда пришел дроп
+                switch (dnd.from.name) {
+                    case 'kanbanlist':
+                        delTask(dnd.start);
+                        $$('kanban').remove(dnd.start);
+                        break;
+                    case 'Вписать лист проектов':
+                        deleteFromGroup(dnd.start);
+                        break;
+                }
+            }
         });
     }
 </script>

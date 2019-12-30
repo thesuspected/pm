@@ -20,6 +20,15 @@ func (c *CEmployee) GetAll() revel.Result {
 	return c.RenderJSON(employees)
 }
 
+func (c *CEmployee) GetEmp() revel.Result {
+	c.provider = employee.New()
+	employees, err := c.provider.GetEmp()
+	if err != nil {
+		c.RenderJSON(err)
+	}
+	return c.RenderJSON(employees)
+}
+
 func (c *CEmployee) Get(id int) revel.Result {
 	c.provider = employee.New()
 	employee, err := c.provider.Get(id)

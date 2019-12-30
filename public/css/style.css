@@ -129,7 +129,7 @@
 
 .uploadDiv {
     position: relative;
-    border: 5px dashed #1992af;
+    border: 4px dashed #1992af;
     border-radius: 10px;
     height: 167px;
     width: 167px;
@@ -163,7 +163,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 5px dashed red !important;
+    border: 4px dashed red !important;
     border-radius: 10px;
     flex-direction: column;
     transition-duration: 0.2s;

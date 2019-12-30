@@ -5,6 +5,11 @@ export const EmployeeModel = {
             .then(response => response.json())
     },
 
+    getEmp: () => {
+        return fetch('/employeesEmp', {method: 'GET'})
+            .then(response => response.json())
+    },
+
     get: (Id) => {
         return fetch(`/employees/${Id}`, {method: 'GET'})
             .then(response => response.json())

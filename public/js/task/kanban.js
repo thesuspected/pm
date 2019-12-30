@@ -38,12 +38,18 @@ export let kanban = {
         id:"kanban_form",
         rules: {
             text: webix.rules.isNotEmpty,
-            assign: webix.rules.isNotEmpty,
-            priority: webix.rules.isNotEmpty,
+            user_id: webix.rules.isNotEmpty,
+            color: webix.rules.isNotEmpty,
             status: webix.rules.isNotEmpty,
         },
         elements: [
-            {view: "textarea", name: "text", label: "Название"},
+            {
+                margin: 10,
+                cols: [
+                    {view: "textarea", name: "text", label: "Название"},
+                    {view: "datepicker", id:"taskDate", readonly: true, name: "date", label: "Дата создания", value: new Date(), width:160}
+                ]
+            },
             {view: "textarea", name: "description", height: 100, label: "Описание"},
             {
                 view: "multicombo",
@@ -56,10 +62,10 @@ export let kanban = {
                 margin: 10,
                 cols: [
                     {
-                        name: "assign", id:"assignSelect", view: "combo", options: [], label: "Назначить"
+                        name: "user_id", id:"assignSelect", view: "combo", options: [], label: "Назначить"
                     },
                     {
-                        view: "richselect", name: "priority", label: "Приоритет",
+                        view: "richselect", name: "color", label: "Приоритет",
                         options: {
                             body: {
                                 id:"prioritySelect",
@@ -104,10 +110,10 @@ export let kanban = {
     },
     userList: {
         width:150
-    }, // настроить вывод должности?
+    },
     cardActions: true,
-    tags: [],
-    users: users_set,
-    colors: colors_set,
-    data: kanban_data
+    tags: "/tags",
+    users: "/employeesEmp",
+    colors: "/priority",
+    data: []
 };

@@ -23,33 +23,33 @@
 
     ///////////////////////////////////////////////// Виджеты //////////////////////////////////////////////////////
 
-    import {toolbar} from "/public/js/toolbar.js";						    // шапка
-    import {sidebar} from "/public/js/sidebar.js";						    // боковая панель
+    import {toolbar} from "/public/js/toolbar.js";						        // шапка
+    import {sidebar} from "/public/js/sidebar.js";						        // боковая панель
 
-    import {groups} from "/public/js/group/groups.js";				        // островок Группы
-    import {groupTable} from "/public/js/group/groupTable.js";		        // островок сотрудники Группы
-    import {employees} from "/public/js/employee/employees.js";			    // островок Сотрудники
+    import {groups} from "/public/js/group/groups.js";				            // островок Группы
+    import {groupTable} from "/public/js/group/groupTable.js";		            // островок сотрудники Группы
+    import {employees} from "/public/js/employee/employees.js";			        // островок Сотрудники
 
-    import {employeeForm} from "/public/js/employee/employeeForm.js";
-
-    import {groupWindow} from "/public/js/group/groupWindow.js";		    // окно группы
+    import {groupWindow} from "/public/js/group/groupWindow.js";		        // окно группы
     webix.ui(groupWindow);
 
-    import {employeeWindow} from "/public/js/employee/employeeWindow.js";	// окно сотрудника
+    import {employeeWindow} from "/public/js/employee/employeeWindow.js";	    // окно сотрудника
     webix.ui(employeeWindow);
 
-    import {editPopup} from "/public/js/editPopup.js";	                    // попап списка [редактировать / удалить]
+    import {editPopup} from "/public/js/editPopup.js";	                        // попап списка [редактировать / удалить]
     webix.ui(editPopup);
 
-    import {sortPopup} from "/public/js/sortPopup.js";					    // попап сортировки [по порядку / по имени / по дате]
+    import {sortPopup} from "/public/js/sortPopup.js";					        // попап сортировки [по порядку / по имени / по дате]
     webix.ui(sortPopup);
 
-    import {uploadApi} from "/public/js/uploadApi.js";                 // загрузка фото
+    import {uploadApi} from "/public/js/uploadApi.js";                          // загрузка фото
     webix.ui(uploadApi);
 
-    import {groups_originalValues} from "/public/js/origValuesForm.js";	    // оригинальные значения формы группы
+    import {basket} from "/public/js/basket.js";                                // корзина для DnD
+    import {uploadForm} from "/public/js/employee/employeeForm.js";             // форма для загрузки фото
+
+    import {groups_originalValues} from "/public/js/origValuesForm.js";	        // оригинальные значения формы группы
     import {employees_originalValues} from "/public/js/origValuesForm.js";	    // оригинальные значения формы сотрудника
-    import {uploadForm} from "/public/js/employee/employeeForm.js";
 
     ////////////////////////////////////////////////// Функции /////////////////////////////////////////////////////
 
@@ -190,20 +190,6 @@
             // Заполняем форму проекта
             $$("groups_Form").setValues(values);
         });
-        // // запрос на получение сотрудников данной группы
-        // EmployeeModel.getByGroupFk(id).then(function (result) {
-        //     // проверяем на ноль
-        //     if (result != null) {
-        //         let tags = "";
-        //         // записываем сотрудников
-        //         for (let i = 0; i < result.length; i++) {
-        //             if (i != result.length - 1) tags += result[i]["id"] + ",";
-        //             else tags += result[i]["id"];
-        //         }
-        //         // заполняем комбо
-        //         $$('employeeCombo').setValue(tags);
-        //     }
-        // });
     }
 
     function getGroupEmployees() {
@@ -231,7 +217,7 @@
         $$("employees_window").show();
     }
 
-    function editEmployeeForm() {
+    function editEmployeeForm(id) {
         // получаем актуальные группы и должности
         getGroupSelect();
         getPosSelect();
@@ -242,7 +228,6 @@
         $$("createEmployeeFormBtn").hide();
         $$("edit_Popup").hide();
         // заносим данные сотрудника в форму
-        let id = $$("listEmployees").getSelectedId();
         fillEmployeeForm(id);
         // открываем окно сотрудника
         $$("employees_window").show();
@@ -319,10 +304,9 @@
         // Валидация заполнения
         if ($$("employees_Form").validate()) {
             // берем значения формы
-            let id = $$("listEmployees").getSelectedId();
             let em_form = $$("employees_Form").getValues();
             let employee = {
-                Id: id,
+                Id:         em_form.id,
                 lastName:   em_form.lastName,
                 firstName:  em_form.firstName,
                 patronymic: em_form.patronymic,
@@ -351,8 +335,8 @@
             // Добавляем сотрудника в конец списка
             $$("listEmployees").add(result[0]);
             // Добавляем сотрудника в таблицу группы
-            let item = $$('listGroup').getSelectedItem();
-            if (result[0].group = item.name) {
+            let group = $$('listGroup').getSelectedItem();
+            if (result[0].group === group.name) {
                 $$('groupsTable').add(result[0]);
             }
         });
@@ -361,13 +345,28 @@
     function refreshEmployee(id) {
         // делаем запрос в бд
         EmployeeModel.get(id).then(function (result) {
-            // обновляем данные о проекте
+            // обновляем данные о сотруднике в списке
             let item = $$("listEmployees").getItem(result[0]['id']);
             item.lastName = result[0].lastName;
             item.firstName = result[0].firstName;
             item.patronymic = result[0].patronymic;
             item.position = result[0].position;
             $$("listEmployees").updateItem(result[0]['id']);
+            let group = $$('listGroup').getSelectedItem();
+            // если обновленный сотрудник находится в выбранной группе
+            if (result[0].group === group.name) {
+                // обновляем данные о сотруднике в группе
+                let itemTable = $$("groupsTable").getItem(result[0]['id']);
+                itemTable.id = result[0].id;
+                itemTable.lastName = result[0].lastName;
+                itemTable.firstName = result[0].firstName;
+                itemTable.patronymic = result[0].patronymic;
+                itemTable.position = result[0].position;
+                itemTable.imgSrc = result[0].imgSrc;
+                itemTable.date = result[0].date;
+                itemTable.email = result[0].email;
+                $$('groupsTable').updateItem(result[0]['id']);
+            }
         });
     }
 
@@ -459,13 +458,7 @@
                                                 type: 'clean',
                                                 rows: [
                                                     groupTable,
-                                                    {
-                                                        template: "<img src='/public/img/remove.svg' class='removeImg'><div class='removeDiv'>Удалить</div>",
-                                                        id:"basket",
-                                                        css:"basket",
-                                                        gravity: 0.3,
-                                                        drag:true
-                                                    }
+                                                    basket
                                                 ]},
                                             employees
                                         ]
@@ -484,7 +477,7 @@
             $$('listGroup').select(1);
             getGroupEmployees(1);
 
-            // подсветка вкладки
+            // подсветка текущей вкладки
             $$("sidebar").select("employees", true);
 
             // скрываем корзину
@@ -502,33 +495,11 @@
                 $$("sidebar").toggle();
             });
 
+            //*********************************************** Группы ************************************************//
+
             // Добавить группу
             $$("addGroupBtn").attachEvent("onItemClick", function () {
                 addGroupForm();
-            });
-
-            // Добавить сотрудника
-            $$("addEmployeeBtn").attachEvent("onItemClick", function () {
-                addEmployeeForm();
-            });
-
-            // Открыть поиск сотрудников
-            $$("openSearchBtn").attachEvent("onItemClick", function () {
-                $$("search").show();
-                $$("closeSearchBtn").show();
-                $$("openSearchBtn").hide();
-            });
-
-            // Закрыть поиск сотрудников
-            $$("closeSearchBtn").attachEvent("onItemClick", function () {
-                $$("search").hide();
-                $$("search").setValue("");
-                $$("listEmployees").filter(function (obj) {
-                    return obj;
-                });
-                $$("openSearchBtn").show();
-                $$("closeSearchBtn").hide();
-
             });
 
             // Показать попап группы
@@ -556,35 +527,19 @@
             });
 
             // Окно заполнения группы
-            $$("dltGroupFormBtn").attachEvent("onItemClick", function () {
+            $$("dltGroupFormBtn").attachEvent("onItemClick", function () {      // кнопка удалить
                 delGroup();
                 $$('groups_Form').clearValidation();
             });
-            $$("saveGroupFormBtn").attachEvent("onItemClick", function () {
+            $$("saveGroupFormBtn").attachEvent("onItemClick", function () {     // кнопка сохранить
                 updateGroup()
             });
-            $$("createGroupFormBtn").attachEvent("onItemClick", function () {
+            $$("createGroupFormBtn").attachEvent("onItemClick", function () {   // кнопка создать
                 createGroup();
             });
-            $$("closeGroupFormBtn").attachEvent("onItemClick", function () {
+            $$("closeGroupFormBtn").attachEvent("onItemClick", function () {    // кнопка закрыть
                 $$('groups_window').hide();
                 $$('groups_Form').clearValidation();
-            });
-
-            // Окно заполнения сотрудника
-            $$("dltEmployeeFormBtn").attachEvent("onItemClick", function () {
-                // Берем id сотрудника
-                let id = $$("listEmployees").getSelectedId();
-                deleteEmployee(id);
-            });
-            $$("saveEmployeeFormBtn").attachEvent("onItemClick", function () {
-                updateEmployee();
-            });
-            $$("createEmployeeFormBtn").attachEvent("onItemClick", function () {
-                createEmployee();
-            });
-            $$("closeEmployeeFormBtn").attachEvent("onItemClick", function () {
-                $$('employees_window').hide();
             });
 
             // сотрудники группы по клику
@@ -597,9 +552,56 @@
                 editGroupForm();
             });
 
+            //********************************************* Сотрудники **********************************************//
+
+            // Добавить сотрудника
+            $$("addEmployeeBtn").attachEvent("onItemClick", function () {
+                addEmployeeForm();
+            });
+
+            // Открыть поиск сотрудников
+            $$("openSearchBtn").attachEvent("onItemClick", function () {
+                $$("search").show();
+                $$("closeSearchBtn").show();
+                $$("openSearchBtn").hide();
+            });
+
+            // Закрыть поиск сотрудников
+            $$("closeSearchBtn").attachEvent("onItemClick", function () {
+                $$("search").hide();
+                $$("search").setValue("");
+                $$("listEmployees").filter(function (obj) {
+                    return obj;
+                });
+                $$("openSearchBtn").show();
+                $$("closeSearchBtn").hide();
+
+            });
+
+            // Окно заполнения сотрудника
+            $$("dltEmployeeFormBtn").attachEvent("onItemClick", function () {       // кнопка удалить
+                // Берем id сотрудника
+                let item = $$("employees_Form").getValues();
+                deleteEmployee(item.id);
+            });
+            $$("saveEmployeeFormBtn").attachEvent("onItemClick", function () {      // кнопка сохранить
+                updateEmployee();
+            });
+            $$("createEmployeeFormBtn").attachEvent("onItemClick", function () {    // кнопка создать
+                createEmployee();
+            });
+            $$("closeEmployeeFormBtn").attachEvent("onItemClick", function () {     // кнопка закрыть
+                $$('employees_window').hide();
+            });
+
             // Редактирование сотрудника по doubleClick
             $$("listEmployees").attachEvent("onItemDblClick", function () {
-                editEmployeeForm();
+                let id = $$("listEmployees").getSelectedId();
+                editEmployeeForm(id);
+            });
+            $$("groupsTable").attachEvent("onItemDblClick", function () {
+                let id = $$("groupsTable").getSelectedId();
+                editEmployeeForm(id);
             });
 
             // Загрузка фотографии
@@ -615,7 +617,7 @@
                 })
             });
 
-            /////////////////////////////////////////// Drag and drop /////////////////////////////////////////////////
+            //********************************************* Drag & Drop **********************************************//
 
             $$("groupsTable").attachEvent("onBeforeDrop", function(context, ev){
                 // Если запись перетаскивается из всех сотрудников в таблицу группы
@@ -645,7 +647,22 @@
                 return false;
             });
 
-            let basket = $$("basket").getNode();
+            // получаем node корзины
+            let basket_id = $$("basket").getNode();
+
+            webix.attachEvent("onDragMode",function(signal){
+                // событие при сбросе элемента над областью корзины
+                basket_id.addEventListener('mouseup', handler);
+                // показать/скрыть корзину
+                switch (signal) {
+                    case 'start':
+                        $$('basket').show();
+                        break;
+                    case 'stop':
+                        $$('basket').hide();
+                        break;
+                }
+            });
 
             function handler() {
                 // получаем контекст взятия элемента
@@ -660,20 +677,6 @@
                         break;
                 }
             }
-
-            webix.attachEvent("onDragMode",function(signal){
-                // событие при сбросе элемента над областью корзины
-                basket.addEventListener('mouseup', handler);
-                // показать/скрыть корзину
-                switch (signal) {
-                    case 'start':
-                        $$('basket').show();
-                        break;
-                    case 'stop':
-                        $$('basket').hide();
-                        break;
-                }
-            });
         });
     }
 </script>

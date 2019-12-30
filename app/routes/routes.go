@@ -135,6 +135,13 @@ func (_ tCEmployee) GetAll(
 	return revel.MainRouter.Reverse("CEmployee.GetAll", args).URL
 }
 
+func (_ tCEmployee) GetEmp(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("CEmployee.GetEmp", args).URL
+}
+
 func (_ tCEmployee) Get(
 		id int,
 		) string {
@@ -375,6 +382,42 @@ func (_ tCTask) GetAll(
 	
 	revel.Unbind(args, "id", id)
 	return revel.MainRouter.Reverse("CTask.GetAll", args).URL
+}
+
+func (_ tCTask) Create(
+		task interface{},
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "task", task)
+	return revel.MainRouter.Reverse("CTask.Create", args).URL
+}
+
+func (_ tCTask) Delete(
+		id int,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "id", id)
+	return revel.MainRouter.Reverse("CTask.Delete", args).URL
+}
+
+func (_ tCTask) Update(
+		task interface{},
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "task", task)
+	return revel.MainRouter.Reverse("CTask.Update", args).URL
+}
+
+func (_ tCTask) GetTags(
+		id int,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "id", id)
+	return revel.MainRouter.Reverse("CTask.GetTags", args).URL
 }
 
 

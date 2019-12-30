@@ -38,6 +38,32 @@ func (m *EmployeeMapper) SelectAll(db *sql.DB) (employees []*resources.Employee,
 	return employees, err
 }
 
+func (m *EmployeeMapper) SelectEmp(db *sql.DB) (employees []*resources.Emp, err error) {
+	rows, err := db.Query(
+		`SELECT c_id, c_last_name, imgPath(c_img_src)
+				FROM t_employees
+				ORDER BY c_id`)
+	if err != nil {
+		return employees, err
+	}
+	defer rows.Close()
+	for rows.Next() {
+		c := resources.Emp{}
+		err := rows.Scan(&c.Id, &c.Value, &c.Image)
+		if err != nil {
+			return employees, err
+		}
+
+		employees = append(employees, &c)
+	}
+
+	if err = rows.Err(); err != nil {
+		Println(err)
+	}
+
+	return employees, err
+}
+
 func (m *EmployeeMapper) Select(id int, db *sql.DB) (employees []*resources.Employee, err error) {
 	c := resources.Employee{}
 	err = db.QueryRow(
