@@ -46,7 +46,7 @@
     import {basket} from "/public/js/basket.js";                            // корзина для DnD
 
     import {projects_originalValues} from "/public/js/origValuesForm.js";   // оригинальные значения формы проекта
-    import {tasks_originalValues} from "/public/js/origValuesForm.js";         // оригинальные значения формы задачи
+    import {tasks_originalValues} from "/public/js/origValuesForm.js";      // оригинальные значения формы задачи
 
     ////////////////////////////////////////////////// Функции /////////////////////////////////////////////////////
 
@@ -206,39 +206,48 @@
                     // добавляем теги
                     TaskModel.getTags(result[i].id, project).then(function (tags) {
                         let str = [];
-                        for (let j = 0; j < tags.length; j++) {
-                            str[j] = parseInt(tags[j].value);
+                        if (tags != null) {
+                            for (let j = 0; j < tags.length; j++) {
+                                str[j] = parseInt(tags[j].value);
+                            }
                         }
                         result[i].tags = str;
                     });
                 }
             }
-            console.log(result);
-            $$("kanban").parse(result, 'json');
+            // вынужденная задержка для прогрузки тэгов
+            setTimeout(function () {$$("kanban").parse(result)}, 170);
         });
     }
 
     function createTask() {
-        let task = $$('kanban_form').getValues();
-        task.project = "" + $$('listProject').getSelectedId();
-        console.log(task);
+        let task = $$('kanban_form').getValues();               // получаем значения формы
+        task.project = "" + $$('listProject').getSelectedId();  // заносим выбранный проект
+        // делаем запрос создания задачи
         TaskModel.create(task).then(function (result) {
-
+            // делаем запрос на получение задачи
+            TaskModel.getFk(result[0].id, task.project).then(function (item) {
+                // добавляем задачу
+                $$('kanban').add(item[0]);
+            });
         });
     }
 
     function delTask(id) {
+        // берем текущий проект
         let project = $$('listProject').getSelectedId();
-        console.log(id);
-        console.log(project);
-        TaskModel.delete(id, project).then(function (result) {
-            console.log('успех');
+        // делаем запрос
+        TaskModel.delete(id, project).then(function (result_id) {
+            // задача на удаление
+            let task = $$('kanban').getItem(result_id);
+            webix.message({type:"debug", text:"Задача <i>" + task.text + "</i> удалёна"});
+            $$('kanban').remove(result_id);
         });
     }
 
     function updateTask(task) {
         TaskModel.update(task).then(function (result) {
-            console.log('успех');
+            console.log(result);
         });
     }
 
@@ -290,11 +299,6 @@
             // заносим в select
             $$("prioritySelect").define("data", result);
             $$("prioritySelect").refresh();
-            // неудачная попытка ранней загрузки
-            // $$("kanban").define("colors", result);
-            // console.log($$("kanban").config.colors);
-            // console.log("^^-----colors-----^^");
-            // $$("kanban").reconstruct();
         });
     }
 
@@ -302,7 +306,6 @@
         // делаем запрос в бд
         RefModel.getStatus().then(function (result) {
             // заносим в select
-            console.log(result);
             $$("statusSelect").define("options", result);
             $$("statusSelect").refresh();
         });
@@ -356,21 +359,14 @@
                 ]
             });
 
-            setTimeout(getAllTasks, 800);
-            // выбираем первый по списку проект
-            //let item = $$('listProject').getFirstChildId();
-            //console.log(item);
-            $$('listProject').select(2);
+            // Получаем все проекты
+            getAllProjects();
 
-            getAllProjects();       // Получаем все проекты из бд
-            //getAllTasks();          // Получаем все задачи из бд
-
-            getGroupSelect();       // Получаем все группы в select проекта
-
-            getAssignSelect();      // Заполняем
-            //getPrioritySelect();    // селекты
-            getStatusSelect();      // для
-            getTagsSelect();        // задач
+            // заполняем селекты
+            getGroupSelect();
+            getTagsSelect();
+            getPrioritySelect();
+            getStatusSelect();
 
             //let subtasks = $$('subTasksTable').data.pull;
             //console.log(subtasks);
@@ -382,6 +378,14 @@
             $$('basket').hide();
 
             //////////////////////////////////////////// Обработчики ///////////////////////////////////////////////
+
+            // Действия после загрузки проектов
+            $$('listProject').attachEvent("onAfterLoad", function(){
+                // селектим первый проект
+                this.select(this.getFirstId());
+                // получаем сотрудников выбранного проекта
+                getAssignSelect();
+            });
 
             // Переход по вкладкам
             $$("sidebar").attachEvent("onItemClick", function (id) {
@@ -459,14 +463,12 @@
             });
 
             // Создание задачи
-            $$('kanban').data.attachEvent("onBeforeAdd", function () {
-                createTask();
-            });
-
-            // Удаление задачи
-            $$('kanban').data.attachEvent("onBeforeDelete", function () {
-                let id = $$('kanban').getSelectedId();
-                delTask(id);
+            $$('kanban').data.attachEvent("onBeforeAdd", function (id, item) {
+                if (Number.isInteger(item.id)) {
+                    createTask();
+                    return false;
+                }
+                else return true;
             });
 
             // Изменение задачи
@@ -479,8 +481,14 @@
             $$("kanban").attachEvent("onBeforeEditorAction", function (action, editor, obj) {
                 if (action === "save" && !editor.getForm().validate())
                     return false;
+                // Перемещение DnD
                 else if (action === "save") {
                     obj.$list = parseInt(obj.status);
+                }
+                // Удаление задачи
+                else if (action === "delete") {
+                    let id = $$('kanban').getSelectedId();
+                    delTask(id);
                 }
             });
 
@@ -524,11 +532,13 @@
             function handler() {
                 // получаем контекст взятия элемента
                 let dnd = webix.DragControl.getContext();
+                console.log(dnd.start);
+                let item = $$('kanban').getItem(dnd.start);
+                console.log(item);
                 // определяем откуда пришел дроп
                 switch (dnd.from.name) {
                     case 'kanbanlist':
                         delTask(dnd.start);
-                        $$('kanban').remove(dnd.start);
                         break;
                     case 'Вписать лист проектов':
                         deleteFromGroup(dnd.start);

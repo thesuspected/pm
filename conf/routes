@@ -28,8 +28,8 @@ DELETE  /projects/:id                           CProject.Delete
 
 GET     /projects/:id/tasks                     CTask.GetAll
 GET     /projects/:id/tasks/:id/tags            CTask.GetTags
-# GET     /tasks/:id                             CTask.Get
-# GET     /tasksFk/:id                           CTask.GetFk
+GET     /projects/:id/tasks/:id                 CTask.Get
+GET     /projects/:id/tasksFk/:id               CTask.GetFk
 PUT     /projects/:id/tasks/                    CTask.Create
 POST    /projects/:id/tasks/:id                 CTask.Update
 DELETE  /projects/:id/tasks/:id                 CTask.Delete

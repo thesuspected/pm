@@ -5,6 +5,7 @@ type Task struct {
 	Name 			string		`json:"text"`
 	Description 	string		`json:"description"`
 	Date 			string		`json:"date"`
+	Tags			string		`json:"tags"`
 	Priority		string		`json:"color"`
 	Status			string		`json:"status"`
 	Assign			string		`json:"user_id"`

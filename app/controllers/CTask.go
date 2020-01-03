@@ -20,6 +20,22 @@ func (c *CTask) GetAll(id int) revel.Result {
 	return c.RenderJSON(tasks)
 }
 
+func (c *CTask) Get(id int) revel.Result {
+	task, err := c.provider.Get(id)
+	if err != nil {
+		return c.RenderError(err)
+	}
+	return c.RenderJSON(task)
+}
+
+func (c *CTask) GetFk(id int) revel.Result {
+	task, err := c.provider.GetFk(id)
+	if err != nil {
+		return c.RenderError(err)
+	}
+	return c.RenderJSON(task)
+}
+
 func (c *CTask) Create(task resources.Task) revel.Result {
 	tasks, err := c.provider.Create(task)
 	if err != nil {

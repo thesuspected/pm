@@ -385,6 +385,22 @@ func Register() {
 				},
 			},
 			&revel.MethodType{
+				Name: "Get",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "id", Type: reflect.TypeOf((*int)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "GetFk",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "id", Type: reflect.TypeOf((*int)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
 				Name: "Create",
 				Args: []*revel.MethodArg{ 
 					&revel.MethodArg{Name: "task", Type: reflect.TypeOf((*resources.Task)(nil)) },

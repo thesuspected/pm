@@ -384,6 +384,24 @@ func (_ tCTask) GetAll(
 	return revel.MainRouter.Reverse("CTask.GetAll", args).URL
 }
 
+func (_ tCTask) Get(
+		id int,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "id", id)
+	return revel.MainRouter.Reverse("CTask.Get", args).URL
+}
+
+func (_ tCTask) GetFk(
+		id int,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "id", id)
+	return revel.MainRouter.Reverse("CTask.GetFk", args).URL
+}
+
 func (_ tCTask) Create(
 		task interface{},
 		) string {

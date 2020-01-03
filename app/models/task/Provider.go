@@ -23,6 +23,24 @@ func (p *Provider) GetAll(id int) ([]*resources.Task, error) {
 	return p.tasks.SelectAll(db, id)
 }
 
+func (p *Provider) Get(id int) ([]*resources.Task, error) {
+	db, err := connection.DatabaseConnect()
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+	return p.tasks.Select(id, db)
+}
+
+func (p *Provider) GetFk(id int) ([]*resources.Task, error) {
+	db, err := connection.DatabaseConnect()
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+	return p.tasks.SelectFk(id, db)
+}
+
 func (p *Provider) Create(task resources.Task) ([]*resources.Task, error) {
 	db, err := connection.DatabaseConnect()
 	if err != nil {

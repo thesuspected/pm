@@ -12,8 +12,8 @@ type TaskMapper struct {
 }
 
 func (m *TaskMapper) SelectAll(db *sql.DB, id int) (tasks []*resources.Task, err error) {
-	rows, err := db.Query(
-		`SELECT *
+	rows, err := db.Query(`
+				SELECT *
 				FROM t_tasks
 				WHERE fk_project = $1
 				ORDER BY c_id`, id)
@@ -34,6 +34,38 @@ func (m *TaskMapper) SelectAll(db *sql.DB, id int) (tasks []*resources.Task, err
 	if err = rows.Err(); err != nil {
 		Println(err)
 	}
+
+	return tasks, err
+}
+
+func (m *TaskMapper) Select(id int, db *sql.DB) (tasks []*resources.Task, err error) {
+	c := resources.Task{}
+	err = db.QueryRow(
+		`SELECT t.c_id, t.c_name, t.c_description, t.c_date, r.c_name, s.c_name, e.c_last_name, p.c_name
+				FROM t_tasks AS t, t_ref_priority AS r, t_ref_status AS s, t_employees AS e, t_projects AS p
+				WHERE t.fk_priority = r.c_id and t.fk_status = s.c_id and t.fk_assign_to = e.c_id and t.fk_project = p.c_id
+				GROUP BY t.c_id, r.c_name, s.c_name, e.c_last_name, p.c_name
+				HAVING t.c_id = $1`, id).Scan(&c.Id, &c.Name, &c.Description, &c.Date, &c.Priority, &c.Status, &c.Assign, &c.Project)
+	if err != nil {
+		return tasks, err
+	}
+
+	tasks = append(tasks, &c)
+
+	return tasks, err
+}
+
+func (m *TaskMapper) SelectFk(id int, db *sql.DB) (tasks []*resources.Task, err error) {
+	c := resources.Task{}
+	err = db.QueryRow(
+		`SELECT *
+				FROM t_tasks
+				WHERE c_id = $1`, id).Scan(&c.Id, &c.Name, &c.Description, &c.Date, &c.Priority, &c.Status, &c.Assign, &c.Project)
+	if err != nil {
+		return tasks, err
+	}
+
+	tasks = append(tasks, &c)
 
 	return tasks, err
 }
