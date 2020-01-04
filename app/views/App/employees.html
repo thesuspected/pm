@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>pm - employees</title>
+    <link rel="icon" href="/public/img/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="/public/css/style.css" type="text/css">
     <link rel="stylesheet" href="/public/codebase/webix.css" type="text/css">
     <link rel="stylesheet" href="/public/kanban/codebase/kanban.css" type="text/css">
@@ -473,10 +474,6 @@
             getAllGroups();         // Получаем все группы из бд
             getAllEmployees();      // Получаем всех сотрудников из бд
 
-            // выводим сотрудников без группы
-            $$('listGroup').select(1);
-            getGroupEmployees(1);
-
             // подсветка текущей вкладки
             $$("sidebar").select("employees", true);
 
@@ -484,6 +481,14 @@
             $$('basket').hide();
 
             //////////////////////////////////////////// Обработчики ///////////////////////////////////////////////
+
+            // Действия после загрузки групп
+            $$('listGroup').attachEvent("onAfterLoad", function(){
+                // селектим первый проект
+                this.select(this.getFirstId());
+                // получаем сотрудников выбранного проекта
+                getGroupEmployees();
+            });
 
             // Переход по вкладкам
             $$("sidebar").attachEvent("onItemClick", function (id) {

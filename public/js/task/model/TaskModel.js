@@ -33,5 +33,15 @@ export const TaskModel = {
     getTags: (Id, project) => {
         return fetch(`/projects/${project}/tasks/${Id}/tags`, {method: 'GET'})
             .then(response => response.json())
+    },
+
+    createTag: (tag, project) => {
+        return fetch(`/projects/${project}/tasks/${tag.id}/tags/${tag.value}`, {method: 'PUT', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(tag)})
+            .then(response => response.json())
+    },
+
+    deleteTag: (tag, project) => {
+        return fetch(`/projects/${project}/tasks/${tag.id}/tags/${tag.value}`, {method: 'DELETE', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(tag)})
+            .then(response => response.json())
     }
 }

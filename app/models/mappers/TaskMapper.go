@@ -136,3 +136,25 @@ func (m *TaskMapper) SelectTags(db *sql.DB, id int) (tags []*resources.Ref, err 
 
 	return tags, err
 }
+
+func (m *TaskMapper) InsertTag(db *sql.DB, tag resources.Ref) (resources.Ref, error) {
+	_, err := db.Exec(
+		`insert into toc_task_to_tags
+				values (nextval('t_toc_ttt_id_seq'), $2, $1)`, tag.Id, tag.Value)
+	if err != nil {
+		return tag, err
+	}
+
+	return tag, err
+}
+
+func (m *TaskMapper) DeleteTag(db *sql.DB, tag resources.Ref) (resources.Ref, error) {
+	_, err := db.Exec(`
+				DELETE FROM toc_task_to_tags 
+				WHERE fk_task = $1 and fk_tag = $2`, tag.Id, tag.Value)
+	if err != nil {
+		return tag, err
+	}
+
+	return tag, err
+}

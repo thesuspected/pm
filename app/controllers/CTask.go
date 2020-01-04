@@ -68,3 +68,19 @@ func (c *CTask) GetTags(id int) revel.Result {
 	}
 	return c.RenderJSON(tags)
 }
+
+func (c *CTask) CreateTag(tag resources.Ref) revel.Result {
+	tags, err := c.provider.CreateTag(tag)
+	if err != nil {
+		return c.RenderError(err)
+	}
+	return c.RenderJSON(tags)
+}
+
+func (c *CTask) DeleteTag(tag resources.Ref) revel.Result {
+	tags, err := c.provider.DeleteTag(tag)
+	if err != nil {
+		return c.RenderError(err)
+	}
+	return c.RenderJSON(tags)
+}

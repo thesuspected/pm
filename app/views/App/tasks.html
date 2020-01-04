@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>pm - tasks</title>
+    <link rel="icon" href="/public/img/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="/public/css/style.css" type="text/css">
     <link rel="stylesheet" href="/public/codebase/webix.css" type="text/css">
     <link rel="stylesheet" href="/public/kanban/codebase/kanban.css" type="text/css">
@@ -246,9 +247,58 @@
     }
 
     function updateTask(task) {
+        let project = $$('listProject').getSelectedId();
+        // обновляем задачу
         TaskModel.update(task).then(function (result) {
-            console.log(result);
+            // добавить обновление с сервера?
         });
+        // обновляем теги задачи
+        TaskModel.getTags(task.id, task.project).then(function (tags) {
+            // переносим теги ДО в массив
+            let before = [];
+            if (tags) {
+                for (let i = 0; i < tags.length; i++) {
+                    before[i] = tags[i].value;
+                }
+            }
+            // переносим теги ПОСЛЕ в массив
+            let after = task.tags;
+
+            // выбираем длину
+            let len;
+            if (after.length > before.length) len = after.length;
+            else len = before.length;
+
+            // заполняем массив для отправки
+            let tag = {};
+            tag.id = task.id;
+
+            // проходимся по массивам
+            for (let j = 0; j < len; j++) {
+
+                // если элемент сущ.
+                if (before[j]) {
+                    // ищем старый тег в новом массиве
+                    let elem = after.indexOf(before[j]);
+                    // если его нет - удаляем
+                    if (elem === -1) {
+                        tag.value = before[j];              // дополняем массив для отправки
+                        TaskModel.deleteTag(tag, project);  // делаем запрос на удаление
+                    }
+                }
+
+                // если элемент сущ.
+                if (after[j]) {
+                    // ищем новый тег в старом массиве
+                    let elem = before.indexOf(after[j]);
+                    // если его нет - добавляем
+                    if (elem === -1) {
+                        tag.value = after[j];               // дополняем массив для отправки
+                        TaskModel.createTag(tag, project);  // делаем запрос на создание
+                    }
+                }
+            }
+        })
     }
 
     //************************************************** Select ***************************************************//
@@ -464,10 +514,12 @@
 
             // Создание задачи
             $$('kanban').data.attachEvent("onBeforeAdd", function (id, item) {
+                // игнорируем создание задачи канбаном
                 if (Number.isInteger(item.id)) {
                     createTask();
                     return false;
                 }
+                // разрешаем создание из функции
                 else return true;
             });
 

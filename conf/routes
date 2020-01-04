@@ -6,18 +6,21 @@
 module:testrunner
 # module:jobs
 
-
+# Страницы
 GET     /                                       App.Index
 GET     /tasks                                  App.Tasks
 GET     /employees                              App.Employees
 
+# Селекты
 GET     /positions                              CRef.GetPos
 GET     /priority                               CRef.GetPriority
 GET     /status                                 CRef.GetStatus
 GET     /tags                                   CRef.GetTags
 
+# Загрузка
 # POST    /upload                                CRef.Upload
 
+# Проекты
 GET     /projects                               CProject.GetAll
 GET     /projects/:id                           CProject.Get
 GET     /projectsFk/:id                         CProject.GetFk
@@ -25,19 +28,23 @@ PUT     /projects                               CProject.Create
 POST    /projects/:id                           CProject.Update
 DELETE  /projects/:id                           CProject.Delete
 
-
+# Задачи
 GET     /projects/:id/tasks                     CTask.GetAll
-GET     /projects/:id/tasks/:id/tags            CTask.GetTags
 GET     /projects/:id/tasks/:id                 CTask.Get
 GET     /projects/:id/tasksFk/:id               CTask.GetFk
 PUT     /projects/:id/tasks/                    CTask.Create
 POST    /projects/:id/tasks/:id                 CTask.Update
 DELETE  /projects/:id/tasks/:id                 CTask.Delete
 
+# Теги задач
+GET     /projects/:id/tasks/:id/tags            CTask.GetTags
+PUT     /projects/:id/tasks/:id/tags/:id        CTask.CreateTag
+DELETE  /projects/:id/tasks/:id/tags/:id        CTask.DeleteTag
 
-# PUT     /subTask                               CSubTask.Create
+# Подзадачи
+# PUT     /subTask                                CSubTask.Create
 
-
+# Группы
 GET     /groups                                 CGroup.GetAll
 GET     /groups/:id                             CGroup.Get
 GET     /groupsFk/:id                           CGroup.GetFk
@@ -45,7 +52,7 @@ PUT     /groups                                 CGroup.Create
 POST    /groups/:id                             CGroup.Update
 DELETE  /groups/:id                             CGroup.Delete
 
-
+# Сотрудники
 GET     /employeess                             CEmployee.GetAll
 GET     /employeesEmp                           CEmployee.GetEmp
 GET     /employees/:id                          CEmployee.Get
@@ -54,7 +61,7 @@ PUT     /employees                              CEmployee.Create
 POST    /employees/:id                          CEmployee.Update
 DELETE  /employees/:id                          CEmployee.Delete
 
-
+# Группы сотрудников
 GET     /employeesByGroup/:id                   CEmployee.GetByGroup
 GET     /employeesByGroupFk/:id                 CEmployee.GetByGroupFk
 POST    /employeesUpdateGroup/:id               CEmployee.UpdateGroup
@@ -62,7 +69,7 @@ POST    /employeesDeleteGroup/:id               CEmployee.DeleteGroup
 
 
 # Ignore favicon requests
-GET     /favicon.ico                            404
+# GET     /favicon.ico                            404
 
 # Map static resources from the /app/public folder to the /public path
 GET     /public/*filepath                       Static.Serve("public")

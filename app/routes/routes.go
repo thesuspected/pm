@@ -438,4 +438,22 @@ func (_ tCTask) GetTags(
 	return revel.MainRouter.Reverse("CTask.GetTags", args).URL
 }
 
+func (_ tCTask) CreateTag(
+		tag interface{},
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "tag", tag)
+	return revel.MainRouter.Reverse("CTask.CreateTag", args).URL
+}
+
+func (_ tCTask) DeleteTag(
+		tag interface{},
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "tag", tag)
+	return revel.MainRouter.Reverse("CTask.DeleteTag", args).URL
+}
+
 

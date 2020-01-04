@@ -76,3 +76,21 @@ func (p *Provider) GetTags(id int) ([]*resources.Ref, error) {
 	defer db.Close()
 	return p.tasks.SelectTags(db, id)
 }
+
+func (p *Provider) CreateTag(tag resources.Ref) (resources.Ref, error) {
+	db, err := connection.DatabaseConnect()
+	if err != nil {
+		return tag, err
+	}
+	defer db.Close()
+	return p.tasks.InsertTag(db, tag)
+}
+
+func (p *Provider) DeleteTag(tag resources.Ref) (resources.Ref, error) {
+	db, err := connection.DatabaseConnect()
+	if err != nil {
+		return tag, err
+	}
+	defer db.Close()
+	return p.tasks.DeleteTag(db, tag)
+}
