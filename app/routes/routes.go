@@ -456,4 +456,40 @@ func (_ tCTask) DeleteTag(
 	return revel.MainRouter.Reverse("CTask.DeleteTag", args).URL
 }
 
+func (_ tCTask) GetAllSub(
+		id int,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "id", id)
+	return revel.MainRouter.Reverse("CTask.GetAllSub", args).URL
+}
+
+func (_ tCTask) CreateSub(
+		sub interface{},
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "sub", sub)
+	return revel.MainRouter.Reverse("CTask.CreateSub", args).URL
+}
+
+func (_ tCTask) DeleteSub(
+		sub interface{},
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "sub", sub)
+	return revel.MainRouter.Reverse("CTask.DeleteSub", args).URL
+}
+
+func (_ tCTask) UpdateSub(
+		sub interface{},
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "sub", sub)
+	return revel.MainRouter.Reverse("CTask.UpdateSub", args).URL
+}
+
 

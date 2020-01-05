@@ -158,3 +158,74 @@ func (m *TaskMapper) DeleteTag(db *sql.DB, tag resources.Ref) (resources.Ref, er
 
 	return tag, err
 }
+
+func (m *TaskMapper) SelectAllSub(db *sql.DB, id int) (subTasks []*resources.SubTask, err error) {
+	rows, err := db.Query(`
+				SELECT *
+				FROM t_subtasks
+				WHERE fk_task = $1
+				ORDER BY c_id`, id)
+	if err != nil {
+		return subTasks, err
+	}
+	defer rows.Close()
+	for rows.Next() {
+		c := resources.SubTask{}
+		err := rows.Scan(&c.Id, &c.Name, &c.Task, &c.Check)
+		if err != nil {
+			return subTasks, err
+		}
+
+		subTasks = append(subTasks, &c)
+	}
+
+	if err = rows.Err(); err != nil {
+		Println(err)
+	}
+
+	return subTasks, err
+}
+
+func (m *TaskMapper) InsertSub(db *sql.DB, sub resources.SubTask) (subTasks []*resources.SubTask, err error) {
+	c := resources.SubTask{}
+	err = db.QueryRow(
+		`INSERT INTO t_subtasks
+				VALUES (nextval('t_subtasks_id_seq'), $1, $2, $3)
+				RETURNING *`,
+		sub.Name, sub.Task, sub.Check).Scan(&c.Id, &c.Name, &c.Task, &c.Check)
+	if err != nil {
+		return subTasks, err
+	}
+
+	subTasks = append(subTasks, &c)
+
+	return subTasks, err
+}
+
+func (m *TaskMapper) DeleteSub(db *sql.DB, sub resources.SubTask) (resources.SubTask, error) {
+	_, err := db.Exec(`
+				DELETE FROM t_subtasks
+				WHERE c_id = $1`, sub.Id)
+	if err != nil {
+		return sub, err
+	}
+
+	return sub, err
+}
+
+func (m *TaskMapper) UpdateSub(db *sql.DB, sub resources.SubTask) (subTasks []*resources.SubTask, err error) {
+	c := resources.SubTask{}
+	err = db.QueryRow(
+		`UPDATE t_subtasks 
+				SET (c_name, fk_task, c_check) = ($2, $3, $4)
+				WHERE c_id = $1
+				RETURNING c_id`,
+		sub.Id, sub.Name, sub.Task, sub.Check).Scan(&c.Id)
+	if err != nil {
+		return subTasks, err
+	}
+
+	subTasks = append(subTasks, &c)
+
+	return subTasks, err
+}

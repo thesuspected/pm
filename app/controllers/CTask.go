@@ -84,3 +84,36 @@ func (c *CTask) DeleteTag(tag resources.Ref) revel.Result {
 	}
 	return c.RenderJSON(tags)
 }
+
+func (c *CTask) GetAllSub(id int) revel.Result {
+	c.provider = task.New()
+	subTasks, err := c.provider.GetAllSub(id)
+	if err != nil {
+		c.RenderJSON(err)
+	}
+	return c.RenderJSON(subTasks)
+}
+
+func (c *CTask) CreateSub(sub resources.SubTask) revel.Result {
+	subTasks, err := c.provider.CreateSub(sub)
+	if err != nil {
+		return c.RenderError(err)
+	}
+	return c.RenderJSON(subTasks)
+}
+
+func (c *CTask) DeleteSub(sub resources.SubTask) revel.Result {
+	subTasks, err := c.provider.DeleteSub(sub)
+	if err != nil {
+		return c.RenderError(err)
+	}
+	return c.RenderJSON(subTasks)
+}
+
+func (c *CTask) UpdateSub(sub resources.SubTask) revel.Result {
+	subTasks, err := c.provider.UpdateSub(sub)
+	if err != nil {
+		return c.RenderError(err)
+	}
+	return c.RenderJSON(subTasks)
+}

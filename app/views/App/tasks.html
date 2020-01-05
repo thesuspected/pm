@@ -301,6 +301,45 @@
         })
     }
 
+    //************************************************** Подзадачи ***************************************************//
+
+    function fillSubTasksForm(id) {
+        // делаем запрос
+        TaskModel.getAllSub(id).then(function (result) {
+            // добавляем подзадачи
+            $$('subTasksTable').parse(result);
+        });
+    }
+
+    function createSubTask() {
+        // заполняем подзадачу
+        let sub = {};
+        sub.id = "";
+        sub.value = $$('textSubTask').getValue();
+        sub.task = $$('kanban').getSelectedId();
+        sub.check = false;
+        // делаем запрос
+        TaskModel.createSub(sub).then(function (result) {
+            // добавляем подзадачу
+            $$('subTasksTable').add(result[0]);
+        });
+        // очищаем поле ввода
+        $$('textSubTask').setValue("");
+    }
+
+    function deleteSubTask(sub) {
+        // удаляем подзадачу из бд
+        TaskModel.deleteSub(sub);
+        // удаляем подзадачу из таблицы
+        $$('subTasksTable').remove(sub.id);
+    }
+    
+    function updateSubTask(sub) {
+        // При нажатии check в шапке, больше 5 записей не обрабатывается
+        // обновляем задачу в бд
+        TaskModel.updateSub(sub);
+    }
+
     //************************************************** Select ***************************************************//
 
     function getGroupSelect() {
@@ -509,6 +548,8 @@
             // Добавить задачу
             $$("addTaskBtn").attachEvent("onItemClick", function () {
                 $$("kanban").showEditor();
+                $$('subTasksTable').clearAll(); // очищаем таблицу подзадач
+                $$('enterSubTask').hide();      // скрываем ввод подзадачи
                 $$('kanban_form').setValues(tasks_originalValues);
             });
 
@@ -551,16 +592,56 @@
 
             //********************************************** Подзадачи ***********************************************//
 
-            // Добавить подзадачу
+            // Заполнение подзадач перед открытием
+            $$("kanban").attachEvent("onBeforeEditorShow", function (editor, obj) {
+                $$('subTasksTable').clearAll(); // очищаем таблицу подзадач
+                $$('enterSubTask').hide();      // скрываем ввод подзадачи
+                // если задача создана
+                if (obj) {
+                    fillSubTasksForm(obj.id)
+                }
+            });
+
+            // Показать поле ввода подзадачи
             $$("subTasksTable").on_click.addSubtaskBtn = function (node) {
-                $$('subTasksTable').add({id:$$('subTasksTable').length,check:0, value:''});
+                $$('enterSubTask').show();
             };
+
+            // Скрыть поле ввода подзадачи
+            $$("closeEnterSubTaskBtn").attachEvent("onItemClick", function () {
+                $$('enterSubTask').hide();
+                $$('textSubTask').setValue("");
+            });
+
+            // Добавить подзадачу
+            $$("saveSubTaskBtn").attachEvent("onItemClick", function () {
+                createSubTask();
+            });
+            // press Enter
+            $$("textSubTask").attachEvent("onEnter",function(ev){
+                createSubTask();
+            });
 
             // Удалить подзадачу
             $$("subTasksTable").on_click.delSubtaskBtn = function (node) {
-                let id = $$('subTasksTable').getSelectedId();
-                $$('subTasksTable').remove(id);
+                let sub = $$('subTasksTable').getSelectedItem();
+                deleteSubTask(sub);
             };
+
+            // Изменение подзадачи
+            $$('subTasksTable').attachEvent("onAfterEditStop", function(state, editor, ignoreUpdate){
+                if(state.value !== state.old){
+                    let sub = $$('subTasksTable').getSelectedItem();
+                    updateSubTask(sub);
+                }
+            });
+
+            // Изменение check
+            $$('subTasksTable').attachEvent("onCheck", function(row, column, state){
+                $$('subTasksTable').select(row);
+                let sub = $$('subTasksTable').getSelectedItem();
+                updateSubTask(sub);
+            });
 
             //********************************************* Drag & Drop **********************************************//
 

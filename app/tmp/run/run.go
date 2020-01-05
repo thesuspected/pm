@@ -448,6 +448,38 @@ func Register() {
 				RenderArgNames: map[int][]string{ 
 				},
 			},
+			&revel.MethodType{
+				Name: "GetAllSub",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "id", Type: reflect.TypeOf((*int)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "CreateSub",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "sub", Type: reflect.TypeOf((*resources.SubTask)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "DeleteSub",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "sub", Type: reflect.TypeOf((*resources.SubTask)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "UpdateSub",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "sub", Type: reflect.TypeOf((*resources.SubTask)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
 			
 		})
 	

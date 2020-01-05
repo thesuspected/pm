@@ -43,5 +43,25 @@ export const TaskModel = {
     deleteTag: (tag, project) => {
         return fetch(`/projects/${project}/tasks/${tag.id}/tags/${tag.value}`, {method: 'DELETE', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(tag)})
             .then(response => response.json())
-    }
+    },
+
+    getAllSub: (Id) => {
+        return fetch(`/tasks/${Id}/sub`, {method: 'GET'})
+            .then(response => response.json())
+    },
+
+    createSub: (sub) => {
+        return fetch(`/tasks/${sub.task}/sub`, {method: 'PUT', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(sub)})
+            .then(response => response.json())
+    },
+
+    updateSub: (sub) => {
+        return fetch(`/tasks/${sub.task}/sub/${sub.id}`, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(sub)})
+            .then(response => response.json())
+    },
+
+    deleteSub: (sub) => {
+        return fetch(`/tasks/${sub.task}/sub/${sub.id}`, {method: 'DELETE', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(sub)})
+            .then(response => response.json())
+    },
 }

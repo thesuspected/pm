@@ -86,26 +86,29 @@ export let kanban = {
             },
             {
                 view: "label",
-                label: "Подзадачи"
+                label: "Чек-лист"
             },
             {
                 view:"datatable",
                 id:"subTasksTable",
                 editable: true,
                 select: true,
-                multiselect:true,
                 height:220,
                 columns:[
-                    { id:"check", header:{ content:"masterCheckbox" }, template:"{common.checkbox()}", width:50},
-                    { id:"value", header:"Значение", editor:"text", fillspace:true},
+                    { id:"check", header:{ content:"masterCheckbox" }, template:"{common.checkbox()}", checkValue: true, uncheckValue: false, width:50},
+                    { id:"value", header:"Подзадачи", editor:"text", fillspace:true},
                     { id:"buttons", header:addIcon + delIcon, width:100}
-                ],
-                data: [
-                    { id: 1, check:0, value:"Допилить базу данных"},
-                    { id: 2, check:1, value:"Реализовать подзадачи на фронтенде"},
-                    { id: 3, check:0, value:"Связать бэк с фронтом"},
                 ]
             },
+            {
+                margin: 10,
+                id: "enterSubTask",
+                cols: [
+                    { view: "icon", id: "closeEnterSubTaskBtn", icon: "mdi mdi-close" },
+                    { view: "text", id: "textSubTask", placeholder: "Введите подзадачу..." },
+                    { view: "button", id: "saveSubTaskBtn", value: "Добавить", width: 111, css: "webix_primary" },
+                ]
+            }
         ]
     },
     userList: {

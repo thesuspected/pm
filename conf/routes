@@ -42,7 +42,10 @@ PUT     /projects/:id/tasks/:id/tags/:id        CTask.CreateTag
 DELETE  /projects/:id/tasks/:id/tags/:id        CTask.DeleteTag
 
 # Подзадачи
-# PUT     /subTask                                CSubTask.Create
+GET     /tasks/:id/sub                          CTask.GetAllSub
+PUT     /tasks/:id/sub                          CTask.CreateSub
+POST    /tasks/:id/sub/:id                      CTask.UpdateSub
+DELETE  /tasks/:id/sub/:id                      CTask.DeleteSub
 
 # Группы
 GET     /groups                                 CGroup.GetAll

@@ -94,3 +94,39 @@ func (p *Provider) DeleteTag(tag resources.Ref) (resources.Ref, error) {
 	defer db.Close()
 	return p.tasks.DeleteTag(db, tag)
 }
+
+func (p *Provider) GetAllSub(id int) ([]*resources.SubTask, error) {
+	db, err := connection.DatabaseConnect()
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+	return p.tasks.SelectAllSub(db, id)
+}
+
+func (p *Provider) CreateSub(sub resources.SubTask) ([]*resources.SubTask, error) {
+	db, err := connection.DatabaseConnect()
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+	return p.tasks.InsertSub(db, sub)
+}
+
+func (p *Provider) DeleteSub(sub resources.SubTask) (resources.SubTask, error) {
+	db, err := connection.DatabaseConnect()
+	if err != nil {
+		return sub, err
+	}
+	defer db.Close()
+	return p.tasks.DeleteSub(db, sub)
+}
+
+func (p *Provider) UpdateSub(sub resources.SubTask) ([]*resources.SubTask, error) {
+	db, err := connection.DatabaseConnect()
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+	return p.tasks.UpdateSub(db, sub)
+}
