@@ -11,7 +11,7 @@ export let uploadApi = {
             }
         },
         onFileUpload:function(item){
-
+            webix.alert("Файл загружен");
         },
         onFileUploadError:function(item){
             webix.alert("Ошибка загрузки файла");

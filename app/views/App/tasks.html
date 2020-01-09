@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>pm - tasks</title>
-    <link rel="icon" href="/public/img/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/public/img/favicon.png" type="image/x-icon">
     <link rel="stylesheet" href="/public/css/style.css" type="text/css">
     <link rel="stylesheet" href="/public/codebase/webix.css" type="text/css">
     <link rel="stylesheet" href="/public/kanban/codebase/kanban.css" type="text/css">
@@ -457,9 +457,6 @@
             getPrioritySelect();
             getStatusSelect();
 
-            //let subtasks = $$('subTasksTable').data.pull;
-            //console.log(subtasks);
-
             // Подсветка текущей вкладки
             $$("sidebar").select("tasks", true);
 
@@ -472,8 +469,6 @@
             $$('listProject').attachEvent("onAfterLoad", function(){
                 // селектим первый проект
                 this.select(this.getFirstId());
-                // получаем сотрудников выбранного проекта
-                getAssignSelect();
             });
 
             // Переход по вкладкам
@@ -536,6 +531,7 @@
             // Click по проекту (Сделать смену задач)
             $$("listProject").attachEvent("onSelectChange", function () {
                 getAllTasks();
+                getAssignSelect();
             });
 
             // Редактирование проекта по doubleClick
@@ -665,9 +661,7 @@
             function handler() {
                 // получаем контекст взятия элемента
                 let dnd = webix.DragControl.getContext();
-                console.log(dnd.start);
                 let item = $$('kanban').getItem(dnd.start);
-                console.log(item);
                 // определяем откуда пришел дроп
                 switch (dnd.from.name) {
                     case 'kanbanlist':
