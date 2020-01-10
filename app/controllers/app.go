@@ -1,9 +1,11 @@
 package controllers
 
 import (
+	"encoding/base64"
 	"fmt"
 	"log"
 	"pm/app/routes"
+	"strings"
 
 	"github.com/revel/revel"
 )
@@ -12,26 +14,41 @@ type App struct {
 	*revel.Controller
 }
 
-// func handler(w http.ResponseWriter, r *http.Request) {
-// 	w.Header().Set("WWW-Authenticate", fmt.Sprintf(`Basic realm="Войдите в систему"`))
-// 	w.WriteHeader(401)
-// 	return
-// }
-
 func (c *App) checkAuth() revel.Result {
-	//r := c.Request
-	w := c.Response.Out.Header()
-	if w.Get("authorization") != "" {
-		log.Println(w.Get("authorization"))
-		return c.Redirect(routes.App.Tasks)
+
+	// получаем строку авторизации
+	auth := c.Request.GetHttpHeader("authorization")
+
+	// если авторизация есть
+	if auth != "" {
+		// избавляемся от префикса
+		encoded := strings.TrimPrefix(auth, "Basic ")
+		// декодируем
+		decoded, err := base64.StdEncoding.DecodeString(encoded)
+		if err != nil {
+			log.Fatal(err)
+		}
+		// разбиваем логин и пароль
+		str := strings.Split(string(decoded), ":")
+		if len(str) == 2 {
+			user, pass := str[0], str[1]
+			if user == "suspect" && pass == "suspect" {
+				c.Redirect(routes.App.Tasks)
+			}
+		}
+	} else {
+		// если не авторизован
+		h := c.Response.Out.Header()
+		h.Set("WWW-Authenticate", fmt.Sprintf(`Basic realm="Войдите в систему"`))
+		h.SetStatus(401)
+		return nil
 	}
-	w.Set("WWW-Authenticate", fmt.Sprintf(`Basic realm="Войдите в систему"`))
-	w.SetStatus(401)
 	return nil
 }
 
+// проверка аутентификации
 func init() {
-	revel.InterceptMethod((*App).checkAuth, revel.AFTER)
+	revel.InterceptMethod((*App).checkAuth, revel.BEFORE)
 }
 
 func (c App) Index() revel.Result {

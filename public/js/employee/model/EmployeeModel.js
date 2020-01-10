@@ -53,5 +53,10 @@ export const EmployeeModel = {
     update: (employee) => {
         return fetch(`/employees/${employee.group}`, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(employee)})
             .then(response => response.json())
-    }
+    },
+
+    logout: () => {
+        return fetch(`/logout`, {method: 'POST'})
+            .then(response => response.json())
+    },
 }

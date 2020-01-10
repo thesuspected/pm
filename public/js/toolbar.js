@@ -11,8 +11,9 @@ export let toolbar = {
         },
         {view: "label", label: "Project Manager"},
         {},
-        {view: "icon", icon: "mdi mdi-account-circle", tooltip:"аккаунт"},
-        {view: "icon", icon: "mdi mdi-bell", badge: 3},
+        {type: 'clean', template: "<div id='userPop' class='headUser'><img src='/public/img/employees/1.png' class='headImg'><span class='headSpan'>Мищенко А.</span></div>"},
+        //{view: "icon", icon: "mdi mdi-account-circle", tooltip:"аккаунт"},
+        //{view: "icon", icon: "mdi mdi-bell", badge: 3},
         {view: "icon", icon: "mdi mdi-settings"}
     ]
 };

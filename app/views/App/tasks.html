@@ -44,6 +44,9 @@
     import {sortPopup} from "/public/js/sortPopup.js";						// попап сортировки [по порядку / по имени / по дате]
     webix.ui(sortPopup);
 
+    import {userPopup} from "/public/js/userPopup.js";                      // попап пользователя
+    webix.ui(userPopup);
+
     import {basket} from "/public/js/basket.js";                            // корзина для DnD
 
     import {projects_originalValues} from "/public/js/origValuesForm.js";   // оригинальные значения формы проекта
@@ -409,6 +412,10 @@
         });
     }
 
+    function logout() {
+
+    }
+
     ///////////////////////////////////////////////// Отрисовка ////////////////////////////////////////////////////
 
     window.onload = function () {
@@ -476,9 +483,25 @@
                 location.href = id;
             });
 
+            //************************************************ Head *************************************************//
+
             // Открыть/закрыть sidebar
             $$("toggleIcon").attachEvent("onItemClick", function () {
                 $$("sidebar").toggle()
+            });
+
+            // Показать попап пользователя
+            let userPop = document.getElementById("userPop");
+            userPop.onclick = function () {
+                if ($$("user_Popup").isVisible()) {
+                    $$("user_Popup").hide()
+                }
+                else $$("user_Popup").show(this, { pos: "bottom"});
+            };
+
+            // Кнопка выйти
+            $$("logout").attachEvent("onItemClick", function () {
+                logout()
             });
 
             //********************************************** Проекты ***********************************************//
