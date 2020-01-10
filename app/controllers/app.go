@@ -18,6 +18,7 @@ func (c *App) checkAuth() revel.Result {
 
 	// получаем строку авторизации
 	auth := c.Request.GetHttpHeader("authorization")
+	h := c.Response.Out.Header()
 
 	// если авторизация есть
 	if auth != "" {
@@ -34,11 +35,14 @@ func (c *App) checkAuth() revel.Result {
 			user, pass := str[0], str[1]
 			if user == "suspect" && pass == "suspect" {
 				c.Redirect(routes.App.Tasks)
+			} else {
+				h.Set("WWW-Authenticate", fmt.Sprintf(`Basic realm="Войдите в систему"`))
+				h.SetStatus(401)
+				return nil
 			}
 		}
 	} else {
 		// если не авторизован
-		h := c.Response.Out.Header()
 		h.Set("WWW-Authenticate", fmt.Sprintf(`Basic realm="Войдите в систему"`))
 		h.SetStatus(401)
 		return nil
