@@ -1,14 +1,50 @@
 package controllers
 
 import (
-	"github.com/revel/revel"
+	"encoding/base64"
+	"log"
 	"pm/app/models/employee"
 	"pm/app/models/resources"
+	"pm/app/routes"
+	"strings"
+
+	"github.com/revel/revel"
 )
 
 type CEmployee struct {
 	*revel.Controller
 	provider *employee.Provider
+}
+
+func (c *CEmployee) Login(encoded string) revel.Result {
+	// декодируем
+	decoded, err := base64.StdEncoding.DecodeString(encoded)
+	if err != nil {
+		log.Fatal(err)
+	}
+	// разбиваем логин и пароль
+	str := strings.Split(string(decoded), ":")
+	if len(str) == 2 {
+		var user resources.User
+		user.Login, user.Password = str[0], str[1]
+		// ищем логин и пароль в бд
+		_, err := c.provider.UserLogin(user)
+		// если неверны
+		if err != nil {
+			// НЕВЕРНЫЕ ЛОГИН ИЛИ ПАРОЛЬ ВЕРНУТЬ
+		} else {
+			//h.Set("WWW-Authenticate", fmt.Sprintf(`Basic realm="Войдите в систему"`))
+			//h.SetStatus(401)
+			c.Request.Header.Add("Authorization", "Basic " + encoded)
+			return c.Redirect(routes.App.Tasks())
+		}
+	}
+	return c.Redirect(routes.App.Auth())
+}
+
+func (c *CEmployee) Logout() revel.Result {
+	c.Response.SetStatus(401)
+	return c.Redirect(routes.App.Auth())
 }
 
 func (c *CEmployee) GetAll() revel.Result {

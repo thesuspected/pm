@@ -1,11 +1,16 @@
 export let userPopup = {
     view: "popup",
     id: "user_Popup",
+    width: 140,
     body: {
-        width: 300,
-        height: 200,
-        rows: [
-            {view: "button", id:"logout", value: "Выйти", width: 111}
-        ]
+        view: "menu",
+        id: "userMenu",
+        data: [
+            {view: "button", id:"profile", value: "Профиль", icon: "mdi mdi-account"},
+            {view: "button", id:"settings", value: "Настройки", icon: "mdi mdi-tune"},
+            {view: "button", id:"logout", value: "Выйти", icon: "mdi mdi-logout"}
+        ],
+        layout: "y",
+        autoheight: true
     }
 };

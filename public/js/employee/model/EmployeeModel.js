@@ -55,6 +55,11 @@ export const EmployeeModel = {
             .then(response => response.json())
     },
 
+    login: (encoded) => {
+        return fetch(`/login`, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(encoded)})
+            .then(response => response.json())
+    },
+
     logout: () => {
         return fetch(`/logout`, {method: 'POST'})
             .then(response => response.json())

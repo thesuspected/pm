@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"encoding/base64"
-	"fmt"
+	//"fmt"
 	"log"
 	"pm/app/routes"
 	"strings"
@@ -18,10 +18,14 @@ func (c *App) checkAuth() revel.Result {
 
 	// получаем строку авторизации
 	auth := c.Request.GetHttpHeader("authorization")
-	h := c.Response.Out.Header()
+	url := c.Request.URL
 
 	// если авторизация есть
 	if auth != "" {
+		// не пускаем на стр авторизации
+		if url.Path == "/auth" {
+			c.Redirect(routes.App.Tasks())
+		}
 		// избавляемся от префикса
 		encoded := strings.TrimPrefix(auth, "Basic ")
 		// декодируем
@@ -33,20 +37,23 @@ func (c *App) checkAuth() revel.Result {
 		str := strings.Split(string(decoded), ":")
 		if len(str) == 2 {
 			user, pass := str[0], str[1]
+			// если логин и пароль найдены в бд
 			if user == "suspect" && pass == "suspect" {
-				c.Redirect(routes.App.Tasks)
-			} else {
-				h.Set("WWW-Authenticate", fmt.Sprintf(`Basic realm="Войдите в систему"`))
-				h.SetStatus(401)
 				return nil
+				// иначе выкидываем
+			} else {
+				//h.Set("WWW-Authenticate", fmt.Sprintf(`Basic realm="Войдите в систему"`))
+				//h.SetStatus(401)
+				return c.Redirect(routes.App.Auth())
 			}
 		}
-	} else {
-		// если не авторизован
-		h.Set("WWW-Authenticate", fmt.Sprintf(`Basic realm="Войдите в систему"`))
-		h.SetStatus(401)
-		return nil
+		// пересылаем на стр авторизации
+	} else if url.Path != "/auth" {
+		//h.Set("WWW-Authenticate", fmt.Sprintf(`Basic realm="Войдите в систему"`))
+		//h.SetStatus(401)
+		return c.Redirect(routes.App.Auth())
 	}
+	// если не авторизован и на стр авторизации
 	return nil
 }
 
@@ -56,7 +63,11 @@ func init() {
 }
 
 func (c App) Index() revel.Result {
-	return c.Redirect(routes.App.Tasks)
+	return c.Redirect(routes.App.Tasks())
+}
+
+func (c App) Auth() revel.Result {
+	return c.Render()
 }
 
 func (c App) Tasks() revel.Result {

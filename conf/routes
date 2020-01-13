@@ -8,8 +8,13 @@ module:testrunner
 
 # Страницы
 GET     /                                       App.Index
+GET     /auth                                   App.Auth
 GET     /tasks                                  App.Tasks
 GET     /employees                              App.Employees
+
+# Авторизация
+POST    /login                                  CEmployee.Login
+POST    /logout                                 CEmployee.Logout
 
 # Селекты
 GET     /positions                              CRef.GetPos

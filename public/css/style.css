@@ -212,3 +212,18 @@
     height: 38px;
     margin-left: 9px;
 }
+
+.loginTitle {
+    position: relative;
+    top: -16px;
+    display: inline-block;
+}
+
+.loginIcon {
+    height: 30px;
+    padding: 7px;
+}
+
+.forgotPass {
+    font-weight: 400 !important;
+}

@@ -11,9 +11,8 @@ export let toolbar = {
         },
         {view: "label", label: "Project Manager"},
         {},
-        {type: 'clean', template: "<div id='userPop' class='headUser'><img src='/public/img/employees/1.png' class='headImg'><span class='headSpan'>Мищенко А.</span></div>"},
-        //{view: "icon", icon: "mdi mdi-account-circle", tooltip:"аккаунт"},
+        {type: 'clean', template: "<div id='userPop' class='headUser'><img src='/public/img/employees/1.png' class='headImg'><span class='headSpan'>Мищенко А.</span></div>", tooltip: "Аккаунт"},
         //{view: "icon", icon: "mdi mdi-bell", badge: 3},
-        {view: "icon", icon: "mdi mdi-settings"}
+        {view: "icon", id: "themeBtn", icon: "mdi mdi-settings", tooltip: "Тема"}
     ]
 };

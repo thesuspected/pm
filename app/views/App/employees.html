@@ -43,6 +43,12 @@
     import {sortPopup} from "/public/js/sortPopup.js";					        // попап сортировки [по порядку / по имени / по дате]
     webix.ui(sortPopup);
 
+    import {userPopup} from "/public/js/userPopup.js";                          // попап пользователя
+    webix.ui(userPopup);
+
+    import {themePopup} from "/public/js/themePopup.js";                        // попап темы
+    webix.ui(themePopup);
+
     import {uploadApi} from "/public/js/uploadApi.js";                          // загрузка фото
     webix.ui(uploadApi);
 
@@ -495,9 +501,43 @@
                 location.href = id;
             });
 
+            //*********************************************** Header ************************************************//
+
             // Открыть/закрыть sidebar
             $$("toggleIcon").attachEvent("onItemClick", function () {
-                $$("sidebar").toggle();
+                $$("sidebar").toggle()
+            });
+
+            // Показать попап пользователя
+            let userPop = document.getElementById("userPop");
+            userPop.onclick = function () {
+                if ($$("user_Popup").isVisible()) {
+                    $$("user_Popup").hide()
+                }
+                else $$("user_Popup").show(this, { pos: "bottom"});
+            };
+
+            // Кнопка выйти
+            $$("userMenu").attachEvent("onItemClick", function (id) {
+                switch (id) {
+                    case 'profile':
+                        webix.message("Профиль");
+                        break;
+                    case 'settings':
+                        webix.message("Настройки");
+                        break;
+                    case 'logout':
+                        logout();
+                        break;
+                }
+            });
+
+            // Показать попап темы
+            $$('themeBtn').attachEvent("onItemClick", function (id, e) {
+                if ($$("theme_Popup").isVisible()) {
+                    $$("theme_Popup").hide()
+                }
+                else $$("theme_Popup").show({y:46, pos: "right"});
             });
 
             //*********************************************** Группы ************************************************//

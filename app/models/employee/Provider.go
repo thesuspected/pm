@@ -14,6 +14,15 @@ func New() *Provider {
 	return &Provider{employees: new(mappers.EmployeeMapper)}
 }
 
+func (p *Provider) UserLogin(user resources.User) ([]*resources.User, error) {
+	db, err := connection.DatabaseConnect()
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+	return mappers.UserLogin(db, user)
+}
+
 func (p *Provider) GetAll() ([]*resources.Employee, error) {
 	db, err := connection.DatabaseConnect()
 	if err != nil {

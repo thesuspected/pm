@@ -47,6 +47,9 @@
     import {userPopup} from "/public/js/userPopup.js";                      // попап пользователя
     webix.ui(userPopup);
 
+    import {themePopup} from "/public/js/themePopup.js";                    // попап темы
+    webix.ui(themePopup);
+
     import {basket} from "/public/js/basket.js";                            // корзина для DnD
 
     import {projects_originalValues} from "/public/js/origValuesForm.js";   // оригинальные значения формы проекта
@@ -413,7 +416,8 @@
     }
 
     function logout() {
-
+        EmployeeModel.logout();
+        webix.message({type: "debug", text: "Вы вышли из профиля"});
     }
 
     ///////////////////////////////////////////////// Отрисовка ////////////////////////////////////////////////////
@@ -458,16 +462,18 @@
             // Получаем все проекты
             getAllProjects();
 
-            // заполняем селекты
+            // Заполняем селекты
             getGroupSelect();
             getTagsSelect();
             getPrioritySelect();
             getStatusSelect();
 
+            // Получаем профиль пользователя
+
             // Подсветка текущей вкладки
             $$("sidebar").select("tasks", true);
 
-            // скрываем корзину
+            // Скрываем корзину
             $$('basket').hide();
 
             //////////////////////////////////////////// Обработчики ///////////////////////////////////////////////
@@ -483,7 +489,7 @@
                 location.href = id;
             });
 
-            //************************************************ Head *************************************************//
+            //*********************************************** Header ************************************************//
 
             // Открыть/закрыть sidebar
             $$("toggleIcon").attachEvent("onItemClick", function () {
@@ -500,8 +506,26 @@
             };
 
             // Кнопка выйти
-            $$("logout").attachEvent("onItemClick", function () {
-                logout()
+            $$("userMenu").attachEvent("onItemClick", function (id) {
+                switch (id) {
+                    case 'profile':
+                        webix.message("Профиль");
+                        break;
+                    case 'settings':
+                        webix.message("Настройки");
+                        break;
+                    case 'logout':
+                        logout();
+                        break;
+                }
+            });
+
+            // Показать попап темы
+            $$('themeBtn').attachEvent("onItemClick", function (id, e) {
+                if ($$("theme_Popup").isVisible()) {
+                    $$("theme_Popup").hide()
+                }
+                else $$("theme_Popup").show({y:46, pos: "right"});
             });
 
             //********************************************** Проекты ***********************************************//
