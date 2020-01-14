@@ -416,6 +416,9 @@
     }
 
     function logout() {
+        let header = new Headers();
+        header.delete("Authorization");
+        console.log(header.has("Authorization"));
         EmployeeModel.logout();
         webix.message({type: "debug", text: "Вы вышли из профиля"});
     }

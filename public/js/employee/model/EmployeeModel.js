@@ -56,12 +56,12 @@ export const EmployeeModel = {
     },
 
     login: (encoded) => {
-        return fetch(`/login`, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(encoded)})
-            .then(response => response.json())
+        return fetch(`/login`, {method: 'POST', headers: {'Content-Type': 'text'}, body: encoded})
+
     },
 
     logout: () => {
         return fetch(`/logout`, {method: 'POST'})
-            .then(response => response.json())
+
     },
-}
+};

@@ -136,11 +136,9 @@ var CEmployee tCEmployee
 
 
 func (_ tCEmployee) Login(
-		encoded string,
 		) string {
 	args := make(map[string]string)
 	
-	revel.Unbind(args, "encoded", encoded)
 	return revel.MainRouter.Reverse("CEmployee.Login", args).URL
 }
 

@@ -25,7 +25,9 @@
 
     function encodeForm(form) {
         let encoded = window.btoa(form.user + ":" + form.pass);
-        EmployeeModel.login(encoded);
+        EmployeeModel.login(encoded).then(function (result) {
+            console.log(result);
+        })
     }
 
     window.onload = function () {

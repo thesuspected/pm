@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"encoding/base64"
+	"io/ioutil"
 	"log"
 	"pm/app/models/employee"
 	"pm/app/models/resources"
@@ -16,7 +17,12 @@ type CEmployee struct {
 	provider *employee.Provider
 }
 
-func (c *CEmployee) Login(encoded string) revel.Result {
+func (c *CEmployee) Login() revel.Result {
+	body, err := ioutil.ReadAll(c.Request.GetBody())
+	if err != nil {
+		log.Fatal(err)
+	}
+	encoded := string(body)
 	// декодируем
 	decoded, err := base64.StdEncoding.DecodeString(encoded)
 	if err != nil {
@@ -24,27 +30,28 @@ func (c *CEmployee) Login(encoded string) revel.Result {
 	}
 	// разбиваем логин и пароль
 	str := strings.Split(string(decoded), ":")
-	if len(str) == 2 {
-		var user resources.User
-		user.Login, user.Password = str[0], str[1]
-		// ищем логин и пароль в бд
-		_, err := c.provider.UserLogin(user)
-		// если неверны
-		if err != nil {
-			// НЕВЕРНЫЕ ЛОГИН ИЛИ ПАРОЛЬ ВЕРНУТЬ
-		} else {
-			//h.Set("WWW-Authenticate", fmt.Sprintf(`Basic realm="Войдите в систему"`))
-			//h.SetStatus(401)
-			c.Request.Header.Add("Authorization", "Basic " + encoded)
-			return c.Redirect(routes.App.Tasks())
-		}
+	// заносим их в структуру
+	var user resources.User
+	user.Login, user.Password = str[0], str[1]
+	// ищем логин и пароль в бд
+	_, err = c.provider.UserLogin(user)
+	// если неверны
+	if err != nil {
+		// НЕВЕРНЫЕ ЛОГИН ИЛИ ПАРОЛЬ ВЕРНУТЬ
+	} else {
+		//h.Set("WWW-Authenticate", fmt.Sprintf(`Basic realm="Войдите в систему"`))
+		//h.SetStatus(401)
+		//c.Request.Header.Add("Authorization", "Basic "+encoded)
+		//log.Println("========= " + c.Request.Header.Get("Authorization") + " ==========")
+		return c.RenderJSON(body)
 	}
-	return c.Redirect(routes.App.Auth())
+	return c.Render(routes.App.Auth())
 }
 
 func (c *CEmployee) Logout() revel.Result {
-	c.Response.SetStatus(401)
-	return c.Redirect(routes.App.Auth())
+	c.Response.Out.Header().Set("Content-Type", "application/xml")
+	c.Request.Header.Server.Del("Authorization")
+	return c.Render(routes.App.Auth())
 }
 
 func (c *CEmployee) GetAll() revel.Result {

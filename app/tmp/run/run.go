@@ -130,7 +130,7 @@ func Register() {
 				Args: []*revel.MethodArg{ 
 				},
 				RenderArgNames: map[int][]string{ 
-					70: []string{ 
+					74: []string{ 
 					},
 				},
 			},
@@ -139,7 +139,7 @@ func Register() {
 				Args: []*revel.MethodArg{ 
 				},
 				RenderArgNames: map[int][]string{ 
-					74: []string{ 
+					78: []string{ 
 					},
 				},
 			},
@@ -148,7 +148,7 @@ func Register() {
 				Args: []*revel.MethodArg{ 
 				},
 				RenderArgNames: map[int][]string{ 
-					78: []string{ 
+					82: []string{ 
 					},
 				},
 			},
@@ -160,9 +160,10 @@ func Register() {
 			&revel.MethodType{
 				Name: "Login",
 				Args: []*revel.MethodArg{ 
-					&revel.MethodArg{Name: "encoded", Type: reflect.TypeOf((*string)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
+					48: []string{ 
+					},
 				},
 			},
 			&revel.MethodType{
@@ -170,6 +171,8 @@ func Register() {
 				Args: []*revel.MethodArg{ 
 				},
 				RenderArgNames: map[int][]string{ 
+					54: []string{ 
+					},
 				},
 			},
 			&revel.MethodType{
