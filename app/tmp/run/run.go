@@ -130,7 +130,7 @@ func Register() {
 				Args: []*revel.MethodArg{ 
 				},
 				RenderArgNames: map[int][]string{ 
-					74: []string{ 
+					73: []string{ 
 					},
 				},
 			},
@@ -139,7 +139,7 @@ func Register() {
 				Args: []*revel.MethodArg{ 
 				},
 				RenderArgNames: map[int][]string{ 
-					78: []string{ 
+					77: []string{ 
 					},
 				},
 			},
@@ -148,7 +148,7 @@ func Register() {
 				Args: []*revel.MethodArg{ 
 				},
 				RenderArgNames: map[int][]string{ 
-					82: []string{ 
+					81: []string{ 
 					},
 				},
 			},
@@ -162,7 +162,7 @@ func Register() {
 				Args: []*revel.MethodArg{ 
 				},
 				RenderArgNames: map[int][]string{ 
-					48: []string{ 
+					46: []string{ 
 					},
 				},
 			},
@@ -171,7 +171,7 @@ func Register() {
 				Args: []*revel.MethodArg{ 
 				},
 				RenderArgNames: map[int][]string{ 
-					54: []string{ 
+					52: []string{ 
 					},
 				},
 			},

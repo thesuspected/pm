@@ -38,11 +38,9 @@ func (c *CEmployee) Login() revel.Result {
 	// если неверны
 	if err != nil {
 		// НЕВЕРНЫЕ ЛОГИН ИЛИ ПАРОЛЬ ВЕРНУТЬ
+		log.Println("--------  НЕВЕРНЫЕ ЛОГИН И ПАРОЛЬ  --------")
 	} else {
-		//h.Set("WWW-Authenticate", fmt.Sprintf(`Basic realm="Войдите в систему"`))
-		//h.SetStatus(401)
-		//c.Request.Header.Add("Authorization", "Basic "+encoded)
-		//log.Println("========= " + c.Request.Header.Get("Authorization") + " ==========")
+		c.Request.Header.Add("Authorization", "Basic "+encoded)
 		return c.RenderJSON(body)
 	}
 	return c.Render(routes.App.Auth())

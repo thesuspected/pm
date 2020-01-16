@@ -24,10 +24,9 @@ func (c *App) checkAuth() revel.Result {
 
 	// если авторизация есть
 	if auth != "" {
-		var redirect revel.Result = nil
 		// не пускаем на стр авторизации
 		if url.Path == "/auth" {
-			redirect = c.Redirect(routes.App.Tasks())
+			return c.Redirect(routes.App.Tasks())
 		}
 		// избавляемся от префикса
 		encoded := strings.TrimPrefix(auth, "Basic ")
@@ -42,7 +41,7 @@ func (c *App) checkAuth() revel.Result {
 			user, pass := str[0], str[1]
 			// если логин и пароль найдены в бд
 			if user == "suspect" && pass == "suspect" {
-				return redirect
+				return nil
 				// иначе выкидываем
 			} else {
 				r.Set("WWW-Authenticate", fmt.Sprintf(`Basic realm="Войдите в систему"`))
