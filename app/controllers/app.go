@@ -2,12 +2,9 @@ package controllers
 
 import (
 	"encoding/base64"
+	"log"
 	"pm/app/models/employee"
 	"pm/app/models/resources"
-
-	//"encoding/base64"
-	//"fmt"
-	"log"
 	"pm/app/routes"
 	"strings"
 
@@ -24,7 +21,6 @@ func (c *App) CheckAuth() revel.Result {
 	auth := c.Request.GetHttpHeader("Authorization")
 	// получем header
 	r := c.Response.Out.Header()
-	log.Println("---------------", auth, "----------------")
 
 	// если авторизация есть
 	if auth != "" {

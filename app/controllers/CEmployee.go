@@ -4,8 +4,6 @@ import (
 	"pm/app/models/employee"
 	"pm/app/models/resources"
 
-	//"pm/app/routes"
-
 	"github.com/revel/revel"
 )
 

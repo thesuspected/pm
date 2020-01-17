@@ -433,6 +433,11 @@
         });
     }
 
+    function logout() {
+        EmployeeModel.logout();
+        document.location.replace("/")
+    }
+
     ///////////////////////////////////////////////// Отрисовка ////////////////////////////////////////////////////
 
     window.onload = function () {

@@ -5,10 +5,9 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/controllers/CEmployee.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/CEmployee.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/controllers/app.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/app.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routes/routes.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/routes.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/tmp/run/run.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/tmp/run/run.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views/App/employees.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/App/employees.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/views/App/tasks.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/App/tasks.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/conf/routes" beforeDir="false" afterPath="$PROJECT_DIR$/conf/routes" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
