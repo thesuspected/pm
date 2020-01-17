@@ -1,14 +1,10 @@
 package controllers
 
 import (
-	"encoding/base64"
-	"io/ioutil"
-	"log"
 	"pm/app/models/employee"
 	"pm/app/models/resources"
 
 	//"pm/app/routes"
-	"strings"
 
 	"github.com/revel/revel"
 )
@@ -18,40 +14,16 @@ type CEmployee struct {
 	provider *employee.Provider
 }
 
-func (c *CEmployee) Login() revel.Result {
-	body, err := ioutil.ReadAll(c.Request.GetBody())
-	if err != nil {
-		log.Fatal(err)
-	}
-	encoded := string(body)
-	// декодируем
-	decoded, err := base64.StdEncoding.DecodeString(encoded)
-	if err != nil {
-		log.Fatal(err)
-	}
-	// разбиваем логин и пароль
-	str := strings.Split(string(decoded), ":")
-	// заносим их в структуру
-	var user resources.User
-	user.Login, user.Password = str[0], str[1]
-	log.Println("========", user, "=========")
-	// ищем логин и пароль в бд
-	users, _ := c.provider.UserLogin(user)
-	// если такого пользователя нет
-	if len(users) == 0 {
-		log.Println("-------- НЕВЕРНЫЕ ЛОГ И ПАРОЛЬ --------")
-		return c.RenderJSON(users)
-	} else {
-		log.Println("-------- ПОЛЬЗОВАТЕЛЬ НАЙДЕН --------")
-		//c.Request.Header.Add("Authorization", "Basic "+encoded)
-		return c.RenderJSON(users)
-	}
-}
-
 func (c *CEmployee) Logout() revel.Result {
-	c.Response.Out.Header().Set("WWW-Authenticate", "Basic")
+	// уничтожаем всеееее
+	c.Response.Out.Destroy()
+	c.Request.Destroy()
+	// 401
+	c.Response.Out.Header().Set("WWW-Authenticate", "Basic realm='tasks'")
 	c.Response.SetStatus(401)
-	return c.Render()
+	c.Response.GetWriter().Write([]byte("Unauthorised.\n"))
+
+	return nil
 }
 
 func (c *CEmployee) GetAll() revel.Result {

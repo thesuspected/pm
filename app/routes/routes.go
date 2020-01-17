@@ -116,13 +116,6 @@ func (_ tApp) Index(
 	return revel.MainRouter.Reverse("App.Index", args).URL
 }
 
-func (_ tApp) Auth(
-		) string {
-	args := make(map[string]string)
-	
-	return revel.MainRouter.Reverse("App.Auth", args).URL
-}
-
 func (_ tApp) Tasks(
 		) string {
 	args := make(map[string]string)
@@ -141,13 +134,6 @@ func (_ tApp) Employees(
 type tCEmployee struct {}
 var CEmployee tCEmployee
 
-
-func (_ tCEmployee) Login(
-		) string {
-	args := make(map[string]string)
-	
-	return revel.MainRouter.Reverse("CEmployee.Login", args).URL
-}
 
 func (_ tCEmployee) Logout(
 		) string {

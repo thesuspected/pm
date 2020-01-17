@@ -420,7 +420,7 @@
     }
 
     function logout() {
-        EmployeeModel.logout();
+        EmployeeModel.logout().then(location.reload(true));
     }
 
     ///////////////////////////////////////////////// Отрисовка ////////////////////////////////////////////////////
