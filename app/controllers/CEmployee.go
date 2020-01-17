@@ -6,7 +6,8 @@ import (
 	"log"
 	"pm/app/models/employee"
 	"pm/app/models/resources"
-	"pm/app/routes"
+
+	//"pm/app/routes"
 	"strings"
 
 	"github.com/revel/revel"
@@ -33,23 +34,24 @@ func (c *CEmployee) Login() revel.Result {
 	// заносим их в структуру
 	var user resources.User
 	user.Login, user.Password = str[0], str[1]
+	log.Println("========", user, "=========")
 	// ищем логин и пароль в бд
-	_, err = c.provider.UserLogin(user)
-	// если неверны
-	if err != nil {
-		// НЕВЕРНЫЕ ЛОГИН ИЛИ ПАРОЛЬ ВЕРНУТЬ
-		log.Println("--------  НЕВЕРНЫЕ ЛОГИН И ПАРОЛЬ  --------")
+	users, _ := c.provider.UserLogin(user)
+	// если такого пользователя нет
+	if len(users) == 0 {
+		log.Println("-------- НЕВЕРНЫЕ ЛОГ И ПАРОЛЬ --------")
+		return c.RenderJSON(users)
 	} else {
-		c.Request.Header.Add("Authorization", "Basic "+encoded)
-		return c.RenderJSON(body)
+		log.Println("-------- ПОЛЬЗОВАТЕЛЬ НАЙДЕН --------")
+		//c.Request.Header.Add("Authorization", "Basic "+encoded)
+		return c.RenderJSON(users)
 	}
-	return c.Render(routes.App.Auth())
 }
 
 func (c *CEmployee) Logout() revel.Result {
-	c.Response.Out.Header().Set("Content-Type", "application/xml")
-	c.Request.Header.Server.Del("Authorization")
-	return c.Render(routes.App.Auth())
+	c.Response.Out.Header().Set("WWW-Authenticate", "Basic")
+	c.Response.SetStatus(401)
+	return c.Render()
 }
 
 func (c *CEmployee) GetAll() revel.Result {

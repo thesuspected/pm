@@ -119,6 +119,13 @@ func Register() {
 	revel.RegisterController((*controllers1.App)(nil),
 		[]*revel.MethodType{
 			&revel.MethodType{
+				Name: "CheckAuth",
+				Args: []*revel.MethodArg{ 
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
 				Name: "Index",
 				Args: []*revel.MethodArg{ 
 				},
@@ -130,7 +137,7 @@ func Register() {
 				Args: []*revel.MethodArg{ 
 				},
 				RenderArgNames: map[int][]string{ 
-					73: []string{ 
+					58: []string{ 
 					},
 				},
 			},
@@ -139,7 +146,7 @@ func Register() {
 				Args: []*revel.MethodArg{ 
 				},
 				RenderArgNames: map[int][]string{ 
-					77: []string{ 
+					62: []string{ 
 					},
 				},
 			},
@@ -148,7 +155,7 @@ func Register() {
 				Args: []*revel.MethodArg{ 
 				},
 				RenderArgNames: map[int][]string{ 
-					81: []string{ 
+					66: []string{ 
 					},
 				},
 			},
@@ -162,8 +169,6 @@ func Register() {
 				Args: []*revel.MethodArg{ 
 				},
 				RenderArgNames: map[int][]string{ 
-					46: []string{ 
-					},
 				},
 			},
 			&revel.MethodType{
@@ -171,7 +176,7 @@ func Register() {
 				Args: []*revel.MethodArg{ 
 				},
 				RenderArgNames: map[int][]string{ 
-					52: []string{ 
+					54: []string{ 
 					},
 				},
 			},

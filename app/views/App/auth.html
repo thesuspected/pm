@@ -26,7 +26,14 @@
     function encodeForm(form) {
         let encoded = window.btoa(form.user + ":" + form.pass);
         EmployeeModel.login(encoded).then(function (result) {
-            console.log(result);
+            if (result) {
+                // Заполняем header
+                let header = new Headers();
+                header.set("Authorization", "Basic " + encoded);
+                // Отправляем запрос
+                return fetch('/tasks', {method: 'GET', headers:header});
+            }
+            else webix.message({type: "error", text:"Неверные логин и/или пароль"})
         })
     }
 

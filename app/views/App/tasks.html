@@ -253,12 +253,14 @@
     }
 
     function updateTask(task) {
-        let project = $$('listProject').getSelectedId();
         // обновляем задачу
-        TaskModel.update(task).then(function (result) {
-            // добавить обновление с сервера?
-        });
+        TaskModel.update(task);
         // обновляем теги задачи
+        updateTags(task);
+    }
+
+    function updateTags(task) {
+        let project = $$('listProject').getSelectedId();
         TaskModel.getTags(task.id, task.project).then(function (tags) {
             // переносим теги ДО в массив
             let before = [];
@@ -354,10 +356,12 @@
             // создаем массив для Select
             let selectGroup = [];
             // заполняем группы
-            for (let i = 0; i < result.length; i++) {
-                selectGroup[i] = {};
-                selectGroup[i].id = result[i].id;
-                selectGroup[i].value = result[i].name;
+            if (result) {
+                for (let i = 0; i < result.length; i++) {
+                    selectGroup[i] = {};
+                    selectGroup[i].id = result[i].id;
+                    selectGroup[i].value = result[i].name;
+                }
             }
             // заносим в select
             $$("groupSelect").define("options", selectGroup);
@@ -416,11 +420,7 @@
     }
 
     function logout() {
-        let header = new Headers();
-        header.delete("Authorization");
-        console.log(header.has("Authorization"));
         EmployeeModel.logout();
-        webix.message({type: "debug", text: "Вы вышли из профиля"});
     }
 
     ///////////////////////////////////////////////// Отрисовка ////////////////////////////////////////////////////

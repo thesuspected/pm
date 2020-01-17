@@ -1,11 +1,12 @@
 package controllers
 
 import (
-	"encoding/base64"
-	"fmt"
+	//"encoding/base64"
+	//"fmt"
 	"log"
 	"pm/app/routes"
-	"strings"
+
+	//"strings"
 
 	"github.com/revel/revel"
 )
@@ -14,55 +15,39 @@ type App struct {
 	*revel.Controller
 }
 
-func (c *App) checkAuth() revel.Result {
+func (c *App) CheckAuth() revel.Result {
 
 	// получаем строку авторизации
-	auth := c.Request.GetHttpHeader("authorization")
+	auth := c.Request.GetHttpHeader("Authorization")
 	url := c.Request.URL
 	r := c.Response.Out.Header()
-	log.Println(auth, "----------------")
+	log.Println("---------------", auth, "----------------")
 
 	// если авторизация есть
 	if auth != "" {
 		// не пускаем на стр авторизации
 		if url.Path == "/auth" {
+			c.Request.Header.Set("Authorization", auth)
+			//r.Set("Authorization", auth)
+			//c.Request.Header.Set("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9")
 			return c.Redirect(routes.App.Tasks())
 		}
-		// избавляемся от префикса
-		encoded := strings.TrimPrefix(auth, "Basic ")
-		// декодируем
-		decoded, err := base64.StdEncoding.DecodeString(encoded)
-		if err != nil {
-			log.Fatal(err)
-		}
-		// разбиваем логин и пароль
-		str := strings.Split(string(decoded), ":")
-		if len(str) == 2 {
-			user, pass := str[0], str[1]
-			// если логин и пароль найдены в бд
-			if user == "suspect" && pass == "suspect" {
-				return nil
-				// иначе выкидываем
-			} else {
-				r.Set("WWW-Authenticate", fmt.Sprintf(`Basic realm="Войдите в систему"`))
-				//r.SetStatus(401)
-				return c.Render(routes.App.Auth())
-			}
-		}
-		// пересылаем на стр авторизации
-	} else {
-		//c.Response.WriteHeader(401, "WWW-Authenticate")
+		return nil
+		// Если не авторизован и не на странице авторизации
+	} else if url.Path != "/auth" {
 		r.Set("WWW-Authenticate", "Basic")
-		r.SetStatus(401)
-		return c.Render(routes.App.Auth())
+		//r.SetStatus(401)
+		return c.Redirect(routes.App.Auth())
 	}
 	// если не авторизован и на стр авторизации
-	return nil
+	r.Set("WWW-Authenticate", "Basic")
+	//r.SetStatus(401)
+	return c.RenderTemplate("App/auth.html")
 }
 
 // проверка аутентификации
 func init() {
-	revel.InterceptMethod((*App).checkAuth, revel.BEFORE)
+	revel.InterceptMethod((*App).CheckAuth, revel.BEFORE)
 }
 
 func (c App) Index() revel.Result {
