@@ -41,6 +41,15 @@ func (p *Provider) GetEmp() ([]*resources.Emp, error) {
 	return p.employees.SelectEmp(db)
 }
 
+func (p *Provider) GetByUser(id int) ([]*resources.Employee, error) {
+	db, err := connection.DatabaseConnect()
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+	return p.employees.SelectByUser(id, db)
+}
+
 func (p *Provider) Get(id int) ([]*resources.Employee, error) {
 	db, err := connection.DatabaseConnect()
 	if err != nil {

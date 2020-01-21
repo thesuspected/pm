@@ -10,6 +10,11 @@ export const EmployeeModel = {
             .then(response => response.json())
     },
 
+    getByUser: (Id) => {
+        return fetch(`/employeesByUser/${Id}`, {method: 'GET'})
+            .then(response => response.json())
+    },
+
     get: (Id) => {
         return fetch(`/employees/${Id}`, {method: 'GET'})
             .then(response => response.json())
@@ -55,8 +60,8 @@ export const EmployeeModel = {
             .then(response => response.json())
     },
 
-    login: (encoded) => {
-        return fetch(`/login`, {method: 'POST', headers: {'Content-Type': 'text'}, body: encoded})
+    login: () => {
+        return fetch(`/login`, {method: 'GET'})
             .then(response => response.json())
     },
 

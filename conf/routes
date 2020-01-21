@@ -12,6 +12,7 @@ GET     /tasks                                  App.Tasks
 GET     /employees                              App.Employees
 
 # Авторизация
+GET     /login                                  CEmployee.Login
 POST    /logout                                 CEmployee.Logout
 
 # Селекты
@@ -61,6 +62,7 @@ DELETE  /groups/:id                             CGroup.Delete
 # Сотрудники
 GET     /employeess                             CEmployee.GetAll
 GET     /employeesEmp                           CEmployee.GetEmp
+GET     /employeesByUser/:id                    CEmployee.GetByUser
 GET     /employees/:id                          CEmployee.Get
 GET     /employeesFk/:id                        CEmployee.GetFk
 PUT     /employees                              CEmployee.Create

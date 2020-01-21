@@ -1,8 +1,11 @@
 package controllers
 
 import (
+	"encoding/base64"
+	"log"
 	"pm/app/models/employee"
 	"pm/app/models/resources"
+	"strings"
 
 	"github.com/revel/revel"
 )
@@ -10,6 +13,34 @@ import (
 type CEmployee struct {
 	*revel.Controller
 	provider *employee.Provider
+}
+
+func (c *CEmployee) Login() revel.Result {
+
+	// получаем строку авторизации
+	auth := c.Request.GetHttpHeader("Authorization")
+
+	// избавляемся от префикса
+	encoded := strings.TrimPrefix(auth, "Basic ")
+
+	// декодируем
+	decoded, err := base64.StdEncoding.DecodeString(encoded)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// разбиваем логин и пароль
+	str := strings.Split(string(decoded), ":")
+
+	// заносим в структуру
+	var user resources.User
+	user.Login, user.Password = str[0], str[1]
+
+	// делаем запрос в бд
+	users, _ := c.provider.UserLogin(user)
+
+	// возвращаем пользователя
+	return c.RenderJSON(users)
 }
 
 func (c *CEmployee) Logout() revel.Result {
@@ -40,6 +71,15 @@ func (c *CEmployee) GetEmp() revel.Result {
 		c.RenderJSON(err)
 	}
 	return c.RenderJSON(employees)
+}
+
+func (c *CEmployee) GetByUser(id int) revel.Result {
+	c.provider = employee.New()
+	employee, err := c.provider.GetByUser(id)
+	if err != nil {
+		c.RenderJSON(err)
+	}
+	return c.RenderJSON(employee)
 }
 
 func (c *CEmployee) Get(id int) revel.Result {

@@ -87,6 +87,21 @@ func (m *EmployeeMapper) SelectEmp(db *sql.DB) (employees []*resources.Emp, err 
 	return employees, err
 }
 
+func (m *EmployeeMapper) SelectByUser(id int, db *sql.DB) (employees []*resources.Employee, err error) {
+	c := resources.Employee{}
+	err = db.QueryRow(
+		`SELECT c_id, c_last_name, c_img_src, fk_user
+				FROM t_employees
+				WHERE fk_user = $1`, id).Scan(&c.Id, &c.LastName, &c.ImgSrc, &c.User)
+	if err != nil {
+		return employees, err
+	}
+
+	employees = append(employees, &c)
+
+	return employees, err
+}
+
 func (m *EmployeeMapper) Select(id int, db *sql.DB) (employees []*resources.Employee, err error) {
 	c := resources.Employee{}
 	err = db.QueryRow(

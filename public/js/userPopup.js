@@ -7,7 +7,6 @@ export let userPopup = {
         id: "userMenu",
         data: [
             {view: "button", id:"profile", value: "Профиль", icon: "mdi mdi-account"},
-            {view: "button", id:"settings", value: "Настройки", icon: "mdi mdi-tune"},
             {view: "button", id:"logout", value: "Выйти", icon: "mdi mdi-logout"}
         ],
         layout: "y",

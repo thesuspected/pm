@@ -135,6 +135,13 @@ type tCEmployee struct {}
 var CEmployee tCEmployee
 
 
+func (_ tCEmployee) Login(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("CEmployee.Login", args).URL
+}
+
 func (_ tCEmployee) Logout(
 		) string {
 	args := make(map[string]string)
@@ -154,6 +161,15 @@ func (_ tCEmployee) GetEmp(
 	args := make(map[string]string)
 	
 	return revel.MainRouter.Reverse("CEmployee.GetEmp", args).URL
+}
+
+func (_ tCEmployee) GetByUser(
+		id int,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "id", id)
+	return revel.MainRouter.Reverse("CEmployee.GetByUser", args).URL
 }
 
 func (_ tCEmployee) Get(

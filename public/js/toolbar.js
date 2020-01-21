@@ -1,5 +1,6 @@
 export let toolbar = {
     view: "toolbar",
+    id: "toolbar",
     height: 50,
     elements: [
         {view: "icon", id: "toggleIcon", icon: "mdi mdi-menu"},
@@ -11,8 +12,18 @@ export let toolbar = {
         },
         {view: "label", label: "Project Manager"},
         {},
-        {type: 'clean', template: "<div id='userPop' class='headUser'><img src='/public/img/employees/1.png' class='headImg'><span class='headSpan'>Мищенко А.</span></div>", tooltip: "Аккаунт"},
-        //{view: "icon", icon: "mdi mdi-bell", badge: 3},
+        {
+            type: 'clean',
+            id: "userBtn",
+            template: function (obj) {
+                if (obj.user === undefined) {
+                    return null//"<div id='userPop' class='headUser'><img src='/public/img/employees/0.png' class='headImg'><span class='headSpan'>Сотрудник</span></div>"
+                } else {
+                    return "<div id='userPop' class='headUser'><img src='/public/img/employees/" + obj.imgSrc + "' class='headImg'><span class='headSpan'>" + obj.lastName + "</span></div>"
+                }
+            },
+            tooltip: "Аккаунт"
+        },
         {view: "icon", id: "themeBtn", icon: "mdi mdi-settings", tooltip: "Тема"}
     ]
 };

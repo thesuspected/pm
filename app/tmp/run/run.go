@@ -156,6 +156,13 @@ func Register() {
 	revel.RegisterController((*controllers1.CEmployee)(nil),
 		[]*revel.MethodType{
 			&revel.MethodType{
+				Name: "Login",
+				Args: []*revel.MethodArg{ 
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
 				Name: "Logout",
 				Args: []*revel.MethodArg{ 
 				},
@@ -172,6 +179,14 @@ func Register() {
 			&revel.MethodType{
 				Name: "GetEmp",
 				Args: []*revel.MethodArg{ 
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "GetByUser",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "id", Type: reflect.TypeOf((*int)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
 				},
