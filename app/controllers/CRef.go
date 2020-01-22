@@ -1,8 +1,9 @@
 package controllers
 
 import (
-	"github.com/revel/revel"
 	"pm/app/models/ref"
+
+	"github.com/revel/revel"
 )
 
 type CRef struct {

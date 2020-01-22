@@ -1,7 +1,7 @@
 
 import {ProjectModel} from "/public/js/project/model/ProjectModel.js";      // db requests  -  проекты
 import {GroupModel} from "/public/js/group/model/GroupModel.js";            // db requests  -  группы
-import {EmployeeModel} from "/public/js/employee/model/EmployeeModel.js";   // db requests -  сотрудники
+import {EmployeeModel} from "/public/js/employee/model/EmployeeModel.js";   // db requests  -  сотрудники
 import {RefModel} from "/public/js/ref/model/RefModel.js";                  // db requests  -  селекты
 import {TaskModel} from "/public/js/task/model/TaskModel.js";               // db requests  -  задачи
 
@@ -14,17 +14,17 @@ import {uploadForm} from "/public/js/employee/employeeForm.js";             // �
 export const f = {
     ////////////////////////////////////////////////// Функции /////////////////////////////////////////////////////
 
-    sortProject: (value) => {
-        $$("listProject").sort("#" + value + "#");  // Сортировка проектов
+    sortProject: (value) => {                       // Сортировка проектов
+        $$("listProject").sort("#" + value + "#");
     },
 
-    sortGroup: (value) => {
-        $$("listGroup").sort("#" + value + "#");        // Сортировка групп
+    sortGroup: (value) => {                         // Сортировка групп
+        $$("listGroup").sort("#" + value + "#");
     },
 
     //************************************************** Проекты ***************************************************//
 
-    addProjectForm: () => {
+    addProjectForm: () => {                         // Заполнение формы для добавления проекта
         // получаем актуальные группы
         f.getGroupSelect();
         // Изменяем форму
@@ -37,7 +37,7 @@ export const f = {
         $$("project_window").show();
     },
 
-    editProjectForm: () => {
+    editProjectForm: () => {                        // Заполнение формы для изменения проекта
         // получаем актуальные группы
         f.getGroupSelect();
         // Изменяем форму
@@ -53,14 +53,15 @@ export const f = {
         $$("project_window").show();
     },
 
-    getAllProjects: () => {
+    getAllProjects: () => {                         // Запрашиваем все проекты из бд и заполняем в список
         // запрос на получение всех проектов
         ProjectModel.getAll().then(function (result) {
+            // парсим в список
             $$("listProject").parse(result, 'json');
         });
     },
 
-    createProject: () => {
+    createProject: () => {                          // Берем значения формы, заносим в бд и выводим в список
         // Валидация заполнения
         if ($$("project_Form").validate()) {
             // берем значения формы
@@ -71,6 +72,7 @@ export const f = {
             };
             // делаем запрос в бд
             ProjectModel.create(project).then(function (result) {
+                // заносим новый проект в список
                 f.getLastProject(result[0].id);
             });
             // закрываем окно
@@ -80,7 +82,7 @@ export const f = {
             webix.message({type: "error", text: "Дайте название проекту"});
     },
 
-    delProject: () => {
+    delProject: () => {                             // Удаляем проект из бд и из списка
         // закрываем окна
         $$("edit_Popup").hide();
         $$("project_window").hide();
@@ -94,12 +96,13 @@ export const f = {
                 let id = $$("listProject").getSelectedId();
                 // делаем запрос в бд
                 ProjectModel.delete(id).then(function(result) {
+                    // удаляем из списка
                     $$("listProject").remove(result);
                 });
             })
     },
 
-    updateProject: () => {
+    updateProject: () => {                          // Обновляем проект в бд, затем в списке
         // Валидация заполнения
         if ($$("project_Form").validate()) {
             // берем значения формы
@@ -112,6 +115,7 @@ export const f = {
             };
             // делаем запрос в бд
             ProjectModel.update(project).then(function(result) {
+                // обновляем в списке
                 f.refreshProject(result[0].id);
             });
             // закрываем окно
@@ -121,7 +125,7 @@ export const f = {
             webix.message({type: "error", text: "Дайте название проекту"});
     },
 
-    getLastProject: (id) => {
+    getLastProject: (id) => {                       // запрашиваем проект из бд, затем добавляем в конец списка
         // делаем запрос в бд
         ProjectModel.get(id).then(function (result) {
             // Добавляем проект в конец списка
@@ -134,7 +138,7 @@ export const f = {
         });
     },
 
-    refreshProject: (id) => {
+    refreshProject: (id) => {                       // запрашиваем проект из бд, затем обновляем в списке
         // делаем запрос в бд
         ProjectModel.get(id).then(function (result) {
             // обновляем данные о проекте
@@ -145,7 +149,7 @@ export const f = {
         });
     },
 
-    fillProjectForm: (id) => {
+    fillProjectForm: (id) => {                      // запрашиваем проект из бд, затем заполняем форму
         // делаем запрос в бд
         ProjectModel.getFk(id).then(function (result) {
             // Создаем массив для формы
@@ -159,7 +163,7 @@ export const f = {
 
     //************************************************** Задачи ***************************************************//
 
-    getAllTasks: () => {
+    getAllTasks: () => {                            // запрашиваем все задачи и их теги из бд
         let project_id = $$('listProject').getSelectedId();
         $$('kanban').clearAll();
         // запрос на получение всех задач
@@ -188,7 +192,7 @@ export const f = {
         });
     },
 
-    createTask: () => {
+    createTask: () => {                             // заносим задачу в бд, затем в канбан
         let task = $$('kanban_form').getValues();               // получаем значения формы
         task.project = "" + $$('listProject').getSelectedId();  // заносим выбранный проект
         // делаем запрос создания задачи
@@ -201,7 +205,7 @@ export const f = {
         });
     },
 
-    delTask: (id) => {
+    delTask: (id) => {                              // удаляем задачу из бд, затем из канбана
         // берем текущий проект
         let project = $$('listProject').getSelectedId();
         // делаем запрос
@@ -213,14 +217,14 @@ export const f = {
         });
     },
 
-    updateTask: (task) => {
+    updateTask: (task) => {                         // обновляем задачу в бд, затем обновляем теги
         // обновляем задачу
         TaskModel.update(task);
         // обновляем теги задачи
         f.updateTags(task);
     },
 
-    updateTags: (task) => {
+    updateTags: (task) => {                         // обновление тегов в бд
         let project = $$('listProject').getSelectedId();
         TaskModel.getTags(task.id, task.project).then(function (tags) {
             // переносим теги ДО в массив
@@ -272,7 +276,7 @@ export const f = {
 
     //************************************************** Подзадачи ***************************************************//
 
-    fillSubTasksForm: (id) => {
+    fillSubTasksForm: (id) => {                         // Заполняем форму подзадач
         // делаем запрос
         TaskModel.getAllSub(id).then(function (result) {
             // добавляем подзадачи

@@ -132,20 +132,24 @@
                 $$("sidebar").toggle()
             });
 
-            // Показать попап пользователя
-            let userPop = document.getElementById("userPop");
-            userPop.onclick = function () {
-                if ($$("user_Popup").isVisible()) {
-                    $$("user_Popup").hide()
-                }
-                else $$("user_Popup").show(this, { pos: "bottom"});
-            };
+            // Показать попап пользователя (после рендера с данными)
+            $$("userBtn").attachEvent("onAfterRender", function () {
+                let userPop = document.getElementById("userPop");
+                userPop.onclick = function () {
+                    if ($$("user_Popup").isVisible()) {
+                        $$("user_Popup").hide()
+                    }
+                    else $$("user_Popup").show(this, { pos: "bottom"});
+                };
+            });
 
-            // Кнопка попапа пользователя
+            // Кнопки попапа пользователя
             $$("userMenu").attachEvent("onItemClick", function (id) {
                 switch (id) {
                     case 'profile':
-                        f.editEmployeeForm();
+                        let item = $$('userBtn').getValues();   // берем данные сотрудника
+                        f.editEmployeeForm(item.user);          // выводим их на экран
+                        $$("user_Popup").hide();                // закрываем попап
                         break;
                     case 'logout':
                         f.logout();

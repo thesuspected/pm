@@ -28,6 +28,9 @@
     import {projectWindow} from "/public/js/project/projectWindow.js";		// окно проекта
     webix.ui(projectWindow);
 
+    import {employeeWindow} from "/public/js/employee/employeeWindow.js";	// окно сотрудника
+    webix.ui(employeeWindow);
+
     import {editPopup} from "/public/js/editPopup.js";		                // попап списка [редактировать / удалить]
     webix.ui(editPopup);
 
@@ -126,22 +129,24 @@
                 $$("sidebar").toggle()
             });
 
-            // Показать попап пользователя
-            let userPop = document.getElementById("userPop");
-            userPop.onclick = function () {
-                if ($$("user_Popup").isVisible()) {
-                    $$("user_Popup").hide()
-                }
-                else $$("user_Popup").show(this, { pos: "bottom"});
-            };
+            // Показать попап пользователя (после рендера с данными)
+            $$("userBtn").attachEvent("onAfterRender", function () {
+                let userPop = document.getElementById("userPop");
+                userPop.onclick = function () {
+                    if ($$("user_Popup").isVisible()) {
+                        $$("user_Popup").hide()
+                    }
+                    else $$("user_Popup").show(this, { pos: "bottom"});
+                };
+            });
 
             // Кнопки попапа пользователя
             $$("userMenu").attachEvent("onItemClick", function (id) {
                 switch (id) {
                     case 'profile':
-                        let u_id = $$('userBtn').getValues();
-                        console.log(u_id);
-                        f.editEmployeeForm(u_id);
+                        let item = $$('userBtn').getValues();   // берем данные сотрудника
+                        f.editEmployeeForm(item.user);          // выводим их на экран
+                        $$("user_Popup").hide();                // закрываем попап
                         break;
                     case 'logout':
                         f.logout();
@@ -314,6 +319,24 @@
                 $$('subTasksTable').select(row);
                 let sub = $$('subTasksTable').getSelectedItem();
                 f.updateSubTask(sub);
+            });
+
+            //********************************************* Профиль **********************************************//
+
+            // Окно заполнения сотрудника
+            $$("dltEmployeeFormBtn").attachEvent("onItemClick", function () {       // кнопка удалить
+                // Берем id сотрудника
+                let item = $$("employees_Form").getValues();
+                f.deleteEmployee(item.id);
+            });
+            $$("saveEmployeeFormBtn").attachEvent("onItemClick", function () {      // кнопка сохранить
+                f.updateEmployee();
+            });
+            $$("createEmployeeFormBtn").attachEvent("onItemClick", function () {    // кнопка создать
+                f.createEmployee();
+            });
+            $$("closeEmployeeFormBtn").attachEvent("onItemClick", function () {     // кнопка закрыть
+                $$('employees_window').hide();
             });
 
             //********************************************* Drag & Drop **********************************************//

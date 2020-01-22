@@ -22,7 +22,7 @@ GET     /status                                 CRef.GetStatus
 GET     /tags                                   CRef.GetTags
 
 # Загрузка
-# POST    /upload                                CRef.Upload
+# POST    /upload                               CRef.Upload
 
 # Проекты
 GET     /projects                               CProject.GetAll
