@@ -86,7 +86,8 @@ export let kanban = {
             },
             {
                 view: "label",
-                label: "Чек-лист"
+                label: "Чек-лист",
+                id: "subTasksLabel"
             },
             {
                 view:"datatable",

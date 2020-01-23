@@ -39,13 +39,13 @@ func (c *App) CheckAuth() revel.Result {
 			user.Login, user.Password = str[0], str[1]
 			// делаем запрос в бд
 			users, _ := c.provider.UserLogin(user)
-			// Если пользователь не найден
+			// Если пользователь не найден - обновляем поле авторизации
 			if len(users) == 0 {
 				r.Set("WWW-Authenticate", "Basic realm='tasks'")
 				r.SetStatus(401)
 				return c.Redirect(routes.App.Tasks())
 			} else {
-				// Пользователь найден
+				// Пользователь найден - пропускаем на страницу
 				return nil
 			}
 		}
@@ -56,7 +56,7 @@ func (c *App) CheckAuth() revel.Result {
 	return c.Redirect(routes.App.Tasks())
 }
 
-// проверка аутентификации
+// интерцептор - проверка аутентификации
 func init() {
 	revel.InterceptMethod((*App).CheckAuth, revel.BEFORE)
 }
@@ -65,10 +65,12 @@ func (c App) Index() revel.Result {
 	return c.Redirect(routes.App.Tasks())
 }
 
+// страница проектов и задач
 func (c App) Tasks() revel.Result {
 	return c.Render()
 }
 
+// страница групп и сотрудников
 func (c App) Employees() revel.Result {
 	return c.Render()
 }

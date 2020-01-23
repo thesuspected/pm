@@ -15,6 +15,7 @@ type CEmployee struct {
 	provider *employee.Provider
 }
 
+// Авторизация
 func (c *CEmployee) Login() revel.Result {
 
 	// получаем строку авторизации
@@ -44,7 +45,7 @@ func (c *CEmployee) Login() revel.Result {
 }
 
 func (c *CEmployee) Logout() revel.Result {
-	// уничтожаем всеееее
+	// уничтожаем header
 	c.Response.Out.Destroy()
 	c.Request.Destroy()
 	// 401
@@ -55,6 +56,7 @@ func (c *CEmployee) Logout() revel.Result {
 	return nil
 }
 
+// Получить всех сотрудников
 func (c *CEmployee) GetAll() revel.Result {
 	c.provider = employee.New()
 	employees, err := c.provider.GetAll()
@@ -64,6 +66,7 @@ func (c *CEmployee) GetAll() revel.Result {
 	return c.RenderJSON(employees)
 }
 
+// Получить сотрудников для канбана
 func (c *CEmployee) GetEmp() revel.Result {
 	c.provider = employee.New()
 	employees, err := c.provider.GetEmp()
@@ -73,6 +76,7 @@ func (c *CEmployee) GetEmp() revel.Result {
 	return c.RenderJSON(employees)
 }
 
+// Получить сотрудника привязанного к пользователю
 func (c *CEmployee) GetByUser(id int) revel.Result {
 	c.provider = employee.New()
 	employee, err := c.provider.GetByUser(id)
@@ -82,6 +86,7 @@ func (c *CEmployee) GetByUser(id int) revel.Result {
 	return c.RenderJSON(employee)
 }
 
+// Получить сотрудника с заменой вторичных ключей
 func (c *CEmployee) Get(id int) revel.Result {
 	c.provider = employee.New()
 	employee, err := c.provider.Get(id)
@@ -91,6 +96,7 @@ func (c *CEmployee) Get(id int) revel.Result {
 	return c.RenderJSON(employee)
 }
 
+// Получить сотрудника со вторичными ключами
 func (c *CEmployee) GetFk(id int) revel.Result {
 	c.provider = employee.New()
 	employee, err := c.provider.GetFk(id)
@@ -100,6 +106,7 @@ func (c *CEmployee) GetFk(id int) revel.Result {
 	return c.RenderJSON(employee)
 }
 
+// Получить сотрудников опр. группы
 func (c *CEmployee) GetByGroup(id int) revel.Result {
 	c.provider = employee.New()
 	employees, err := c.provider.GetByGroup(id)
@@ -109,6 +116,7 @@ func (c *CEmployee) GetByGroup(id int) revel.Result {
 	return c.RenderJSON(employees)
 }
 
+// Получить сотрудников опр. группы со втор. ключами
 func (c *CEmployee) GetByGroupFk(id int) revel.Result {
 	c.provider = employee.New()
 	employees, err := c.provider.GetByGroupFk(id)
@@ -118,6 +126,7 @@ func (c *CEmployee) GetByGroupFk(id int) revel.Result {
 	return c.RenderJSON(employees)
 }
 
+// Переместить сотрудника в другую группу
 func (c *CEmployee) UpdateGroup(employee resources.Employee) revel.Result {
 	employees, err := c.provider.UpdateGroup(employee)
 	if err != nil {
@@ -126,6 +135,7 @@ func (c *CEmployee) UpdateGroup(employee resources.Employee) revel.Result {
 	return c.RenderJSON(employees)
 }
 
+// Удалить сотрудника из группы (перемещние в "без группы")
 func (c *CEmployee) DeleteGroup(id int) revel.Result {
 	id, err := c.provider.DeleteGroup(id)
 	if err != nil {
@@ -134,6 +144,7 @@ func (c *CEmployee) DeleteGroup(id int) revel.Result {
 	return c.RenderJSON(id)
 }
 
+// Создать сотрудника
 func (c *CEmployee) Create(employee resources.Employee) revel.Result {
 	employees, err := c.provider.Create(employee)
 	if err != nil {
@@ -142,6 +153,7 @@ func (c *CEmployee) Create(employee resources.Employee) revel.Result {
 	return c.RenderJSON(employees)
 }
 
+// Удалить сотрудника
 func (c *CEmployee) Delete(id int) revel.Result {
 	id, err := c.provider.Delete(id)
 	if err != nil {
@@ -150,6 +162,7 @@ func (c *CEmployee) Delete(id int) revel.Result {
 	return c.RenderJSON(id)
 }
 
+// Обновить данные сотрудника
 func (c *CEmployee) Update(employee resources.Employee) revel.Result {
 	employees, err := c.provider.Update(employee)
 	if err != nil {

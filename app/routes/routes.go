@@ -372,6 +372,13 @@ type tCRef struct {}
 var CRef tCRef
 
 
+func (_ tCRef) Upload(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("CRef.Upload", args).URL
+}
+
 func (_ tCRef) GetPos(
 		) string {
 	args := make(map[string]string)

@@ -11,6 +11,20 @@ type CRef struct {
 	provider *ref.Provider
 }
 
+func (c *CRef) Upload() revel.Result {
+
+	//name := multipart.FileHeader.Filename
+	//ss := c.Request.MultipartForm.Value
+	//conte := c.Request.MultipartForm.File
+	//dis, err := c.Request.GetMultipartForm()
+	//form, err := c.Request.GetForm()
+	//if err != nil {
+	//	return nil
+	//}
+	//log.Println(form, "+++++++++", dis, "++++++++++")
+	return nil
+}
+
 func (c *CRef) GetPos() revel.Result {
 	c.provider = ref.New()
 	values, err := c.provider.GetPos()

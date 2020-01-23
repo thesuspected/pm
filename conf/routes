@@ -21,7 +21,7 @@ GET     /priority                               CRef.GetPriority
 GET     /status                                 CRef.GetStatus
 GET     /tags                                   CRef.GetTags
 
-# Загрузка
+# Загрузка фото
 # POST    /upload                               CRef.Upload
 
 # Проекты

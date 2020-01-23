@@ -1,13 +1,13 @@
 
-import {ProjectModel} from "/public/js/project/model/ProjectModel.js";      // db requests  -  проекты
-import {GroupModel} from "/public/js/group/model/GroupModel.js";            // db requests  -  группы
-import {EmployeeModel} from "/public/js/employee/model/EmployeeModel.js";   // db requests  -  сотрудники
-import {RefModel} from "/public/js/ref/model/RefModel.js";                  // db requests  -  селекты
-import {TaskModel} from "/public/js/task/model/TaskModel.js";               // db requests  -  задачи
+import {ProjectModel} from "/public/js/project/model/ProjectModel.js";      // model  -  проекты
+import {GroupModel} from "/public/js/group/model/GroupModel.js";            // model  -  группы
+import {EmployeeModel} from "/public/js/employee/model/EmployeeModel.js";   // model  -  сотрудники
+import {RefModel} from "/public/js/ref/model/RefModel.js";                  // model  -  селекты
+import {TaskModel} from "/public/js/task/model/TaskModel.js";               // model  -  задачи
 
-import {projects_originalValues} from "/public/js/origValuesForm.js";       // оригинальные значения формы проекта
-import {groups_originalValues} from "/public/js/origValuesForm.js";	        // оригинальные значения формы группы
-import {employees_originalValues} from "/public/js/origValuesForm.js";	    // оригинальные значения формы сотрудника
+import {projects_originalValues} from "/public/js/origValuesForm.js";       // ориг значения формы проекта
+import {groups_originalValues} from "/public/js/origValuesForm.js";	        // ориг значения формы группы
+import {employees_originalValues} from "/public/js/origValuesForm.js";	    // ориг значения формы сотрудника
 
 import {uploadForm} from "/public/js/employee/employeeForm.js";             // форма для загрузки фото
 
@@ -96,8 +96,10 @@ export const f = {
                 let id = $$("listProject").getSelectedId();
                 // делаем запрос в бд
                 ProjectModel.delete(id).then(function(result) {
-                    // удаляем из списка
+                    // удаляем из списка проект
                     $$("listProject").remove(result);
+                    // удаляем задачи проекта
+                    $$("kanban").clearAll();
                 });
             })
     },
@@ -284,7 +286,7 @@ export const f = {
         });
     },
 
-    createSubTask: () => {
+    createSubTask: () => {                              // Создание подзадачи
         // заполняем подзадачу
         let sub = {};
         sub.id = "";
@@ -300,14 +302,14 @@ export const f = {
         $$('textSubTask').setValue("");
     },
 
-    deleteSubTask: (sub) => {
+    deleteSubTask: (sub) => {                           // Удаление подзадачи
         // удаляем подзадачу из бд
         TaskModel.deleteSub(sub);
         // удаляем подзадачу из таблицы
         $$('subTasksTable').remove(sub.id);
     },
 
-    updateSubTask: (sub) => {
+    updateSubTask: (sub) => {                           // Обновление подзадачи
         // При нажатии check в шапке, больше 5 записей не обрабатывается
         // обновляем задачу в бд
         TaskModel.updateSub(sub);
@@ -315,7 +317,7 @@ export const f = {
 
     //************************************************** Группы ***************************************************//
 
-    addGroupForm: () => {
+    addGroupForm: () => {                               // Заполнение формы создания группы
         // получаем актуальных сотрудников
         f.getEmployeeSelect();
         // Изменяем форму
@@ -328,7 +330,7 @@ export const f = {
         $$("groups_window").show();
     },
 
-    editGroupForm: () => {
+    editGroupForm: () => {                              // Заполнение формы редактирования группы
         // получаем актуальных сотрудников
         f.getEmployeeSelect();
         // Изменяем форму
@@ -344,14 +346,14 @@ export const f = {
         $$("groups_window").show();
     },
 
-    getAllGroups: () => {
+    getAllGroups: () => {                               // Заполнить все группы в список
         // запрос на получение всех групп
         GroupModel.getAll().then(function (result) {
             $$("listGroup").parse(result, 'json');
         });
     },
 
-    createGroup: () => {
+    createGroup: () => {                                // Создать группу
         // Валидация заполнения
         if ($$("groups_Form").validate()) {
             // берем значения формы
@@ -371,7 +373,7 @@ export const f = {
             webix.message({type: "error", text: "Дайте название проектной группе"});
     },
 
-    delGroup: () => {
+    delGroup: () => {                                   // Удалить группу
         // закрываем окна
         $$("edit_Popup").hide();
         $$("groups_window").hide();
@@ -390,7 +392,7 @@ export const f = {
             })
     },
 
-    updateGroup: () => {
+    updateGroup: () => {                                // Обновить группу в бд
         // Валидация заполнения
         if ($$("groups_Form").validate()) {
             // берем значения формы
@@ -412,7 +414,7 @@ export const f = {
             webix.message({type: "error", text: "Дайте название проектной группе"});
     },
 
-    getLastGroup: (id) => {
+    getLastGroup: (id) => {                             // Вставить группу в конец списка
         // делаем запрос в бд
         GroupModel.get(id).then(function (result) {
             // Добавляем проект в конец списка
@@ -425,7 +427,7 @@ export const f = {
         });
     },
 
-    refreshGroup: (id) => {
+    refreshGroup: (id) => {                             // Обновить группу в списке
         // делаем запрос в бд
         GroupModel.get(id).then(function (result) {
             // обновляем данные о проекте
@@ -436,7 +438,7 @@ export const f = {
         });
     },
 
-    fillGroupForm: (id) => {
+    fillGroupForm: (id) => {                            // Заполнить форму выбранной группой
         // запрос на получение имени и лидера
         GroupModel.getFk(id).then(function (result) {
             // Создаем массив для формы
@@ -448,7 +450,7 @@ export const f = {
         });
     },
 
-    getGroupEmployees: () => {
+    getGroupEmployees: () => {                          // Получить сотрудников выбранной группы
         let id = $$('listGroup').getSelectedId();
         $$('groupsTable').clearAll();
         EmployeeModel.getByGroup(id).then(function (result) {
@@ -458,7 +460,7 @@ export const f = {
 
     //************************************************ Сотрудники *************************************************//
 
-    addEmployeeForm: () => {
+    addEmployeeForm: () => {                            // Заполнение формы создания сотрудника
         // получаем актуальные группы и должности
         f.getGroupSelect();
         f.getPosSelect();
@@ -473,7 +475,7 @@ export const f = {
         $$("employees_window").show();
     },
 
-    editEmployeeForm: (id) => {
+    editEmployeeForm: (id) => {                         // Заполнение формы изменения сотрудника
         // получаем актуальные группы и должности
         f.getGroupSelect();
         f.getPosSelect();
@@ -489,14 +491,14 @@ export const f = {
         $$("employees_window").show();
     },
 
-    getAllEmployees: () => {
+    getAllEmployees: () => {                            // Заполнить список сотрудников
         // далем запрос в бд
         EmployeeModel.getAll().then(function (result) {
             $$("listEmployees").parse(result, 'json');
         });
     },
 
-    createEmployee:() => {
+    createEmployee:() => {                              // Создать сотрудника
         // Валидация заполнения
         if ($$("employees_Form").validate()) {
             // берем значения формы
@@ -515,6 +517,7 @@ export const f = {
             };
             // далем запрос в бд
             EmployeeModel.create(employee).then(function (result) {
+                // вставляем его в конец списка
                 f.getLastEmployee(result[0].id);
             });
             // закрываем окно
@@ -524,7 +527,7 @@ export const f = {
             webix.message({type: "error", text: "Заполните все данные сотрудника"});
     },
 
-    deleteEmployee: (id) => {
+    deleteEmployee: (id) => {                           // Удалить сотрудника
         // закрываем окна
         $$("edit_Popup").hide();
         $$("employees_window").hide();
@@ -544,7 +547,7 @@ export const f = {
             })
     },
 
-    deleteFromGroup: (id) => {
+    deleteFromGroup: (id) => {                          // Сделать сотрудника "без группы"
         let g_id = $$('listGroup').getSelectedId();
         if (g_id !== 1) {
             EmployeeModel.deleteFromGroup(id).then(function (id) {
@@ -556,7 +559,7 @@ export const f = {
         } else webix.message({type: "error", text: "Сотрудник уже без группы"});
     },
 
-    updateEmployee: () => {
+    updateEmployee: () => {                             // Обновить сотрудника в бд
         // Валидация заполнения
         if ($$("employees_Form").validate()) {
             // берем значения формы
@@ -568,13 +571,14 @@ export const f = {
                 patronymic: em_form.patronymic,
                 date:       webix.i18n.dateFormatStr(em_form.date),
                 email:      em_form.email,
-                imgSrc:     '0.png',
+                imgSrc:     em_form.imgSrc,
                 user:       '1',
                 position:   em_form.position,
                 group:      em_form.group
             };
             // далем запрос в бд
             EmployeeModel.update(employee).then(function(result) {
+                // обновить в списке
                 f.refreshEmployee(result[0].id);
             });
             // закрываем окно
@@ -584,7 +588,7 @@ export const f = {
             webix.message({type: "error", text: "Заполните все данные сотрудника"});
     },
 
-    getLastEmployee: (id) => {
+    getLastEmployee: (id) => {                          // Вставить сотрудника в конец списка
         // делаем запрос в бд
         EmployeeModel.get(id).then(function (result) {
             result[0].date = new Date(result[0].date);
@@ -598,7 +602,7 @@ export const f = {
         });
     },
 
-    refreshEmployee: (id) => {
+    refreshEmployee: (id) => {                          // Обновить сотрудника в списке
         // делаем запрос в бд
         EmployeeModel.get(id).then(function (result) {
             // обновляем данные о сотруднике в списке
@@ -626,7 +630,7 @@ export const f = {
         });
     },
 
-    fillEmployeeForm: (id) => {
+    fillEmployeeForm: (id) => {                         // Заполнить форму выбранным сотрудником
         // запрос на получение данных сотрудника
         EmployeeModel.getFk(id).then(function (result) {
             // Заполняем форму проекта
@@ -637,7 +641,7 @@ export const f = {
         });
     },
 
-    addEmployeeInGroup: () => {
+    addEmployeeInGroup: () => {                         // Добавить сотрудника в группу
         // Если сотрудник уже в группе
         if ($$('groupsTable').exists(context.source)) {
             webix.message({type: "error", text: "Сотрудник уже в группе"});
@@ -663,7 +667,7 @@ export const f = {
 
     //************************************************** Select ***************************************************//
 
-    getGroupSelect: () => {
+    getGroupSelect: () => {                             // Получить все группы для селекта
         // делаем запрос в бд
         GroupModel.getAll().then(function (result) {
             // создаем массив для Select
@@ -677,12 +681,19 @@ export const f = {
                 }
             }
             // заносим в select
-            $$("groupSelect").define("options", selectGroup);
-            $$("groupSelect").refresh();
+            if (window.location.href === "http://localhost:9000/employees")
+            {
+                $$("grEmpSelect").define("options", selectGroup);
+                $$("grEmpSelect").refresh();
+            }
+            else {
+                $$("grProjectSelect").define("options", selectGroup);
+                $$("grProjectSelect").refresh();
+            }
         });
     },
 
-    getEmployeeSelect: () => {
+    getEmployeeSelect: () => {                          // Получить всех сотрудников для выбора лидера проекта
         // далем запрос в бд
         EmployeeModel.getAll().then(function (result) {
             // создаем переменную для select
@@ -696,12 +707,10 @@ export const f = {
             // заносим в select
             $$("employeeSelect").define("options", selectEmployee);
             $$("employeeSelect").refresh();
-            // $$("employeeCombo").define("options", selectEmployee);
-            // $$("employeeCombo").refresh();
         });
     },
 
-    getPosSelect: () => {
+    getPosSelect: () => {                             // Получить все должности для селекта
         RefModel.getPos().then(function (result) {
             // заносим в select
             $$("positionSelect").define("options", result);
@@ -709,7 +718,7 @@ export const f = {
         });
     },
 
-    getAssignSelect: () => {
+    getAssignSelect: () => {                           // Получить всех сотрудников для селекта задач
         let project = $$('listProject').getSelectedId();
         // делаем запрос выбранного проекта
         ProjectModel.getFk(project).then(function (result) {
@@ -732,7 +741,7 @@ export const f = {
         });
     },
 
-    getPrioritySelect: () => {
+    getPrioritySelect: () => {                           // Получить приоритетность задач для селекта
         // делаем запрос в бд
         RefModel.getPriority().then(function (result) {
             // заносим в select
@@ -741,7 +750,7 @@ export const f = {
         });
     },
 
-    getStatusSelect: () => {
+    getStatusSelect: () => {                             // Получить статусы задач для селекта
         // делаем запрос в бд
         RefModel.getStatus().then(function (result) {
             // заносим в select
@@ -750,7 +759,7 @@ export const f = {
         });
     },
 
-    getTagsSelect: () => {
+    getTagsSelect: () => {                             // Получить теги задач для селекта
         // делаем запрос в бд
         RefModel.getTags().then(function (result) {
             // заносим в select
@@ -761,7 +770,7 @@ export const f = {
 
     //************************************************** User ***************************************************//
 
-    getUserInfo: () => {
+    getUserInfo: () => {                             // Получить информацию о пользователе
         // Берем текущего пользователя
         EmployeeModel.login().then(function (user) {
             // Ищем сотрудника с таким пользователем
@@ -771,7 +780,7 @@ export const f = {
         })
     },
 
-    logout: () => {
+    logout: () => {                                 // Выйти из системы
         EmployeeModel.logout();
         document.location.replace("/")
     }

@@ -137,7 +137,7 @@ func Register() {
 				Args: []*revel.MethodArg{ 
 				},
 				RenderArgNames: map[int][]string{ 
-					69: []string{ 
+					70: []string{ 
 					},
 				},
 			},
@@ -146,7 +146,7 @@ func Register() {
 				Args: []*revel.MethodArg{ 
 				},
 				RenderArgNames: map[int][]string{ 
-					73: []string{ 
+					75: []string{ 
 					},
 				},
 			},
@@ -372,6 +372,13 @@ func Register() {
 	
 	revel.RegisterController((*controllers1.CRef)(nil),
 		[]*revel.MethodType{
+			&revel.MethodType{
+				Name: "Upload",
+				Args: []*revel.MethodArg{ 
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
 			&revel.MethodType{
 				Name: "GetPos",
 				Args: []*revel.MethodArg{ 

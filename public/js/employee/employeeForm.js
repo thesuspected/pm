@@ -46,7 +46,7 @@ export let employeeForm = {
         {
             margin: 10,
             cols: [
-                {view: "select", id:"groupSelect", label: "Группа", options: [], labelPosition: "top", name: "group"},
+                {view: "select", id:"grEmpSelect", label: "Группа", options: [], labelPosition: "top", name: "group"},
                 {view: "select", id:"positionSelect", label: "Должность", options: [], labelPosition: "top", name: "position"}
             ]
         },

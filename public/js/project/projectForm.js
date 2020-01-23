@@ -9,15 +9,14 @@ export let projectForm = {
     elements: [
         {
             margin:10, cols: [
-                {view: "text", label: "Название", labelPosition: "top", name: "name"},
+                {view: "text", id:"projectName", label: "Название", labelPosition: "top", name: "name"},
                 {
-                    view: "select",
-                    id: "groupSelect",
-                    margin: 20,
-                    label: "Пр. группа",
-                    options: [],
+                    view:"select",
+                    id: "grProjectSelect",
+                    label:"Пр. группа",
                     labelPosition: "top",
-                    name: "group",
+                    options:[],
+                    name: "group"
                 }
             ]
         },
