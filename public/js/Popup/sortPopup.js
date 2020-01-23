@@ -10,12 +10,6 @@ export let sortPopup = {
         data: sort_data,
         template: "#name#",
         autoheight: true,
-        select: true,
-        // on: {
-        //     onSelectChange: function () {
-        //         let value = this.getSelectedItem().value;
-        //         sortProject(value);
-        //     }
-        // }
+        select: true
     }
 };

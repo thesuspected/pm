@@ -1,4 +1,3 @@
-import {positions, projectGroup_data} from '/public/js/data.js';
 export let uploadForm = "<div class='upload uploadDiv uploadBtns'><button type='button' class='uploadBtn webix_view' ><img src='/public/img/upload.svg' class='uploadImg'/>Загрузить</button></div>";
 
 export let employeeForm = {

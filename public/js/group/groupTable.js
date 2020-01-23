@@ -1,4 +1,4 @@
-import {users_set} from '/public/js/data.js';
+
 
 export let groupTable = {
     view: "datatable",
@@ -15,5 +15,4 @@ export let groupTable = {
     ],
     select: true,
     drag:"move"
-    //data: users_set
 };

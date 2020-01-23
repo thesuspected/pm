@@ -1,4 +1,3 @@
-import {projectGroup_data} from '/public/js/data.js';
 
 export let projectForm = {
     view: "form",

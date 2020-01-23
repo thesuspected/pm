@@ -6,6 +6,5 @@ export let sidebar = {
     data: [
         {id: "tasks", value: "Задачи", icon: "mdi mdi-calendar-check-outline"},
         {id: "employees", value: "Сотрудники", icon: "mdi mdi-account-group-outline"},
-        //{id: "settings", value: "Настройки", icon: "mdi mdi-tune"},
     ]
 };

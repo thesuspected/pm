@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="/public/css/style.css" type="text/css">
     <link rel="stylesheet" href="/public/codebase/webix.css" type="text/css">
     <link rel="stylesheet" href="/public/kanban/codebase/kanban.css" type="text/css">
-    <link rel="stylesheet" href="/public/MaterialDesign/css/materialdesignicons.css" type="text/css">
+    <link rel="stylesheet" href="/public/css/MaterialDesign/css/materialdesignicons.css" type="text/css">
     <!-- Скрипты -->
     <script src="/public/codebase/webix.js" type="text/javascript"></script>
     <script src="/public/kanban/codebase/kanban.js" type="text/javascript"></script>
@@ -35,16 +35,16 @@
     import {employeeWindow} from "/public/js/employee/employeeWindow.js";	    // окно сотрудника
     webix.ui(employeeWindow);
 
-    import {editPopup} from "/public/js/editPopup.js";	                        // попап списка [редактировать / удалить]
+    import {editPopup} from "/public/js/Popup/editPopup.js";	                        // попап списка [редактировать / удалить]
     webix.ui(editPopup);
 
-    import {sortPopup} from "/public/js/sortPopup.js";					        // попап сортировки [по порядку / по имени / по дате]
+    import {sortPopup} from "/public/js/Popup/sortPopup.js";					        // попап сортировки [по порядку / по имени / по дате]
     webix.ui(sortPopup);
 
-    import {userPopup} from "/public/js/userPopup.js";                          // попап пользователя в шапке
+    import {userPopup} from "/public/js/Popup/userPopup.js";                          // попап пользователя в шапке
     webix.ui(userPopup);
 
-    import {themePopup} from "/public/js/themePopup.js";                        // попап темы в шапке
+    import {themePopup} from "/public/js/Popup/themePopup.js";                        // попап темы в шапке
     webix.ui(themePopup);
 
     import {uploadApi} from "/public/js/uploadApi.js";                          // загрузка фото

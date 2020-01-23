@@ -1,4 +1,3 @@
-import {users_set} from '/public/js/data.js';
 
 export let employees = {
     gravity: 0.37,
@@ -27,7 +26,6 @@ export let employees = {
             },
             select: true,
             drag:"source"
-            //data: users_set
         }
     ]
 };

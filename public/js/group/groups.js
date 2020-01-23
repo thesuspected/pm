@@ -1,4 +1,4 @@
-import {groups_data} from '/public/js/data.js';
+
 
 export let groups = {
     rows: [
@@ -22,7 +22,6 @@ export let groups = {
                 height: 80
             },
             select: true,
-            //data: groups_data
         }
     ]
 };

@@ -2,29 +2,50 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7b133205-48b5-4e04-9f68-b8c3c73cadf9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/public/img/employees/10.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/img/employees/5.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/img/employees/6.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/img/employees/7.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/img/employees/8.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/img/employees/9.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/controllers/CEmployee.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/CEmployee.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/controllers/CRef.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/CRef.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/controllers/app.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/app.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/mappers/ProjectMapper.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/mappers/ProjectMapper.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routes/routes.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/routes.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/tmp/run/run.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/tmp/run/run.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/views/App/employees.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/App/employees.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/App/settings.html" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/app/views/App/tasks.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/App/tasks.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/conf/routes" beforeDir="false" afterPath="$PROJECT_DIR$/conf/routes" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views/header.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/header.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/MaterialDesign/.github/ISSUE_TEMPLATE.md" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/MaterialDesign/.github/ISSUE_TEMPLATE.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/MaterialDesign/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/MaterialDesign/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/MaterialDesign/css/materialdesignicons.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/MaterialDesign/css/materialdesignicons.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/MaterialDesign/css/materialdesignicons.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/MaterialDesign/css/materialdesignicons.css.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/MaterialDesign/css/materialdesignicons.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/MaterialDesign/css/materialdesignicons.min.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/MaterialDesign/css/materialdesignicons.min.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/MaterialDesign/css/materialdesignicons.min.css.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/MaterialDesign/fonts/materialdesignicons-webfont.eot" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/MaterialDesign/fonts/materialdesignicons-webfont.eot" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/MaterialDesign/fonts/materialdesignicons-webfont.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/MaterialDesign/fonts/materialdesignicons-webfont.ttf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/MaterialDesign/fonts/materialdesignicons-webfont.woff" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/MaterialDesign/fonts/materialdesignicons-webfont.woff" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/MaterialDesign/fonts/materialdesignicons-webfont.woff2" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/MaterialDesign/fonts/materialdesignicons-webfont.woff2" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/MaterialDesign/license.md" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/MaterialDesign/license.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/MaterialDesign/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/MaterialDesign/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/MaterialDesign/preview.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/MaterialDesign/preview.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/MaterialDesign/scss/_animated.scss" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/MaterialDesign/scss/_animated.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/MaterialDesign/scss/_core.scss" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/MaterialDesign/scss/_core.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/MaterialDesign/scss/_extras.scss" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/MaterialDesign/scss/_extras.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/MaterialDesign/scss/_functions.scss" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/MaterialDesign/scss/_functions.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/MaterialDesign/scss/_icons.scss" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/MaterialDesign/scss/_icons.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/MaterialDesign/scss/_path.scss" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/MaterialDesign/scss/_path.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/MaterialDesign/scss/_variables.scss" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/MaterialDesign/scss/_variables.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/MaterialDesign/scss/materialdesignicons.scss" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/MaterialDesign/scss/materialdesignicons.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/bootstrap-3.3.6.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/libraries/bootstrap-3.3.6.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/data.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/data.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/editPopup.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/Popup/editPopup.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/js/employee/employeeForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/employee/employeeForm.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/functions.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/functions.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/employee/employees.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/employee/employees.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/group/groupForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/group/groupForm.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/group/groupTable.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/group/groupTable.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/group/groups.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/group/groups.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/jquery-2.2.4.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/libraries/jquery-2.2.4.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/logIn/signInForm.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/logIn/signUpForm.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/origValuesForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/origValuesForm.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/js/project/projectForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/project/projectForm.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/project/projects.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/project/projects.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/js/sidebar.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/sidebar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/sortPopup.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/Popup/sortPopup.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/js/task/kanban.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/task/kanban.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/toolbar.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/toolbar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/themePopup.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/Popup/themePopup.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/userPopup.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/Popup/userPopup.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -99,10 +120,13 @@
     <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Faina\go\src\pm\public\css" />
+      <recent name="C:\Users\Faina\go\src\pm\public\js\Popup" />
+      <recent name="C:\Users\Faina\go\src\pm\public\js\libraries" />
       <recent name="C:\Users\Faina\go\src\pm\public\js" />
     </key>
-    <key name="MoveFile.RECENT_KEYS">
+    <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Faina\go\src\pm\public\js" />
     </key>
   </component>

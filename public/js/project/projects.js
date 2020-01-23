@@ -1,9 +1,10 @@
-import {projects_data} from '/public/js/data.js';
+
 
 export let projects = {
     rows: [
         {
             view: "toolbar",
+            id: "projectBar",
             padding: {left: 10},
             margin: -4,
             elements: [
@@ -23,7 +24,6 @@ export let projects = {
                 height: 80
             },
             select: true,
-            //data: projects_data
         }
     ]
 };

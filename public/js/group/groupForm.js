@@ -1,4 +1,4 @@
-import {users_set} from '/public/js/data.js';
+
 
 export let groupForm = {
     view: "form",
@@ -21,14 +21,6 @@ export let groupForm = {
                 }
             ]
         },
-        // {
-        //     view: "multicombo",
-        //     id: "employeeCombo",
-        //     name: "tags",
-        //     label: "Сотрудники",
-        //     labelPosition: "top",
-        //     options: []
-        // },
         {
             margin: 10, cols: [
                 {view: "button", id: "dltGroupFormBtn", width: 111, value: "Удалить"},
