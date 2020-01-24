@@ -34,16 +34,16 @@
     import {employeeWindow} from "/public/js/employee/employeeWindow.js";	// окно сотрудника
     webix.ui(employeeWindow);
 
-    import {editPopup} from "/public/js/Popup/editPopup.js";		                // попап списка [редактировать / удалить]
+    import {editPopup} from "/public/js/Popup/editPopup.js";		        // попап списка [редактировать / удалить]
     webix.ui(editPopup);
 
-    import {sortPopup} from "/public/js/Popup/sortPopup.js";						// попап сортировки [по порядку / по имени / по дате]
+    import {sortPopup} from "/public/js/Popup/sortPopup.js";				// попап сортировки [по порядку / по имени / по дате]
     webix.ui(sortPopup);
 
-    import {userPopup} from "/public/js/Popup/userPopup.js";                      // попап пользователя в шапке
+    import {userPopup} from "/public/js/Popup/userPopup.js";                // попап пользователя в шапке
     webix.ui(userPopup);
 
-    import {themePopup} from "/public/js/Popup/themePopup.js";                    // попап темы в шапке
+    import {themePopup} from "/public/js/Popup/themePopup.js";              // попап темы в шапке
     webix.ui(themePopup);
 
     import {basket} from "/public/js/basket.js";                            // корзина для DnD
@@ -263,7 +263,7 @@
                     f.createTask();
                     return false;
                 }
-                // разрешаем создание из функции
+                // разрешаем создание из своей функции
                 else return true;
             });
 
@@ -271,6 +271,12 @@
             $$('kanban').data.attachEvent("onDataUpdate", function(id, index){
                 let task = $$('kanban').getItem(id);
                 f.updateTask(task);
+            });
+
+            // Удаление задачи
+            $$('kanban').data.attachEvent("onAfterDelete", function(id){
+                f.delTask(id);
+                return true;
             });
 
             // Валидация заполнения задачи

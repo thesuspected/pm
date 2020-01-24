@@ -5,6 +5,9 @@ export let kanban = {
     view: "kanban",
     id: "kanban",
     type: "wide",
+    cardActions:[
+        "edit", "remove"
+    ],
     cols: [
         {
             rows: [
@@ -114,7 +117,6 @@ export let kanban = {
     userList: {
         width:150
     },
-    cardActions: true,
     tags: "/tags",
     users: "/employeesEmp",
     colors: "/priority",

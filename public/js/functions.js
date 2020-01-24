@@ -212,10 +212,11 @@ export const f = {
         let project = $$('listProject').getSelectedId();
         // делаем запрос
         TaskModel.delete(id, project).then(function (result_id) {
-            // задача на удаление
-            let task = $$('kanban').getItem(result_id);
-            webix.message({type:"debug", text:"Задача <i>" + task.text + "</i> удалёна"});
-            $$('kanban').remove(result_id);
+            // Если вызов на удаление из корзины
+            if ($$('kanban').exists(id)) {
+                // Удаляем задачу
+                $$('kanban').remove(result_id);
+            }
         });
     },
 
