@@ -318,7 +318,7 @@
             $$("groupsTable").attachEvent("onBeforeDrop", function(context, ev){
                 // Если запись перетаскивается из всех сотрудников в таблицу группы
                 if (context.from !== context.to) {
-                    f.addEmployeeInGroup();
+                    f.addEmployeeInGroup(context);
                 }
                 return false;
             });

@@ -189,8 +189,8 @@ export const f = {
                     });
                 }
             }
-            // вынужденная задержка для прогрузки тэгов
-            setTimeout(function () {$$("kanban").parse(result)}, 200);
+            // задержка для прогрузки тэгов
+            setTimeout(function () {$$("kanban").parse(result)}, 300);
         });
     },
 
@@ -552,7 +552,6 @@ export const f = {
         let g_id = $$('listGroup').getSelectedId();
         if (g_id !== 1) {
             EmployeeModel.deleteFromGroup(id).then(function (id) {
-                console.log(id);
                 let item = $$('groupsTable').getItem(id);
                 webix.message({type: "debug", text: "<i>" + item.lastName + " " + item.firstName + " </i>теперь без группы"});
                 $$("groupsTable").remove(id);
@@ -642,7 +641,7 @@ export const f = {
         });
     },
 
-    addEmployeeInGroup: () => {                         // Добавить сотрудника в группу
+    addEmployeeInGroup: (context) => {                         // Добавить сотрудника в группу
         // Если сотрудник уже в группе
         if ($$('groupsTable').exists(context.source)) {
             webix.message({type: "error", text: "Сотрудник уже в группе"});
@@ -688,6 +687,8 @@ export const f = {
                 $$("grEmpSelect").refresh();
             }
             else {
+                $$("grEmpSelect").define("options", selectGroup);
+                $$("grEmpSelect").refresh();
                 $$("grProjectSelect").define("options", selectGroup);
                 $$("grProjectSelect").refresh();
             }
